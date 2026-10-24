@@ -1,0 +1,10 @@
+<Project>
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <!-- Les koans contiennent volontairement du code "naïf" : on coupe les warnings de style -->
+    <NoWarn>$(NoWarn);CS0162;CS1718;xUnit2000;xUnit2003;xUnit2004</NoWarn>
+  </PropertyGroup>
+</Project>

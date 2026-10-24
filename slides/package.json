@@ -1,0 +1,23 @@
+{
+  "name": "csharp-101-slides",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "s1": "slidev s1-fundamentals.md --open",
+    "build:s1": "slidev build s1-fundamentals.md --out dist/s1",
+    "export:s1": "slidev export s1-fundamentals.md --output dist/s1-fundamentals.pdf",
+    "build:site": "node scripts/build-site.mjs",
+    "serve:site": "node scripts/serve-site.mjs",
+    "site": "npm run build:site && npm run serve:site"
+  },
+  "dependencies": {
+    "@iconify-json/fluent-emoji-high-contrast": "1.2.6",
+    "@iconify-json/game-icons": "1.2.4",
+    "@iconify-json/logos": "1.2.15",
+    "@slidev/cli": "53.0.0",
+    "@slidev/theme-default": "0.25.0"
+  },
+  "devDependencies": {
+    "playwright-chromium": "^1.64.1"
+  }
+}

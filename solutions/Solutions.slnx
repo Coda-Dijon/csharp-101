@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/s1-fundamentals/">
+    <Project Path="s1-fundamentals/Koans/Koans.csproj" />
+    <Project Path="s1-fundamentals/demos/compilation/Compilation.csproj" />
+  </Folder>
+</Solution>

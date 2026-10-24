@@ -1,0 +1,126 @@
+/* Palette inspirée de l'affiche de Shaun of the Dead : blanc, noir, rouge sang */
+:root {
+  --blood: #be1e2d;
+  --blood-dark: #8e1420;
+  --blood-soft: #fbeaec;
+  --ink: #141414;
+  --paper: #ffffff;
+  --mist: #f5f5f5;
+  --line: #e7e7e7;
+  --muted: #8a8a8a;
+}
+
+.slidev-layout {
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  padding: 2.2rem 3.5rem 3rem;
+}
+
+/* Titres : sans-serif très gras, alignés à gauche, avec un trait rouge */
+.slidev-layout h1 {
+  font-weight: 800;
+  font-size: 2.1rem;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  margin-bottom: 1.4rem;
+}
+.slidev-layout h1::before {
+  content: '';
+  display: block;
+  width: 2.5rem;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--blood);
+  margin-bottom: 0.7rem;
+}
+.slidev-layout h2 { font-weight: 700; letter-spacing: -0.02em; }
+.slidev-layout h3 { font-weight: 700; color: var(--blood); margin-bottom: 0.3rem; }
+.slidev-layout strong, .slidev-layout b { font-weight: 700; }
+.slidev-layout a { color: var(--blood); border-bottom-color: var(--blood); }
+.slidev-layout li::marker { color: var(--blood); }
+
+/* Code : cartes grises arrondies, police sans ligatures pour que `??` reste lisible */
+.slidev-layout pre, .slidev-layout code { font-size: 0.7rem; line-height: 1.5; font-variant-ligatures: none; }
+.slidev-layout .slidev-code {
+  background: var(--mist) !important;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.6rem 0.9rem !important;
+}
+.slidev-layout :not(pre) > code {
+  background: var(--mist);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 0.05rem 0.35rem;
+  font-size: 0.85em;
+}
+
+.slidev-layout.two-cols-header { column-gap: 2rem; grid-template-columns: 1fr 1fr; }
+.slidev-layout.two-cols-header > * { min-width: 0; }
+.slidev-layout.two-cols { column-gap: 2rem; }
+.slidev-layout.two-cols > * { min-width: 0; }
+
+/* Slides centrées : titre et trait centrés aussi */
+.slidev-layout.center h1 { text-align: center; }
+.slidev-layout.center h1::before { margin-left: auto; margin-right: auto; }
+
+/* Tableaux : en-têtes en petites capitales, lignes fines */
+.slidev-layout table { font-size: 0.8rem; border-collapse: collapse; width: 100%; }
+.slidev-layout th, .slidev-layout td { padding: 0.35rem 0.7rem; border-bottom: 1px solid var(--line); }
+.slidev-layout th {
+  text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.68rem;
+  color: var(--muted); border-bottom: 2px solid var(--ink);
+}
+.slidev-layout tr:hover td { background: var(--mist); }
+
+/* Couverture : affiche blanche, sang qui coule du haut */
+.slidev-layout.cover { text-align: center; }
+.slidev-layout.cover h1 {
+  font-size: 5.5rem; font-weight: 900; letter-spacing: -0.05em; line-height: 1; margin: 0;
+}
+.slidev-layout.cover h1::before,
+.slidev-layout.section h1::before,
+.slidev-layout.end h1::before { display: none; }
+.slidev-layout.cover h2 { font-size: 1.5rem; font-weight: 500; color: var(--muted); margin-top: 1rem; }
+
+/* Sections : fond noir, sang qui coule, titre blanc */
+.slidev-layout.section { background: var(--ink); color: white; text-align: center; }
+.slidev-layout.section h1 { color: white; font-size: 3.6rem; font-weight: 900; letter-spacing: -0.04em; margin: 0; }
+
+.slidev-layout.section :not(pre) > code {
+  background: rgba(255, 255, 255, 0.12); border-color: transparent; color: white;
+}
+
+/* Fin : fond rouge sang */
+.slidev-layout.end { background: var(--blood); color: white; text-align: center; }
+.slidev-layout.end h1 { color: white; font-size: 4.2rem; font-weight: 900; letter-spacing: -0.04em; }
+
+/* Petite ligne façon « EDGAR WRIGHT PRESENTS » */
+.kicker {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.3rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.section .kicker, .end .kicker { color: rgba(255, 255, 255, 0.7); }
+
+.small { font-size: 0.8rem; }
+.muted { color: var(--muted); }
+.pill {
+  display: inline-block; padding: 0.3rem 0.9rem; border-radius: 999px;
+  border: 1.5px solid var(--blood); background: var(--blood-soft);
+  color: var(--blood-dark); font-weight: 600; font-size: 0.85rem;
+}
+.callout > p { margin: 0; }
+.callout {
+  border-left: 4px solid var(--blood); background: var(--blood-soft);
+  padding: 0.6rem 1rem; border-radius: 0 10px 10px 0;
+}
+
+/* Libellé de l'étape surlignée, en haut à droite à côté du titre */
+.step-labels { position: absolute; top: 2.9rem; right: 3.5rem; display: grid; justify-items: end; }
+.step-labels > * { grid-area: 1 / 1; }
