@@ -164,7 +164,8 @@ csharp-101/
 ## Avancement & décisions
 - [x] **Séance 1** : 53 koans en 5 fichiers, slides Slidev `slides/s1-fundamentals.md`, démos `hello.cs` et `compilation`.
 - [x] **Séance 2** : 70 koans en 8 fichiers + un exercice de modélisation (`solutions/s2-types`), slides `slides/s2-types.md`, sans démo ni slide preview (comme en séance 1).
-- [ ] Séance 3 · [ ] Séance 4 · [ ] Séance 5
+- [x] **Séance 3** : 57 koans en 7 fichiers autour du registre de la horde (`solutions/s3-linq`, domaine dans `Koans/Domain.cs`), slides `slides/s3-linq.md`, sans slide preview.
+- [ ] Séance 4 · [ ] Séance 4 · [ ] Séance 5
 
 Décisions prises pendant la séance 1 :
 - **Placeholders** : tests rouges à l'exécution (le code compile toujours). `___` est une propriété qui lève `BlankNotFilledException`, pour que le message d'échec ne souffle pas la réponse.

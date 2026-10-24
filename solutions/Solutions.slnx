@@ -6,4 +6,7 @@
   <Folder Name="/s2-types/">
     <Project Path="s2-types/Koans/Koans.csproj" />
   </Folder>
+  <Folder Name="/s3-linq/">
+    <Project Path="s3-linq/Koans/Koans.csproj" />
+  </Folder>
 </Solution>

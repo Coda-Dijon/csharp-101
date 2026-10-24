@@ -9,6 +9,9 @@
     "s2": "slidev s2-types.md --open",
     "build:s2": "slidev build s2-types.md --out dist/s2",
     "export:s2": "slidev export s2-types.md --output dist/s2-types.pdf",
+    "s3": "slidev s3-linq.md --open",
+    "build:s3": "slidev build s3-linq.md --out dist/s3",
+    "export:s3": "slidev export s3-linq.md --output dist/s3-linq.pdf",
     "build:site": "node scripts/build-site.mjs",
     "serve:site": "node scripts/serve-site.mjs",
     "site": "npm run build:site && npm run serve:site"
