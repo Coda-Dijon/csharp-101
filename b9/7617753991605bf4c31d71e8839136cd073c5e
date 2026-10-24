@@ -1,0 +1,158 @@
+solutions/s6-aspnet/FoodTruck/Comptoir.cs
+  s_81f00e07054cb6::t_563631dcda4445 1-80
+solutions/s6-aspnet/FoodTruck/Endpoints.cs
+  s_81f00e07054cb6::t_c01112d8517d76 1-84
+s4-async/Koans/04_LArrivage.cs
+  s_81f00e07054cb6::t_8c89f477f77262 1-70
+solutions/s6-aspnet/FoodTruck/Properties/launchSettings.json
+  s_81f00e07054cb6::t_2deb75ba15d229 1-15
+slides/package.json
+  s_81f00e07054cb6::t_8c89f477f77262 15-17
+  s_81f00e07054cb6::t_5211a2082160b4 18-20
+solutions/s6-aspnet/FoodTruck/sql/init.sql
+  s_81f00e07054cb6::t_2deb75ba15d229 1-50
+s4-async/Koans/BaseDeDonnees.cs
+  s_81f00e07054cb6::t_8c89f477f77262 1-61
+Directory.Packages.props
+  s_81f00e07054cb6::t_2deb75ba15d229 10-12,14-20
+  s_81f00e07054cb6::t_0af8f4aabe3ccc 13
+slides/s6-aspnet.md
+  s_81f00e07054cb6::t_b9d35d7a3da671 28,40-42,318,409,411-415,423,452-453,474-476,480,487-489
+  s_81f00e07054cb6::t_537f08431c140d 154,156
+  s_81f00e07054cb6::t_5a9dfc45961e86 152,155
+  s_81f00e07054cb6::t_3b079e3153d6b1 168,173-177,218,221-223,225-226,228-230,241,250,292-293,298-301,359
+  s_81f00e07054cb6::t_118855bb6c44da 1-27,29-39,43-151,153,157-167,169-172,178-217,219-220,224,227,231-240,242-249,251-291,294-297,302-317,319-358,360-408,410,416-422,424-451,454-473,477-479,481-486,490-517
+solutions/s4-async/Koans/04_LArrivage.cs
+  s_81f00e07054cb6::t_73154ec20d8e86 1-87
+solutions/s6-aspnet/FoodTruck/Domain.cs
+  s_81f00e07054cb6::t_9e92175c56c696 1-40
+s6-aspnet/FoodTruck/Program.cs
+  s_81f00e07054cb6::t_0ccb905804e501 1-56
+README.md
+  s_81f00e07054cb6::t_8c89f477f77262 14,16
+solutions/s6-aspnet/Koans/Blanks.cs
+  s_81f00e07054cb6::t_622a407035fc64 1-22
+s6-aspnet/FoodTruck/Endpoints.cs
+  s_81f00e07054cb6::t_0ccb905804e501 1-58
+solutions/s4-async/Koans/01_LesFichiers.cs
+  s_81f00e07054cb6::t_73154ec20d8e86 1-150
+slides/scripts/build-site.mjs
+  s_81f00e07054cb6::t_8c89f477f77262 15
+Directory.Build.props
+  s_81f00e07054cb6::t_424fb34ee74036 8
+solutions/s4-async/README.md
+  s_81f00e07054cb6::t_cda02af19f20f6 1-35
+solutions/s6-aspnet/Koans/02_MinimalApi.cs
+  s_81f00e07054cb6::t_cda02af19f20f6 1-81
+s6-aspnet/Koans/Blanks.cs
+  s_81f00e07054cb6::t_0ccb905804e501 1-22
+s6-aspnet/FoodTruck/Comptoir.cs
+  s_81f00e07054cb6::t_0ccb905804e501 1-80
+solutions/s4-async/Koans/03_Dapper.cs
+  s_81f00e07054cb6::t_73154ec20d8e86 1-134
+s4-async/Koans/Blanks.cs
+  s_81f00e07054cb6::t_8c89f477f77262 1-22
+solutions/s4-async/Koans/Domain.cs
+  s_81f00e07054cb6::t_44e66bea7e7f59 1-5
+solutions/s4-async/Koans/Koans.csproj
+  s_81f00e07054cb6::t_44e66bea7e7f59 1-32
+solutions/s4-async/Koans/sql/init.sql
+  s_81f00e07054cb6::t_73154ec20d8e86 1-50
+s6-aspnet/FoodTruck/Domain.cs
+  s_81f00e07054cb6::t_0ccb905804e501 1-32
+csharp-101.slnx
+  s_81f00e07054cb6::t_6b1c6f6d01045c 12-14
+  s_81f00e07054cb6::t_9eabc0d873a4e3 15-18
+s6-aspnet/Koans/01_InjectionDeDependances.cs
+  s_81f00e07054cb6::t_8c89f477f77262 1-146
+solutions/Solutions.slnx
+  s_81f00e07054cb6::t_6b1c6f6d01045c 12-14
+  s_81f00e07054cb6::t_9eabc0d873a4e3 15-18
+s4-async/Koans/03_Dapper.cs
+  s_81f00e07054cb6::t_8c89f477f77262 1-118
+s6-aspnet/Koans/BaseDeDonnees.cs
+  s_81f00e07054cb6::t_0ccb905804e501 1-87
+solutions/s6-aspnet/FoodTruck/Program.cs
+  s_81f00e07054cb6::t_d0afaff5072d60 1-56
+solutions/s6-aspnet/README.md
+  s_81f00e07054cb6::t_cda02af19f20f6 10,16,29,33-35,38,40
+  s_81f00e07054cb6::t_6cdc5fab4e8d1b 1-9,11-15,17-28,30-32,36-37,39,41-47
+s4-async/Koans/Domain.cs
+  s_81f00e07054cb6::t_8c89f477f77262 1-5
+slides/s4-async.md
+  s_81f00e07054cb6::t_b9d35d7a3da671 1-700
+s6-aspnet/Koans/02_MinimalApi.cs
+  s_81f00e07054cb6::t_8c89f477f77262 1-81
+s6-aspnet/Koans/03_ExposerLeFoodTruck.cs
+  s_81f00e07054cb6::t_8c89f477f77262 1-113
+solutions/s6-aspnet/Koans/BaseDeDonnees.cs
+  s_81f00e07054cb6::t_8ed80a00d18d26 70
+  s_81f00e07054cb6::t_8b90fdd1ef67fe 1-61,76-87
+  s_81f00e07054cb6::t_a408f77261d054 62-69,71-75
+PLAN.md
+  s_81f00e07054cb6::t_537f08431c140d 202
+  s_81f00e07054cb6::t_8c89f477f77262 238
+  s_81f00e07054cb6::t_540f9ea4e42697 119-133,200-201,239-240
+solutions/s4-async/Koans/BaseDeDonnees.cs
+  s_81f00e07054cb6::t_44e66bea7e7f59 1-61
+solutions/s6-aspnet/compose.yaml
+  s_81f00e07054cb6::t_adad37cb859b68 1-23
+solutions/s6-aspnet/FoodTruck/appsettings.json
+  s_81f00e07054cb6::t_2deb75ba15d229 1-12
+solutions/s6-aspnet/FoodTruck/FoodTruck.csproj
+  s_81f00e07054cb6::t_2deb75ba15d229 1-22
+s6-aspnet/README.md
+  s_81f00e07054cb6::t_6cdc5fab4e8d1b 1-47
+s4-async/Koans/01_LesFichiers.cs
+  s_81f00e07054cb6::t_8c89f477f77262 1-139
+s4-async/Koans/02_AsyncCommeDuSync.cs
+  s_81f00e07054cb6::t_8c89f477f77262 1-185
+solutions/s4-async/Koans/02_AsyncCommeDuSync.cs
+  s_81f00e07054cb6::t_73154ec20d8e86 1-208
+solutions/s4-async/Koans/Blanks.cs
+  s_81f00e07054cb6::t_44e66bea7e7f59 1-22
+solutions/s6-aspnet/Koans/Koans.csproj
+  s_81f00e07054cb6::t_622a407035fc64 1-32
+s4-async/Koans/Koans.csproj
+  s_81f00e07054cb6::t_167466d3300d89 1-32
+s4-async/Koans/donnees/arrivage.csv
+  s_81f00e07054cb6::t_49445ac07b40bc 1-5
+s4-async/Koans/sql/init.sql
+  s_81f00e07054cb6::t_79b42e5dea9998 1-50
+s4-async/README.md
+  s_81f00e07054cb6::t_ef8ccdb6b39572 1-35
+s6-aspnet/FoodTruck/FoodTruck.csproj
+  s_81f00e07054cb6::t_fa4de18c9160d2 1-22
+s6-aspnet/FoodTruck/Properties/launchSettings.json
+  s_81f00e07054cb6::t_6ce8ac84c5ed13 1-15
+s6-aspnet/FoodTruck/appsettings.json
+  s_81f00e07054cb6::t_c7628d37c2b2de 1-12
+s6-aspnet/FoodTruck/sql/init.sql
+  s_81f00e07054cb6::t_9cd3da6c2382c1 1-50
+s6-aspnet/Koans/Koans.csproj
+  s_81f00e07054cb6::t_7d5ed0f5ebd6eb 1-32
+s6-aspnet/compose.yaml
+  s_81f00e07054cb6::t_5958e9b58b6281 1-23
+solutions/s4-async/Koans/donnees/arrivage.csv
+  s_81f00e07054cb6::t_583a4da36b4544 1-5
+solutions/s6-aspnet/Koans/01_InjectionDeDependances.cs
+  s_81f00e07054cb6::t_e3ebdc2311d909 1-150
+solutions/s6-aspnet/Koans/03_ExposerLeFoodTruck.cs
+  s_81f00e07054cb6::t_7bf9d0d0048957 1-113
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "b97617753991605bf4c31d71e8839136cd073c5e",
+  "prompts": {},
+  "sessions": {
+    "s_81f00e07054cb6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "12a7d70d-2244-42e4-8b2b-6116d5cce135",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Yoan Thirion <yoan.thirion@gmail.com>"
+    }
+  }
+}
