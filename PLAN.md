@@ -1,4 +1,4 @@
-# C# 101 — Plan de formation (5 × 1h30)
+# C# 101 — Plan de formation (6 × 1h30)
 
 ## Context
 Créer une formation hands-on « C# 101 » dans l'esprit de `fp101/` (code d'abord, exercices à compléter, domaine fil rouge) et du deck `fsharp.pdf` (comparaisons **Java ↔ C#** pour ancrer chaque concept).
@@ -7,6 +7,7 @@ Créer une formation hands-on « C# 101 » dans l'esprit de `fp101/` (code d'abo
 - **Périmètre** : niveaux 1 à 4 du *.NET Maturity Stack* (IMG_9725.jpg), sans viser l'exhaustivité.
 - **Exercices autonomes** : chaque fichier de test se suffit à lui-même (pas de dépendance d'une séance à l'autre).
 - **Séance 5** : modéliser un domaine complet en C#.
+- **Séance 6** : exposer ce domaine en API avec ASP.NET Core, et faire le tour de l'écosystème (NuGet, OpenAPI, OpenTelemetry...).
 
 ## Déroulé type d'une séance (90 min)
 | Temps | Activité |
@@ -134,6 +135,58 @@ Créer une formation hands-on « C# 101 » dans l'esprit de `fp101/` (code d'abo
 
 AJOUTER les monads, Functional Core - Imperative Shell à ce dernier moment
 
+### Séance 6 : L'écosystème, ASP.NET Core et les packages incontournables
+*Objectif : exposer le domaine de la séance 5 (🧟 Food-Truck Zombie) sous forme d'API HTTP, et découvrir l'écosystème qu'un développeur .NET rencontre en entreprise.*
+
+**Connexion : « C# en entreprise, combien ? »** Les participants estiment les chiffres ci-dessous avant qu'on les révèle (relevés en octobre 2026, à rafraîchir avant chaque session) :
+
+| Source | Chiffre |
+|---|---|
+| [Stack Overflow Developer Survey 2025](https://survey.stackoverflow.co/2025/technology) | C# utilisé par **29,9 %** des développeurs professionnels (27,8 % de l'ensemble des répondants) |
+| idem, frameworks web | **ASP.NET Core 21,3 %** des pros, ASP.NET (Framework) 15 % |
+| [TIOBE](https://www.tiobe.com/tiobe-index/) | C# **langage de l'année 2025** (+2,94 points, plus forte hausse de l'année) et 5ᵉ en janvier 2026 (7,39 %) ; toujours 5ᵉ en octobre 2026, mais à 3,79 %. TIOBE mesure la popularité dans les moteurs de recherche, pas l'usage, d'où des variations brutales. |
+| [JetBrains, State of .NET 2025](https://lp.jetbrains.com/the-state-of-dotnet-2025/) (3 800 pros, 34 pays) | Ce que l'on développe en .NET : **web 68 %**, backend 50 %, desktop 41 %, Unity 19 % |
+| idem | **.NET Framework encore utilisé par 35 %** des répondants, à côté de .NET 8 (56 %) et .NET 9 (44 %) : le legacy est une réalité en entreprise |
+| idem | **29 %** des répondants travaillent dans une entreprise de plus de 1 000 salariés · IDE : Visual Studio 45 %, Rider 44 %, VS Code 9 % |
+| idem | **65 %** n'envisagent pas de changer de langage dans les 12 prochains mois |
+| [ITJobsWatch](https://www.itjobswatch.co.uk/jobs/uk/.net.do) (Royaume-Uni) | Nuance : les offres en CDI qui citent .NET sont passées de 7 945 à 2 195 (6 mois jusqu'à mai, 2023 → 2025), dans un marché tech en net recul en général |
+
+- Pas de chiffre fiable de part de marché « Fortune 500 » : les chiffres qui circulent viennent d'éditeurs de scraping de sites, sans méthodologie publiée. On ne les présente pas.
+
+**ASP.NET Core vu par un dev Spring Boot**
+- `WebApplication.CreateBuilder` + Kestrel vs `@SpringBootApplication` + Tomcat embarqué
+- Injection de dépendances intégrée : `AddSingleton` / `AddScoped` / `AddTransient` vs les scopes Spring ; le piège du service scoped capturé par un singleton
+- Configuration : `appsettings.json` + `IOptions<T>` vs `application.yml` + `@ConfigurationProperties`
+- Pipeline de middlewares (`app.Use...`, l'ordre compte) vs filtres de servlet et intercepteurs
+
+**Deux styles d'API**
+- Controllers (`[ApiController]`, `[HttpGet]`) ≈ `@RestController` / `@GetMapping`
+- **Minimal API** : `app.MapGet(...)`, `MapGroup`, `TypedResults`, `Results<Ok<T>, NotFound>`, validation intégrée (.NET 10). Pas d'équivalent dans Spring (au plus proche : les functional endpoints de WebFlux). C'est le style retenu pour les exercices.
+
+**Exposer le Food-Truck Zombie**
+- `GET /menu`, `POST /commandes`, `GET /commandes/{id}`, `GET /stats/chiffre-affaires-par-type`
+- Le `Result<T>` de la séance 5 traduit en HTTP : `RuptureDeStock` → 409, `ClientEncoreVivant` → 422, au format `ProblemDetails` (RFC 9457)
+- Le repository `async` en mémoire injecté, et la file de commandes exposée en streaming (`IAsyncEnumerable<T>`)
+- Tests d'intégration avec `WebApplicationFactory<Program>` (≈ `@SpringBootTest` + MockMvc), toujours en xUnit + NFluent
+
+**L'écosystème NuGet (≈ Maven Central)**
+
+| Besoin | .NET | Équivalent Java |
+|---|---|---|
+| Documenter l'API | `Microsoft.AspNetCore.OpenApi` (natif depuis .NET 9) + UI **Scalar** ou **Swagger UI** (Swashbuckle, retiré des templates par défaut) | springdoc-openapi |
+| Observabilité | **OpenTelemetry** (`OpenTelemetry.Extensions.Hosting`, instrumentations ASP.NET Core et HttpClient), `ILogger`, **Serilog** | OpenTelemetry Java agent, Micrometer, SLF4J + Logback |
+| Accès aux données | **Entity Framework Core**, **Dapper** | JPA / Hibernate, JdbcTemplate |
+| Résilience | **Polly**, `Microsoft.Extensions.Http.Resilience` | Resilience4j |
+| Validation | validation intégrée (.NET 10), **FluentValidation** | Bean Validation |
+| Tests | xUnit, NUnit, **NSubstitute** ou Moq, **Testcontainers**, Verify | JUnit, Mockito, Testcontainers |
+| Orchestration locale | **.NET Aspire** (avec un dashboard OpenTelemetry intégré) | Docker Compose, Spring Boot Docker Compose support |
+
+- ⚠️ **Point de vigilance licences** : plusieurs packages historiques sont passés sous licence commerciale en 2025 (FluentAssertions 8, AutoMapper, MediatR, MassTransit 9). C'est l'une des raisons du choix de NFluent dans cette formation. Réflexe à transmettre : vérifier la licence d'un package avant de l'adopter.
+
+- **Koans / exercices** : `01_MinimalApi` (routes, paramètres, `TypedResults`), `02_InjectionDeDependances` (durées de vie, le piège scoped dans singleton), `03_ExposerLeFoodTruck` (endpoints à écrire, tests d'intégration fournis en rouge), `04_ProblemDetails` (`Result<T>` → codes HTTP), `05_Observabilite` (une métrique `commandes.servies` et une trace custom, vérifiées avec l'exporter en mémoire d'OpenTelemetry)
+- **Démo** : l'API ouverte dans Scalar, puis les traces d'une commande dans le dashboard Aspire
+- Clôture de la formation : rétro, plus la carte du Maturity Stack (niveaux 5 à 7) pour la suite
+
 ## Structure du repo à produire
 ```
 csharp-101/
@@ -144,6 +197,7 @@ csharp-101/
 ├── s3-linq/                  # + Domain.cs (le registre de la horde)
 ├── s4-async/
 ├── s5-domain-model/
+├── s6-aspnet/                # API Minimal sur le domaine de la séance 5
 ├── solutions/                # ou branche git `solutions`
 └── slides/                   # deck par séance (Java ↔ C#)
 ```
@@ -165,7 +219,7 @@ csharp-101/
 - [x] **Séance 1** : 53 koans en 5 fichiers, slides Slidev `slides/s1-fundamentals.md`, démos `hello.cs` et `compilation`.
 - [x] **Séance 2** : 70 koans en 8 fichiers + un exercice de modélisation (`solutions/s2-types`), slides `slides/s2-types.md`, sans démo ni slide preview (comme en séance 1).
 - [x] **Séance 3** : 57 koans en 7 fichiers autour du registre de la horde (`solutions/s3-linq`, domaine dans `Koans/Domain.cs`), slides `slides/s3-linq.md`, sans slide preview.
-- [ ] Séance 4 · [ ] Séance 4 · [ ] Séance 5
+- [ ] Séance 4 · [ ] Séance 5 · [ ] Séance 6
 
 Décisions prises pendant la séance 1 :
 - **Placeholders** : tests rouges à l'exécution (le code compile toujours). `___` est une propriété qui lève `BlankNotFilledException`, pour que le message d'échec ne souffle pas la réponse.
