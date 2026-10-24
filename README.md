@@ -10,7 +10,7 @@ Le format est hands-on : des koans à faire passer du rouge au vert.
 |---|---|---|
 | 1 | Fondamentaux, histoire de .NET, compilation | [`s1-fundamentals`](s1-fundamentals/README.md) |
 | 2 | Types & design objet | [`s2-types`](s2-types/README.md) |
-| 3 | Collections & LINQ | _à venir_ |
+| 3 | LINQ & principes fonctionnels | _à venir_ |
 | 4 | Async & concurrence | _à venir_ |
 | 5 | Domain model : le Food-Truck Zombie | _à venir_ |
 

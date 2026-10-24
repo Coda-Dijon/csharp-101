@@ -19,6 +19,8 @@ layout: cover
 
 # C# 101
 
+## Types & design objet
+
 <Zombie kind="tombstone" pos="bl" :size="6" />
 <Zombie kind="zombie" pos="br" :size="6" />
 
@@ -981,6 +983,7 @@ dotnet test -- --filter-class "Types.AProposDesRecords"   # un seul fichier
 | `06_ClassesStatiques.cs` | classes `static`, `using static`, méthodes d'extension |
 | `07_Generiques.cs` | generics réifiés, contraintes, variance, `INumber<T>` |
 | `08_PatternMatching.cs` | patterns de type, de propriétés, de listes |
+| `09_AToiDeModeliser.cs` | **exercice** : écrire un petit modèle complet |
 
 <div class="callout mt-6">
 
@@ -991,8 +994,97 @@ On change de pilote à chaque fichier · priorité à **02**, **04**, **05** et 
 <Zombie kind="hand" pos="br" :size="4" />
 
 <!--
-70 koans : c'est volontairement trop pour 40 minutes. 02, 04, 05 et 08 sont les briques de la séance 5, les autres peuvent se finir à la maison.
+70 koans et un exercice de modélisation : c'est volontairement trop pour 40 minutes. 02, 04, 05 et 08 sont les briques de la séance 5, les autres peuvent se finir à la maison.
 Pièges habituels : la fuite de la List derrière IReadOnlyList, l'égalité du Groupe (liste différente), Espece() via la variable Creature, Ouvertures == 1 (constructeur static), Bornes avec CompareTo.
+-->
+
+---
+
+# Exercice : la carte de patrouille
+
+Les éclaireurs notent tout ce qui rôde autour du bunker. Écrivez les types dans `09_AToiDeModeliser.cs` :
+
+<div class="grid grid-cols-2 gap-8 mt-4">
+<div>
+
+- un `enum Menace` : `Faible`, `Moyenne`, `Elevee`
+- une `struct Position` : `X` et `Y`, comparée par valeur
+- une `interface IRepere` : `Nom`, `Position`, `Menace`, en lecture seule
+
+</div>
+<div>
+
+- une classe abstraite `MortVivant` qui implémente `IRepere`
+- `Rodeur` et `Tank` : des morts-vivants `sealed`
+- `Pillard` : un `IRepere`, mais pas un mort-vivant
+
+</div>
+</div>
+
+
+<div class="callout mt-8">
+
+Quand vos types compilent, décommentez `#define MODELE_ECRIT` en haut du fichier : les tests s'activent
+
+</div>
+
+<!--
+Exercice volontairement simple : il réinvestit enum, struct, interface, classe abstraite et sealed dans un seul petit modèle, sans blanc à compléter.
+Points de discussion à la correction : record struct ou struct « à la main » pour Position ? Pourquoi Pillard n'hérite pas de MortVivant (composition / interface plutôt qu'un héritage forcé) ? L'ordre de l'enum sert à MaxBy pour trouver le repère le plus dangereux.
+-->
+
+---
+
+# La carte de patrouille, en diagramme
+
+```mermaid {scale: 0.75}
+classDiagram
+  direction RL
+  class IRepere {
+    <<interface>>
+    +string Nom
+    +Position Position
+    +Menace Menace
+  }
+  class MortVivant {
+    <<abstract>>
+    +MortVivant(string nom, Position position)
+    +Menace Menace*
+  }
+  class Rodeur {
+    <<sealed>>
+    +Menace Menace = Faible
+  }
+  class Tank {
+    <<sealed>>
+    +Menace Menace = Elevee
+  }
+  class Pillard {
+    +Menace Menace = Moyenne
+  }
+  class Position {
+    <<struct>>
+    +int X
+    +int Y
+  }
+  class Menace {
+    <<enum>>
+    Faible
+    Moyenne
+    Elevee
+  }
+  MortVivant ..|> IRepere
+  Pillard ..|> IRepere
+  Rodeur --|> MortVivant
+  Tank --|> MortVivant
+  IRepere --> Position
+  IRepere --> Menace
+```
+
+<!--
+Lecture du diagramme UML : flèche pleine à tête creuse = héritage (extends), flèche pointillée = implémentation d'interface (implements).
+L'astérisque sur Menace dans MortVivant = membre abstrait.
+Pillard implémente IRepere sans hériter de MortVivant : l'interface décrit ce qu'on peut faire avec un repère, la classe abstraite partage du code entre morts-vivants.
 -->
 
 ---
@@ -1027,4 +1119,4 @@ layout: end
 
 # Braaains !
 
-<div class="kicker mt-2">Prochaine séance · Collections et LINQ</div>
+<div class="kicker mt-2">Prochaine séance · LINQ et principes fonctionnels</div>

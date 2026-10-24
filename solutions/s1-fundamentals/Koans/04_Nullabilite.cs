@@ -83,9 +83,15 @@ public class AProposDeLaNullabilite
 
     // 🛠 À toi de coder : renvoie le nom du chef du groupe en majuscules, ou "PERSONNE" s'il n'y a pas de chef
     //    (le groupe lui-même peut être null !). Une seule ligne avec ?. et ?? suffit.
-    private record Survivant(string Nom);
+    private class Survivant(string nom)
+    {
+        public string Nom { get; } = nom;
+    }
 
-    private record Groupe(Survivant? Chef);
+    private class Groupe(Survivant? chef)
+    {
+        public Survivant? Chef { get; } = chef;
+    }
 
     private static string NomDuChef(Groupe? groupe)
     {

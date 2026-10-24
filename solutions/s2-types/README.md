@@ -27,6 +27,12 @@ Les commentaires `// Java :` donnent l'équivalent Java, et les lignes `// ... -
 | `06_ClassesStatiques.cs` | classes `static`, `using static`, constructeur statique, méthodes d'extension |
 | `07_Generiques.cs` | generics réifiés, `typeof(T)`, contraintes `where`, variance, `INumber<T>` |
 | `08_PatternMatching.cs` | patterns de type, de propriétés, positionnels, relationnels, de listes |
+| `09_AToiDeModeliser.cs` | **exercice** : écrire soi-même un petit modèle (enum, struct, interface, classe abstraite, classes `sealed`) |
+
+### L'exercice de modélisation
+
+`09_AToiDeModeliser.cs` commence par un mini-énoncé : la carte de patrouille du bunker. Cette fois, pas de blanc : vous écrivez tous les types vous-même, dans ce fichier.
+Ses tests sont désactivés tant que les types n'existent pas (sinon le projet ne compilerait plus). Quand vos types compilent, décommentez la ligne `#define MODELE_ECRIT` tout en haut du fichier : les tests s'activent.
 
 💡 Astuce : lancez un seul fichier avec
 `dotnet test -- --filter-class "Types.AProposDesRecords"`

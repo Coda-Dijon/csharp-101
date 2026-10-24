@@ -6,24 +6,26 @@
 //    ilspycmd bin/Debug/net10.0/Compilation.dll       -> le C# "décompilé"
 // 3. Ou sans rien installer : coller ce fichier dans https://sharplab.io
 //    (menu "Results" : C# lowered, IL, JIT Asm)
-// 4. Dans Rider : menu Tools > IL Viewer
-//    - placez le curseur sur `Zombie` ou sur le `foreach` : la fenêtre IL Viewer se synchronise
+// 4. Dans Rider : menu Tools > IL Code (ou Search Everywhere ⇧⇧ puis "IL Viewer")
+//    - placez le curseur sur un `foreach` : la fenêtre IL Viewer se synchronise
 //    - menu déroulant en haut de la fenêtre : "IL Code", "Low-Level C#" (le code "lowered"), "High-Level C#"
 //    - le projet doit être compilé (Build) pour que l'IL soit à jour
 //
 // Questions à se poser :
-//   - Combien de méthodes le compilateur a-t-il générées pour le record `Zombie` ? (Equals, GetHashCode, ToString, Deconstruct...)
+//   - Que devient `var` dans l'IL ? (indice : le type est écrit en toutes lettres)
 //   - En quoi le `foreach` sur un tableau a-t-il été transformé ?
 //   - Que devient l'interpolation $"..." ? (indice : DefaultInterpolatedStringHandler)
+//   - Que reste-t-il de la constante `Cri` et de sa concaténation ?
 
-var horde = new[] { new Zombie("Bob", 3), new Zombie("Alice", 7) };
+string[] horde = ["Bob", "Alice", "Charlie"];
+int[] faims = [3, 7, 2];
 
 var total = 0;
-foreach (var zombie in horde)
-    total += zombie.Faim;
+foreach (var faim in faims)
+    total += faim;
 
-Console.WriteLine($"Faim totale de la horde : {total}");
-Console.WriteLine(horde[0]); // ToString() généré par le record
-Console.WriteLine(horde[0] == new Zombie("Bob", 3)); // égalité structurelle générée
+foreach (var nom in horde)
+    Console.WriteLine($"{nom} a faim");
 
-record Zombie(string Nom, int Faim);
+const string Cri = "Braaa" + "ains"; // évaluée à la compilation
+Console.WriteLine($"Faim totale de la horde : {total}. {Cri} !");

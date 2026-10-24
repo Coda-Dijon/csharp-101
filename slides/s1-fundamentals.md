@@ -19,6 +19,8 @@ layout: cover
 
 # C# 101
 
+## Fondamentaux
+
 <Zombie kind="hand" pos="bl" :size="6" />
 <Zombie kind="zombie" pos="br" :size="6" />
 
@@ -196,7 +198,14 @@ layout: two-cols-header
 
 ```csharp
 // Ce que j'écris
-record Zombie(string Nom, int Faim);
+string[] horde = ["Bob", "Alice"];
+int[] faims = [3, 7];
+
+foreach (var nom in horde)
+    Console.WriteLine($"{nom} a faim");
+
+foreach (var faim in faims)
+    Console.WriteLine($"Faim : {faim}/10");
 ```
 
 <div class="mt-6 small">
@@ -211,28 +220,31 @@ record Zombie(string Nom, int Faim);
 
 ::right::
 
-```csharp
-// Ce que Roslyn génère (extrait, simplifié)
-class Zombie : IEquatable<Zombie>
+```csharp {all|4,8|6|10-14|all}
+// Ce que Roslyn génère (décompilé, simplifié)
+string[] horde = new string[2] { "Bob", "Alice" };
+int[] faims = new int[2] { 3, 7 };
+for (int i = 0; i < horde.Length; i++)
 {
-    public string Nom { get; init; }
-    public int Faim { get; init; }
-
-    public Zombie(string Nom, int Faim) { ... }
-
-    public override string ToString() { ... }
-    public override int GetHashCode() { ... }
-    public virtual bool Equals(Zombie? other) { ... }
-    public static bool operator ==(...) { ... }
-    public void Deconstruct(out ..., out ...) { ... }
-    public virtual Zombie <Clone>$() { ... }
+    Console.WriteLine(horde[i] + " a faim");
+}
+for (int j = 0; j < faims.Length; j++)
+{
+    var h = new DefaultInterpolatedStringHandler(10, 1);
+    h.AppendLiteral("Faim : ");
+    h.AppendFormatted(faims[j]);
+    h.AppendLiteral("/10");
+    Console.WriteLine(h.ToStringAndClear());
 }
 ```
 
 <!--
 Démo live dans Rider : ouvrir demos/compilation/Program.cs, Build, puis Tools > IL Code.
-Faire deviner : combien de méthodes générées pour une ligne de record ? En quoi le foreach sur un tableau est-il transformé (boucle for avec index) ?
-Que devient l'interpolation $"..." (DefaultInterpolatedStringHandler) ?
+Faire deviner avant chaque clic :
+1. Que devient le foreach sur un tableau ? Une boucle for avec un index, sans allocation d'énumérateur.
+2. Que devient $"{nom} a faim" ? Une simple concaténation : toutes les parties sont des string.
+3. Et avec un int ? Un DefaultInterpolatedStringHandler, qui écrit dans un buffer sans boxer le int (10 = longueur des parties fixes, 1 = nombre de trous).
+Le var a disparu : le type est écrit en toutes lettres dans l'IL.
 -->
 
 ---
@@ -415,9 +427,9 @@ int[] xs = {1, 2, 3};
 xs[2];
 xs[xs.length - 1];
 
-// TUPLES → un record ou Map.Entry
-record Bornes(int min, int max) {}
-var b = new Bornes(1, 9);
+// TUPLES → une classe dédiée ou Map.Entry
+var b = Map.entry(1, 9);
+b.getKey();
 
 // IMMUTABLE LIST
 var ys = List.of(4, 5, 6);
@@ -598,7 +610,7 @@ sens.HasFlag(Sens.Ouie);   // true
 
 <!--
 Les enums C# sont plus pauvres que ceux de Java : pas de méthodes ni de champs.
-On compense avec des méthodes d'extension (séance 3) ou des records (séance 2).
+On compense avec des méthodes d'extension ou de petites classes (séance 2).
 -->
 
 ---

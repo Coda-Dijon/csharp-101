@@ -34,7 +34,7 @@ Créer une formation hands-on « C# 101 » dans l'esprit de `fp101/` (code d'abo
   - `.cs` → compilateur **Roslyn** → **IL** (CIL, ≈ bytecode) dans un **assembly** `.dll` (≈ `.jar`) avec ses métadonnées
   - **CLR** (≈ JVM) : **JIT** RyuJIT, Tiered compilation, GC générationnel
   - Alternatives : **Native AOT** (≈ GraalVM native-image), ReadyToRun
-  - Démo : `dotnet build`, puis ouverture de la dll dans **ILSpy** / sharplab.io pour voir l'IL et le code « lowered » (par exemple ce que devient un `record` ou un `foreach`)
+  - Démo : `dotnet build`, puis ouverture de la dll dans **ILSpy** / sharplab.io pour voir l'IL et le code « lowered » (par exemple ce que devient un `foreach` ou une interpolation `$"..."` ; les `record` sont gardés pour la séance 2)
   - Écosystème : SDK vs runtime, NuGet (≈ Maven Central), `.csproj` (≈ `pom.xml`)
 - Toolchain : `dotnet new`, `dotnet test`, `dotnet run app.cs` (fichier unique, .NET 10)
 - `var`/types, `const`/`readonly`, interpolation `$"..."`, raw strings `"""`
@@ -57,14 +57,21 @@ Créer une formation hands-on « C# 101 » dans l'esprit de `fp101/` (code d'abo
 - Generics réifiés (≠ type erasure Java), contraintes `where T :`
 - Pattern matching : `is`, propriétés, positionnel, listes `[1, .., var last]`
 - Composition plutôt qu'héritage
-- **Koans** : `01_Proprietes`, `02_Encapsulation`, `03_ValeurOuReference` (dont `ref`/`out`), `04_Heritage`, `05_Records` (après l'héritage, pour parler de l'héritage de records), `06_ClassesStatiques`, `07_Generiques`, `08_PatternMatching`
+- **Koans** : `01_Proprietes`, `02_Encapsulation`, `03_ValeurOuReference` (dont `ref`/`out`), `04_Heritage`, `05_Records` (après l'héritage, pour parler de l'héritage de records), `06_ClassesStatiques`, `07_Generiques`, `08_PatternMatching`, puis `09_AToiDeModeliser` : un mini-énoncé (la carte de patrouille du bunker) où l'élève écrit lui-même enum, struct, interface, classe abstraite et classes `sealed` ; tests activés par `#define MODELE_ECRIT`, types retirés de la version exercice par les marqueurs `// >>> MODELE … // <<< MODELE`
 - 🔮 **Preview** : **union types** (`union Shape(Circle, Square)`) et **closed classes** (hiérarchies fermées, exhaustivité vérifiée par le compilateur), comparés aux `sealed interface ... permits` de Java 17
 
-### Séance 3 : Collections & LINQ (niveau 3)
-*Objectif : transformer de la donnée brute en requêtes claires et composables.*
+### Séance 3 : LINQ & principes fonctionnels (niveau 3)
+*Objectif : transformer de la donnée brute en requêtes claires et composables, en s'appuyant sur les principes fonctionnels de C# (les fonctions comme valeurs, l'immuabilité, la composition).*
 *Fil rouge : **le recensement de la horde**. Le QG des survivants a récupéré le registre des zombies, des survivants, des camps et des rencontres : à vous de l'exploiter pour planifier la survie.*
+- **Les fonctions sont des valeurs** : délégués `Func<T, TResult>` (renvoie une valeur), `Action<T>` (ne renvoie rien), `Predicate<T>`, face aux interfaces fonctionnelles Java (`Function`, `BiFunction`, `Supplier`, `Consumer`, `Predicate`, `Runnable`) ; en C#, deux familles génériques couvrent jusqu'à 16 paramètres, là où Java multiplie les interfaces (`IntFunction`, `ToIntFunction`...) à cause de l'erasure et des primitifs
+- Lambdas, method groups (`horde.Select(Formater)` ≈ `Zombie::formater`), fonctions locales `static`, closures (capture de variables, piège de la variable capturée)
+- **Principes fonctionnels** :
+  - fonctions d'ordre supérieur : une fonction qui prend ou renvoie une `Func` (LINQ en est une collection)
+  - fonctions pures vs effets de bord : une requête LINQ ne doit pas modifier ce qu'elle parcourt
+  - immuabilité : rappel des `record` et de `with` (séance 2), collections en lecture seule
+  - composition : enchaîner des petites fonctions, `Func` qui renvoie une `Func` (curryfication légère, sans en faire un dogme)
+  - expressions plutôt qu'instructions : switch expressions, ternaire, LINQ à la place de boucles avec accumulateurs
 - `List<T>`, `Dictionary<K,V>`, `HashSet<T>`, `IReadOnlyList<T>`, collection expressions `[..]`
-- Lambdas, `Func<>`/`Action<>` vs interfaces fonctionnelles Java (`Function`, `Predicate`, `Consumer`), closures (capture de variables, piège de la variable de boucle)
 - LINQ vs Streams : `Where/Select/OrderBy/ThenBy/GroupBy/Any/All/Count/Sum/Aggregate/SelectMany/Join/Zip`, plus les ajouts récents `MaxBy/MinBy/DistinctBy/Chunk/CountBy/AggregateBy/Index`
 - Syntaxe requête (`from z in horde where ... select ...`) en une slide, pour savoir la lire
 - **Exécution différée** et `IEnumerable<T>`, `yield return` (piège de la double énumération)
@@ -79,9 +86,10 @@ Créer une formation hands-on « C# 101 » dans l'esprit de `fp101/` (code d'abo
   - `record Camp(string Nom, string Ville, int Capacite)`
   - `record Rencontre(string Survivant, string Zombie, DateOnly Date, Issue Issue)` avec `enum Issue { Fuite, Victoire, Morsure }`
 - **Koans** :
-  - `01_Lambdas` : `Func`/`Action`/`Predicate`, closures, une lambda qui capture un compteur de zombies abattus
-  - `02_Collections` : `List`, `Dictionary` (`TryGetValue`, `GetValueOrDefault`), `HashSet` (quartiers contaminés), collection expressions
-  - `03_LeRecensement` : 12 questions de difficulté croissante sur le registre :
+  - `01_FuncEtAction` : `Func`/`Action`/`Predicate` comparés à Java, lambdas, method groups, closures (une lambda qui capture un compteur de zombies abattus), une fonction qui renvoie une fonction (`Func<int, Func<Zombie, bool>> PlusAffameQue`)
+  - `02_PrincipesFonctionnels` : fonctions pures vs effets de bord, composition (`Composer(f, g)`), immuabilité avec `with`, remplacer une boucle à accumulateur par une expression
+  - `03_Collections` : `List`, `Dictionary` (`TryGetValue`, `GetValueOrDefault`), `HashSet` (quartiers contaminés), collection expressions
+  - `04_LeRecensement` : 12 questions de difficulté croissante sur le registre :
     1. les noms des zombies du « Centre-ville » (`Where`, `Select`)
     2. la horde triée par faim décroissante, puis par nom (`OrderByDescending`, `ThenBy`)
     3. y a-t-il un Tank ? tous les survivants sont-ils majeurs ? (`Any`, `All`)
@@ -94,9 +102,9 @@ Créer une formation hands-on « C# 101 » dans l'esprit de `fp101/` (code d'abo
     10. le bilan des rencontres de chaque survivant : victoires, fuites, morsures (`GroupBy` + projection en tuple)
     11. les zombies répartis en escouades de 3 pour les tours de garde (`Chunk`, `Zip`)
     12. le premier zombie transformé et les 3 plus récents (`MinBy`, `OrderBy` + `Take`, `Skip`)
-  - `04_ExecutionDifferee` : un générateur de horde qui journalise chaque zombie produit, pour voir quand la requête s'exécute vraiment (et la double énumération)
-  - `05_Yield` : une horde infinie générée avec `yield return`, domptée par `Take` et `TakeWhile`
-  - `06_MethodesDExtension` : écrire ses propres opérateurs (`horde.Affames()`, `horde.DansLeQuartier("Port")`) et une propriété d'extension C# 14
+  - `05_ExecutionDifferee` : un générateur de horde qui journalise chaque zombie produit, pour voir quand la requête s'exécute vraiment (et la double énumération)
+  - `06_Yield` : une horde infinie générée avec `yield return`, domptée par `Take` et `TakeWhile`
+  - `07_MethodesDExtension` : écrire ses propres opérateurs (`horde.Affames()`, `horde.DansLeQuartier("Port")`) et une propriété d'extension C# 14
 - 🔮 **Preview** : **dictionary expressions** et arguments de collection expressions (`[with(comparer), ..]`) ; pattern matching sur des unions dans une requête LINQ
 
 ### Séance 4 : Async & concurrence (niveau 4)
@@ -155,7 +163,7 @@ csharp-101/
 
 ## Avancement & décisions
 - [x] **Séance 1** : 53 koans en 5 fichiers, slides Slidev `slides/s1-fundamentals.md`, démos `hello.cs` et `compilation`.
-- [x] **Séance 2** : 70 koans en 8 fichiers (`solutions/s2-types`), slides `slides/s2-types.md`, sans démo ni slide preview (comme en séance 1).
+- [x] **Séance 2** : 70 koans en 8 fichiers + un exercice de modélisation (`solutions/s2-types`), slides `slides/s2-types.md`, sans démo ni slide preview (comme en séance 1).
 - [ ] Séance 3 · [ ] Séance 4 · [ ] Séance 5
 
 Décisions prises pendant la séance 1 :

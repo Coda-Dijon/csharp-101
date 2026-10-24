@@ -98,7 +98,7 @@ public class AProposDeLaSyntaxe
     [Fact]
     public void Les_tuples_sont_natifs()
     {
-        // Java : pas de tuples, on crée un record ou on abuse de Map.Entry
+        // Java : pas de tuples, on crée une petite classe dédiée ou on abuse de Map.Entry
         static (int Min, int Max) Bornes(int[] valeurs) => (valeurs.Min(), valeurs.Max());
 
         var bornes = Bornes([3, 1, 4, 1, 5, 9, 2, 6]);
