@@ -1,0 +1,77 @@
+solutions/s3-linq/Koans/03_Collections.cs
+  s_81f00e07054cb6::t_b3c0a41638bfc7 1-145
+solutions/s3-linq/Koans/05_ExecutionDifferee.cs
+  s_81f00e07054cb6::t_7052232fe90e56 102,115
+  s_81f00e07054cb6::t_99c9a7b956a018 1-101,103-114,116-120
+solutions/s3-linq/Koans/04_LeRecensement.cs
+  s_81f00e07054cb6::t_a74b202d27a4c9 1-290
+csharp-101.slnx
+  s_81f00e07054cb6::t_1614c5c0473564 9-11
+solutions/Solutions.slnx
+  s_81f00e07054cb6::t_1614c5c0473564 9-11
+solutions/s3-linq/Koans/07_MethodesDExtension.cs
+  s_81f00e07054cb6::t_f43ef03aac6987 110-111,113-117,120,123-124
+  s_81f00e07054cb6::t_f65fdbf617fa99 1-109,112,118-119,121-122,125-126
+s3-linq/Koans/02_PrincipesFonctionnels.cs
+  s_81f00e07054cb6::t_3a663c3cb7c763 1-132
+s3-linq/README.md
+  s_81f00e07054cb6::t_3a2d9957c1e554 1-34
+s3-linq/Koans/07_MethodesDExtension.cs
+  s_81f00e07054cb6::t_3a663c3cb7c763 1-115
+slides/package.json
+  s_81f00e07054cb6::t_3a2d9957c1e554 12-14
+s3-linq/Koans/04_LeRecensement.cs
+  s_81f00e07054cb6::t_3a663c3cb7c763 1-222
+solutions/s3-linq/Koans/Domain.cs
+  s_81f00e07054cb6::t_1eb9e6b3f4fde5 1-73
+s3-linq/Koans/01_FuncEtAction.cs
+  s_81f00e07054cb6::t_3a663c3cb7c763 1-148
+s3-linq/Koans/Domain.cs
+  s_81f00e07054cb6::t_3a663c3cb7c763 1-73
+solutions/s3-linq/Koans/02_PrincipesFonctionnels.cs
+  s_81f00e07054cb6::t_7869ef621dbf22 1-136
+s3-linq/Koans/06_Yield.cs
+  s_81f00e07054cb6::t_3a663c3cb7c763 1-111
+solutions/s3-linq/Koans/01_FuncEtAction.cs
+  s_81f00e07054cb6::t_9fc5af85dc15d1 1-157
+solutions/s3-linq/README.md
+  s_81f00e07054cb6::t_3a2d9957c1e554 1-34
+slides/s3-linq.md
+  s_81f00e07054cb6::t_ff5477f507797f 106,110-111
+  s_81f00e07054cb6::t_33310b6e34802f 1-105,107-109,112-545,547-689
+  s_81f00e07054cb6::t_b0978bed1d1ce1 546
+solutions/s3-linq/Koans/Koans.csproj
+  s_81f00e07054cb6::t_17fd3fd3a2c5a5 1-23
+s3-linq/Koans/05_ExecutionDifferee.cs
+  s_81f00e07054cb6::t_3a663c3cb7c763 1-117
+README.md
+  s_81f00e07054cb6::t_3a2d9957c1e554 13
+s3-linq/Koans/Blanks.cs
+  s_81f00e07054cb6::t_3a663c3cb7c763 1-22
+PLAN.md
+  s_81f00e07054cb6::t_b0978bed1d1ce1 167-168
+solutions/s3-linq/Koans/Blanks.cs
+  s_81f00e07054cb6::t_17fd3fd3a2c5a5 1-22
+solutions/s3-linq/Koans/06_Yield.cs
+  s_81f00e07054cb6::t_4296ece7a5959a 1-125
+s3-linq/Koans/03_Collections.cs
+  s_81f00e07054cb6::t_3a663c3cb7c763 1-133
+s3-linq/Koans/Koans.csproj
+  s_81f00e07054cb6::t_a72fcc0e9ef2f0 1-23
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "673391b827b30ad2c8b90968190a8c09bbfc3bf5",
+  "prompts": {},
+  "sessions": {
+    "s_81f00e07054cb6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "12a7d70d-2244-42e4-8b2b-6116d5cce135",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Yoan Thirion <yoan.thirion@gmail.com>"
+    }
+  }
+}
