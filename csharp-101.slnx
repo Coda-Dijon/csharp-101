@@ -3,4 +3,7 @@
     <Project Path="s1-fundamentals/Koans/Koans.csproj" />
     <Project Path="s1-fundamentals/demos/compilation/Compilation.csproj" />
   </Folder>
+  <Folder Name="/s2-types/">
+    <Project Path="s2-types/Koans/Koans.csproj" />
+  </Folder>
 </Solution>

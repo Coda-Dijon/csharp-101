@@ -9,7 +9,7 @@ Le format est hands-on : des koans à faire passer du rouge au vert.
 | Séance | Thème | Dossier |
 |---|---|---|
 | 1 | Fondamentaux, histoire de .NET, compilation | [`s1-fundamentals`](s1-fundamentals/README.md) |
-| 2 | Types & design objet | _à venir_ |
+| 2 | Types & design objet | [`s2-types`](s2-types/README.md) |
 | 3 | Collections & LINQ | _à venir_ |
 | 4 | Async & concurrence | _à venir_ |
 | 5 | Domain model : le Food-Truck Zombie | _à venir_ |
@@ -84,7 +84,7 @@ Les supports sont des decks [Slidev](https://sli.dev) en Markdown, publiés en l
 
 ```bash
 cd slides && npm install
-npm run s1     # une séance, touche O pour la vue d'ensemble, P pour le mode présentateur
+npm run s2     # une séance (s1, s2...), touche O pour la vue d'ensemble, P pour le mode présentateur
 npm run site   # le site complet comme en ligne : page d'accueil + toutes les séances, sur http://localhost:4173
 ```
 

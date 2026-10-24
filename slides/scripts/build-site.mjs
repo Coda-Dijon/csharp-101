@@ -10,8 +10,8 @@ const out = 'dist'
 // Le programme complet : une séance sans fichier de slides apparaît « à venir »
 const sessions = [
   { slug: 's1-fundamentals', n: 1, title: 'Fondamentaux', topics: 'Histoire de .NET, compilation, syntaxe Java ↔ C#, anatomie d\'un test' },
-  { slug: 's2-types', n: 2, title: 'Types & design objet', topics: 'Propriétés, records, struct vs class, classes static, generics, pattern matching' },
-  { slug: 's3-linq', n: 3, title: 'Collections & LINQ', topics: 'Lambdas, LINQ vs Streams, exécution différée, méthodes d\'extension' },
+  { slug: 's2-types', n: 2, title: 'Types & design objet', topics: 'Propriétés, encapsulation, struct vs class, ref/out, héritage, records, generics, pattern matching' },
+  { slug: 's3-linq', n: 3, title: 'Collections & LINQ', topics: 'Lambdas, LINQ vs Streams sur une horde de zombies, exécution différée, méthodes d\'extension' },
   { slug: 's4-async', n: 4, title: 'Async & concurrence', topics: 'Task, async/await, CancellationToken, IAsyncEnumerable, race conditions' },
   { slug: 's5-domain-model', n: 5, title: 'Le Food-Truck Zombie', topics: 'Un domain model complet, piloté par les tests' },
 ]

@@ -48,25 +48,55 @@ Créer une formation hands-on « C# 101 » dans l'esprit de `fp101/` (code d'abo
 ### Séance 2 : Types & design objet (niveau 2)
 *Objectif : modéliser avec des types qui disent ce qu'ils veulent dire.*
 - Classes, **propriétés** (`get; init;`) vs getters/setters Java
+- **Encapsulation** : `public`, `private` (défaut des membres), `protected` (dérivées seulement, sans l'accès « package » de Java), `internal` (défaut des classes, à l'échelle de l'assembly et non du dossier), `protected internal`, `private protected`, `file` ; `sealed` sur une classe et `sealed override` sur une méthode (≈ `final`) ; exposer une collection sans la laisser fuiter (`IReadOnlyList` + `AsReadOnly()`)
 - `record` / `record struct` vs `record` Java 16+ ; `with`, égalité structurelle
 - `struct` vs `class` (valeur vs référence), un point absent de Java
+- **Paramètres `ref`, `out` et `in`** : Java passe tout par valeur (y compris les références) ; `ref` donne la variable de l'appelant (modifier une struct, remplacer un objet), `out` oblige la méthode à l'affecter (pattern `TryXxx`, `out var`, discard `out _`), `in` passe par référence en lecture seule
 - Interfaces (default methods), héritage, `sealed`, `abstract`
 - **Classes `static`** vs classe utilitaire Java (`final` + constructeur privé) : ni instanciables ni héritables, membres tous `static`, constructeur statique, `using static` (≈ `import static`) ; pas de static nested au sens Java (une classe imbriquée C# n'a jamais accès implicite à l'instance englobante). Ouvre la porte aux méthodes d'extension de la séance 3
 - Generics réifiés (≠ type erasure Java), contraintes `where T :`
 - Pattern matching : `is`, propriétés, positionnel, listes `[1, .., var last]`
 - Composition plutôt qu'héritage
-- **Koans** : `01_Properties`, `02_Records`, `03_StructVsClass`, `04_Interfaces`, `05_StaticClasses`, `06_Generics`, `07_PatternMatching`
+- **Koans** : `01_Proprietes`, `02_Encapsulation`, `03_ValeurOuReference` (dont `ref`/`out`), `04_Heritage`, `05_Records` (après l'héritage, pour parler de l'héritage de records), `06_ClassesStatiques`, `07_Generiques`, `08_PatternMatching`
 - 🔮 **Preview** : **union types** (`union Shape(Circle, Square)`) et **closed classes** (hiérarchies fermées, exhaustivité vérifiée par le compilateur), comparés aux `sealed interface ... permits` de Java 17
 
 ### Séance 3 : Collections & LINQ (niveau 3)
 *Objectif : transformer de la donnée brute en requêtes claires et composables.*
+*Fil rouge : **le recensement de la horde**. Le QG des survivants a récupéré le registre des zombies, des survivants, des camps et des rencontres : à vous de l'exploiter pour planifier la survie.*
 - `List<T>`, `Dictionary<K,V>`, `HashSet<T>`, `IReadOnlyList<T>`, collection expressions `[..]`
-- Lambdas, `Func<>`/`Action<>` vs interfaces fonctionnelles Java
-- LINQ vs Streams : `Where/Select/GroupBy/Any/All/Aggregate/OrderBy/SelectMany`
+- Lambdas, `Func<>`/`Action<>` vs interfaces fonctionnelles Java (`Function`, `Predicate`, `Consumer`), closures (capture de variables, piège de la variable de boucle)
+- LINQ vs Streams : `Where/Select/OrderBy/ThenBy/GroupBy/Any/All/Count/Sum/Aggregate/SelectMany/Join/Zip`, plus les ajouts récents `MaxBy/MinBy/DistinctBy/Chunk/CountBy/AggregateBy/Index`
+- Syntaxe requête (`from z in horde where ... select ...`) en une slide, pour savoir la lire
 - **Exécution différée** et `IEnumerable<T>`, `yield return` (piège de la double énumération)
 - Méthodes d'extension (`this` dans une classe `static`, vue en séance 2) et extension members C# 14
 - `IQueryable` en un mot (pont vers EF Core)
-- **Koans** : reprise du domaine Person/Pet/Park de fp101 (questions 1 à 11, `Domain.kt` → records C#), plus `DeferredExecution`, `Yield`, `ExtensionMethods`
+- **Connexion** : « Combien de Streams pour compter la horde ? ». Sur papier, une liste de 10 zombies et trois questions à résoudre en Java Streams (les affamés du centre-ville, le nombre par type, le plus affamé), puis on compare avec LINQ
+- **Domaine** (`Domain.cs`, des records de la séance 2, données dans une classe `static Registre`) :
+  - `enum TypeDeZombie { Rodeur, Coureur, Goule, Tank }`
+  - `record Zombie(string Nom, TypeDeZombie Type, int Faim, string Quartier, DateOnly TransformeLe)`
+  - `record Arme(string Nom, int Degats, int Munitions)`
+  - `record Survivant(string Nom, int Age, string Camp, IReadOnlyList<string> Competences, Arme? Arme)`
+  - `record Camp(string Nom, string Ville, int Capacite)`
+  - `record Rencontre(string Survivant, string Zombie, DateOnly Date, Issue Issue)` avec `enum Issue { Fuite, Victoire, Morsure }`
+- **Koans** :
+  - `01_Lambdas` : `Func`/`Action`/`Predicate`, closures, une lambda qui capture un compteur de zombies abattus
+  - `02_Collections` : `List`, `Dictionary` (`TryGetValue`, `GetValueOrDefault`), `HashSet` (quartiers contaminés), collection expressions
+  - `03_LeRecensement` : 12 questions de difficulté croissante sur le registre :
+    1. les noms des zombies du « Centre-ville » (`Where`, `Select`)
+    2. la horde triée par faim décroissante, puis par nom (`OrderByDescending`, `ThenBy`)
+    3. y a-t-il un Tank ? tous les survivants sont-ils majeurs ? (`Any`, `All`)
+    4. le nombre de zombies par type (`GroupBy` puis `CountBy`)
+    5. la faim moyenne et le zombie le plus affamé de chaque quartier (`Average`, `MaxBy`)
+    6. toutes les compétences des survivants, sans doublon (`SelectMany`, `Distinct`)
+    7. les munitions totales du camp « Alexandria » (`Sum`), puis la même chose avec `Aggregate`
+    8. le survivant le mieux armé, sachant que certains n'ont pas d'arme (`MaxBy`, `?.`, `??`)
+    9. les survivants avec la ville de leur camp, et les camps surpeuplés (`Join`, `GroupBy`)
+    10. le bilan des rencontres de chaque survivant : victoires, fuites, morsures (`GroupBy` + projection en tuple)
+    11. les zombies répartis en escouades de 3 pour les tours de garde (`Chunk`, `Zip`)
+    12. le premier zombie transformé et les 3 plus récents (`MinBy`, `OrderBy` + `Take`, `Skip`)
+  - `04_ExecutionDifferee` : un générateur de horde qui journalise chaque zombie produit, pour voir quand la requête s'exécute vraiment (et la double énumération)
+  - `05_Yield` : une horde infinie générée avec `yield return`, domptée par `Take` et `TakeWhile`
+  - `06_MethodesDExtension` : écrire ses propres opérateurs (`horde.Affames()`, `horde.DansLeQuartier("Port")`) et une propriété d'extension C# 14
 - 🔮 **Preview** : **dictionary expressions** et arguments de collection expressions (`[with(comparer), ..]`) ; pattern matching sur des unions dans une requête LINQ
 
 ### Séance 4 : Async & concurrence (niveau 4)
@@ -103,7 +133,7 @@ csharp-101/
 ├── csharp-101.slnx
 ├── s1-fundamentals/          # projet xUnit, 1 fichier de koans par thème
 ├── s2-types/
-├── s3-linq/                  # + Domain.cs (Person/Pet/Park)
+├── s3-linq/                  # + Domain.cs (le registre de la horde)
 ├── s4-async/
 ├── s5-domain-model/
 ├── solutions/                # ou branche git `solutions`
@@ -125,7 +155,8 @@ csharp-101/
 
 ## Avancement & décisions
 - [x] **Séance 1** : 53 koans en 5 fichiers, slides Slidev `slides/s1-fundamentals.md`, démos `hello.cs` et `compilation`.
-- [ ] Séance 2 · [ ] Séance 3 · [ ] Séance 4 · [ ] Séance 5
+- [x] **Séance 2** : 70 koans en 8 fichiers (`solutions/s2-types`), slides `slides/s2-types.md`, sans démo ni slide preview (comme en séance 1).
+- [ ] Séance 3 · [ ] Séance 4 · [ ] Séance 5
 
 Décisions prises pendant la séance 1 :
 - **Placeholders** : tests rouges à l'exécution (le code compile toujours). `___` est une propriété qui lève `BlankNotFilledException`, pour que le message d'échec ne souffle pas la réponse.
