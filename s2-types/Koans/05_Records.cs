@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Types;
 
 // 🎯 Objectif : modéliser des valeurs immuables en une ligne, comme les records de Java 16... avec quelques bonus.
@@ -67,21 +69,58 @@ public class AProposDesRecords
         Check.That(groupe == copie).IsEqualTo(___);
     }
 
-    private record Temperature(double Celsius)
+    // ❌ La validation dans le constructeur : la création peut échouer, mais rien ne le dit.
+    //    « new TemperatureQuiExplose(-300) » ressemble à n'importe quel new... jusqu'à l'exception.
+    private record TemperatureQuiExplose(double Celsius)
     {
-        // validation : on redéclare la propriété pour intercepter la valeur
         public double Celsius { get; } = Celsius >= -273.15
             ? Celsius
             : throw new ArgumentOutOfRangeException(nameof(Celsius));
+    }
+
+    // ✅ Constructeur privé + FACTORY METHOD : la signature avoue que la création peut échouer.
+    //    Temperature? : « peut-être pas de température ». L'appelant est obligé de traiter le null (séance 1).
+    private sealed record Temperature
+    {
+        private const double ZeroAbsolu = -273.15;
+
+        public double Celsius { get; }
+
+        private Temperature(double celsius) => Celsius = celsius;
+
+        public static Temperature? Creer(double celsius) =>
+            celsius >= ZeroAbsolu ? new Temperature(celsius) : null;
+
+        // La variante TryXxx, comme int.TryParse (voir les paramètres out dans 03_ValeurOuReference)
+        public static bool TryCreer(double celsius, [NotNullWhen(true)] out Temperature? temperature)
+        {
+            temperature = Creer(celsius);
+            return temperature is not null;
+        }
 
         public double Fahrenheit => Celsius * 9 / 5 + 32;
     }
 
     [Fact]
-    public void Un_record_peut_avoir_des_membres_et_de_la_validation()
+    public void Un_constructeur_qui_lance_cache_que_la_construction_peut_echouer()
     {
-        Check.That(new Temperature(100).Fahrenheit).IsEqualTo(___);
-        Check.ThatCode(() => new Temperature(-300)).ThrowsType(___);
+        // Ça compile sans un avertissement... et ça explose à l'exécution
+        Check.ThatCode(() => new TemperatureQuiExplose(-300)).ThrowsType(___);
+    }
+
+    [Fact]
+    public void Une_factory_method_rend_l_echec_visible()
+    {
+        // new Temperature(100) ne compile pas : le constructeur est privé, Creer est la seule porte d'entrée
+        var eau = Temperature.Creer(100);
+        var impossible = Temperature.Creer(-300);
+
+        Check.That(eau?.Fahrenheit).IsEqualTo(___);
+        Check.That(impossible is null).IsEqualTo(___);
+
+        // TryCreer : un booléen pour le if, la valeur dans le out
+        var reussi = Temperature.TryCreer(-300, out var temperature);
+        Check.That(reussi).IsEqualTo(___);
     }
 
     private abstract record Creature(string Nom);

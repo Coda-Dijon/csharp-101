@@ -18,9 +18,11 @@ namespace Winchester.Tests;
 public class UnCerveauFrais
 {
     // >>> TESTS
+    private static Dents Prix(int dents) => Dents.Creer(dents).DoitReussir();
+
     private static readonly DateOnly Aujourdhui = new(2026, 10, 31);
 
-    private static Plat CervellePrepareeLe(DateOnly date) => new("Cervelle nature", Categorie.Cerveau, new Dents(12), date);
+    private static Plat CervellePrepareeLe(DateOnly date) => new("Cervelle nature", Categorie.Cerveau, Prix(12), date);
 
     [Fact]
     public void Une_cervelle_du_jour_est_fraiche()

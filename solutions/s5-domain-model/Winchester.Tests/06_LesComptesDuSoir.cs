@@ -22,9 +22,11 @@ namespace Winchester.Tests;
 public class LesComptesDuSoir
 {
     // >>> TESTS
+    private static Dents Prix(int dents) => Dents.Creer(dents).DoitReussir();
+
     private static readonly DateOnly Aujourdhui = new(2026, 10, 31);
-    private static readonly Plat Cervelle = new("Cervelle nature", Categorie.Cerveau, new Dents(12), Aujourdhui);
-    private static readonly Plat Gratin = new("Gratin de chou-fleur", Categorie.ChouFleur, new Dents(10), Aujourdhui);
+    private static readonly Plat Cervelle = new("Cervelle nature", Categorie.Cerveau, Prix(12), Aujourdhui);
+    private static readonly Plat Gratin = new("Gratin de chou-fleur", Categorie.ChouFleur, Prix(10), Aujourdhui);
 
     private static Commande Servie(Client client, Plat plat, int quantite) =>
         Commande.Passer(client, plat, quantite, 100, Aujourdhui)
@@ -47,7 +49,7 @@ public class LesComptesDuSoir
     [Fact]
     public void Seules_les_commandes_servies_rapportent()
     {
-        Check.That(Statistiques.ChiffreDAffaires(LaSoiree)).IsEqualTo(new Dents(46));
+        Check.That(Statistiques.ChiffreDAffaires(LaSoiree)).IsEqualTo(Prix(46));
     }
 
     [Fact]
@@ -61,15 +63,15 @@ public class LesComptesDuSoir
     {
         var parSorte = Statistiques.ChiffreDAffairesParSorteDeClient(LaSoiree);
 
-        Check.That(parSorte["Rodeur"]).IsEqualTo(new Dents(36));
-        Check.That(parSorte["ZombieVegan"]).IsEqualTo(new Dents(10));
+        Check.That(parSorte["Rodeur"]).IsEqualTo(Prix(36));
+        Check.That(parSorte["ZombieVegan"]).IsEqualTo(Prix(10));
         Check.That(parSorte.Count).IsEqualTo(2);
     }
 
     [Fact]
     public void Les_pertes_en_cuisine()
     {
-        Check.That(Statistiques.PertesEnCuisine(LaSoiree)).IsEqualTo(new Dents(36));
+        Check.That(Statistiques.PertesEnCuisine(LaSoiree)).IsEqualTo(Prix(36));
     }
 
     [Fact]

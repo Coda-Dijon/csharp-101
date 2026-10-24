@@ -23,7 +23,7 @@ Les commentaires `// Java :` donnent l'équivalent Java, et les lignes `// ... -
 | `02_Encapsulation.cs` | `private`, `protected`, `internal`, `protected internal`, `private protected`, `file`, `sealed`, collections en lecture seule |
 | `03_ValeurOuReference.cs` | `struct` vs `class`, paramètres `ref` et `out`, boxing, `readonly record struct` |
 | `04_Heritage.cs` | interfaces, méthodes par défaut, `virtual`/`override`/`new`, `sealed`, `abstract`, composition |
-| `05_Records.cs` | records, égalité structurelle, `with`, déconstruction, héritage de records |
+| `05_Records.cs` | records, égalité structurelle, `with`, déconstruction, factory method plutôt qu'un constructeur qui lance, héritage de records |
 | `06_ClassesStatiques.cs` | classes `static`, `using static`, constructeur statique, méthodes d'extension |
 | `07_Generiques.cs` | generics réifiés, `typeof(T)`, contraintes `where`, variance, `INumber<T>` |
 | `08_PatternMatching.cs` | patterns de type, de propriétés, positionnels, relationnels, de listes |

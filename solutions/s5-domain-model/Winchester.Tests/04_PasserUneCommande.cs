@@ -29,8 +29,10 @@ namespace Winchester.Tests;
 public class PasserUneCommande
 {
     // >>> TESTS
+    private static Dents Prix(int dents) => Dents.Creer(dents).DoitReussir();
+
     private static readonly DateOnly Aujourdhui = new(2026, 10, 31);
-    private static readonly Plat Cervelle = new("Cervelle nature", Categorie.Cerveau, new Dents(12), Aujourdhui);
+    private static readonly Plat Cervelle = new("Cervelle nature", Categorie.Cerveau, Prix(12), Aujourdhui);
     private static readonly Rodeur Bob = new("Bob");
 
     [Fact]
@@ -39,7 +41,7 @@ public class PasserUneCommande
         var commande = Commande.Passer(Bob, Cervelle, quantite: 2, enStock: 10, Aujourdhui).DoitReussir();
 
         Check.That(commande.Client).IsEqualTo(Bob);
-        Check.That(commande.Total).IsEqualTo(new Dents(24));
+        Check.That(commande.Total).IsEqualTo(Prix(24));
         Check.That(commande.Etat).IsEqualTo(new Passee());
     }
 
@@ -70,7 +72,7 @@ public class PasserUneCommande
     [Fact]
     public void On_ne_sert_pas_de_cerveau_perime()
     {
-        var tartare = new Plat("Tartare de neurones", Categorie.Cerveau, new Dents(15), new DateOnly(2026, 10, 20));
+        var tartare = new Plat("Tartare de neurones", Categorie.Cerveau, Prix(15), new DateOnly(2026, 10, 20));
 
         var erreur = Commande.Passer(Bob, tartare, 1, 10, Aujourdhui).DoitEchouer();
 

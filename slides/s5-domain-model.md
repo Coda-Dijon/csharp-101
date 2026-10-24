@@ -93,7 +93,7 @@ Le Winchester a cinq besoins. **Quel outil des séances 1 à 4** pour chacun ?
 </div>
 
 <div v-click class="grid grid-cols-5 gap-3 mt-6 text-center small">
-  <div class="callout"><code>record struct</code> + validation</div>
+  <div class="callout"><code>record struct</code> + factory method</div>
   <div class="callout">une hiérarchie de <code>record</code></div>
   <div class="callout"><code>Result&lt;T&gt;</code> plutôt qu'une exception</div>
   <div class="callout">LINQ</div>
@@ -169,19 +169,19 @@ layout: two-cols-header
 
 ```csharp
 [Fact]
-public void Des_dents_s_additionnent()
+public void Un_prix_se_cree_a_partir_d_un_nombre_de_dents()
 {
-    var total = new Dents(12) + new Dents(8);
+    var prix = Dents.Creer(12).DoitReussir();
 
-    Check.That(total).IsEqualTo(new Dents(20));
+    Check.That(prix.Valeur).IsEqualTo(12);
 }
 ```
 
 <div v-click="1" class="small mt-2">
 
 ```text
-error CS0246: The type or namespace name 'Dents'
-              could not be found
+error CS0103: The name 'Dents' does not exist
+              in the current context
 ```
 
 </div>
@@ -193,10 +193,13 @@ error CS0246: The type or namespace name 'Dents'
 <div class="kicker mb-2">🟢 Le minimum</div>
 
 ```csharp
-public readonly record struct Dents(int Valeur)
+public readonly record struct Dents
 {
-    public static Dents operator +(Dents a, Dents b)
-        => new(a.Valeur + b.Valeur);
+    public int Valeur { get; }
+    private Dents(int valeur) => Valeur = valeur;
+
+    public static Result<Dents> Creer(int valeur)
+        => new Dents(valeur);
 }
 ```
 
@@ -207,7 +210,7 @@ public readonly record struct Dents(int Valeur)
 <div class="kicker mb-2">🔵 Et ensuite ?</div>
 
 - Rien à nettoyer : test suivant de la liste
-- « Un prix ne peut pas être négatif » : un nouveau rouge, qui fera naître la validation
+- « Un prix négatif n'existe pas » : un nouveau rouge, qui fera naître le `PrixNegatif`
 
 </div>
 
@@ -215,13 +218,13 @@ public readonly record struct Dents(int Valeur)
 
 <div v-click="4" class="callout small mt-2">
 
-Pas de validation, pas de `ToString`, pas de multiplication **tant qu'aucun test ne les demande**. Le design émerge des exemples.
+Pas de validation, pas d'opérateur, pas de `ToString` **tant qu'aucun test ne les demande**. Le design émerge des exemples.
 
 </div>
 
 <!--
 À faire en direct dans l'IDE, pas sur la slide : c'est le début de l'histoire 1 en mob.
-Faire remarquer que le record struct donne l'égalité gratuitement : IsEqualTo(new Dents(20)) passe sans écrire Equals (séance 2).
+Faire remarquer que le test impose déjà la forme : Creer renvoie un Result<Dents>, donc la création peut échouer. Le record struct donnera ensuite l'égalité gratuitement (séance 2).
 -->
 
 ---
@@ -239,7 +242,7 @@ layout: section
 <div class="grid grid-cols-3 gap-4 mt-6 small">
 <div v-click class="callout">
   <div class="kicker mb-2">Value objects</div>
-  <code>Dents</code> · un prix, jamais négatif<br>
+  <code>Dents</code> · un prix, jamais négatif (<code>Creer</code>)<br>
   <code>Plat</code> · nom, catégorie, prix, date de préparation<br>
   <span class="muted">définis par leur valeur, immuables</span>
 </div>
@@ -283,27 +286,11 @@ Ce diagramme est celui de la solution. Les binômes peuvent arriver à un autre 
 layout: two-cols-header
 ---
 
-# Value object : un record qui se valide
+# Value object : une factory method
 
 ::left::
 
-<Lang name="java" />
-
-```java
-public record Dents(int valeur) {
-    public Dents {   // constructeur compact
-        if (valeur < 0) throw
-            new IllegalArgumentException("négatif");
-    }
-    public Dents plus(Dents autre) {
-        return new Dents(valeur + autre.valeur);
-    }
-}
-```
-
-::right::
-
-<Lang name="csharp" />
+<div class="kicker mb-2">❌ Le constructeur qui lance</div>
 
 ```csharp
 public readonly record struct Dents
@@ -312,26 +299,50 @@ public readonly record struct Dents
 
     public Dents(int valeur)
     {
-        ArgumentOutOfRangeException.ThrowIfNegative(valeur);
+        ArgumentOutOfRangeException
+            .ThrowIfNegative(valeur);
         Valeur = valeur;
     }
-
-    public static Dents operator +(Dents a, Dents b)
-        => new(a.Valeur + b.Valeur);
 }
+
+var prix = new Dents(-1);   // 💥 surprise
 ```
+
+::right::
+
+<div v-click="1">
+
+<div class="kicker mb-2">✅ La factory method</div>
+
+```csharp
+public readonly record struct Dents
+{
+    public int Valeur { get; }
+    private Dents(int valeur) => Valeur = valeur;
+
+    public static Result<Dents> Creer(int valeur)
+        => valeur < 0
+            ? new PrixNegatif(valeur)
+            : new Dents(valeur);
+}
+
+Dents.Creer(-1);   // Echec(PrixNegatif(-1))
+```
+
+</div>
 
 ::bottom::
 
 <div class="grid grid-cols-3 gap-3 mt-2 small">
-<div v-click class="callout"><code>record struct</code> : une valeur, sans allocation, égale à toute autre valeur identique</div>
-<div v-click class="callout">Les opérateurs : <code>prix * quantite</code> se lit comme le métier</div>
-<div v-click class="callout">Un prix négatif est un <strong>bug</strong> : une exception, immédiate</div>
+<div v-click="2" class="callout">Un constructeur ne peut renvoyer que l'objet : s'il peut échouer, <strong>sa signature ment</strong></div>
+<div v-click="3" class="callout"><code>Result&lt;Dents&gt;</code> l'avoue : l'appelant doit traiter l'échec, et sait <strong>pourquoi</strong></div>
+<div v-click="4" class="callout"><code>+</code> et <code>*</code> gardent le constructeur privé : ils ne peuvent pas produire un prix négatif</div>
 </div>
 
 <!--
-Piège : default(Dents) contourne le constructeur et vaut 0 dent. Ici c'est acceptable ; pour un value object où 0 est invalide, on préfère un record class.
-Java n'a pas de surcharge d'opérateurs : plus(), times().
+Piège : default(Dents) contourne la factory et vaut 0 dent. Ici c'est acceptable ; pour un value object où 0 est invalide, on préfère un record class.
+Java n'a pas de surcharge d'opérateurs : plus(), times(). En Java aussi, on préfère une méthode statique of(...) qui renvoie un Optional ou un résultat à un constructeur compact qui lance.
+La multiplication prend un uint : le type interdit déjà une quantité négative.
 -->
 
 ---
@@ -435,7 +446,7 @@ public static Result<Commande> Passer(Client client, Plat plat,
 - Le refus est **dans la signature** : impossible de l'oublier
 - Grâce aux conversions implicites, on renvoie l'erreur ou la commande, directement
 - Le constructeur de `Commande` est **privé** : `Passer` est la seule porte d'entrée
-- Exception pour un bug, `Result` pour un refus métier
+- Comme `Dents.Creer` : ce qui peut échouer le dit dans sa signature
 
 </v-clicks>
 
@@ -453,7 +464,7 @@ Le switch sur client sert surtout de garde ordonnée : l'ordre des branches est 
 
 | Histoire | Ce qu'on construit | Réinvestit |
 |---|---|---|
-| 1 · Le prix en dents | `Dents`, un value object | S2 `record struct`, opérateurs · S1 exceptions |
+| 1 · Le prix en dents | `Dents`, un value object et sa factory | S2 `record struct`, constructeur privé, opérateurs · `Result<T>` |
 | 2 · Un cerveau frais | `Plat`, et sa date de préparation | S2 `record`, `enum` · S1 `DateOnly` |
 | 3 · Chacun son régime | les clients et ce qu'ils mangent | S2 hiérarchie, pattern matching · S3 extension |
 | 4 · Passer une commande | l'agrégat `Commande`, ses refus | S2 constructeur privé, generics · `Result<T>` |
@@ -708,7 +719,7 @@ Promesse tenue de la séance 2 : « les union types arrivent, on les verra en s�
 
 | Java | C# | Piège |
 |---|---|---|
-| `record` + constructeur compact | `record` / `record struct` + constructeur | `default(Dents)` contourne le constructeur |
+| `record` + constructeur compact qui lance | constructeur privé + factory `Creer` | `default(Dents)` contourne la factory |
 | `sealed interface ... permits` | `abstract record` + constructeur privé | pas d'exhaustivité : le `_` reste obligatoire |
 | méthodes `withX(...)` à écrire | `with { X = ... }` | une copie **superficielle** : les listes sont partagées |
 | `Optional.flatMap` | `Bind`, `SelectMany` | à écrire soi-même pour son `Result<T>` |

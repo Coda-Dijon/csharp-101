@@ -23,8 +23,10 @@ namespace Winchester.Tests;
 public class LeRushDeMinuit
 {
     // >>> TESTS
+    private static Dents Prix(int dents) => Dents.Creer(dents).DoitReussir();
+
     private static readonly DateOnly Aujourdhui = new(2026, 10, 31);
-    private static readonly Plat Cervelle = new("Cervelle nature", Categorie.Cerveau, new Dents(12), Aujourdhui);
+    private static readonly Plat Cervelle = new("Cervelle nature", Categorie.Cerveau, Prix(12), Aujourdhui);
 
     private static Comptoir UnComptoirAvec(int cervelles) =>
         new(new Dictionary<string, int> { [Cervelle.Nom] = cervelles }, () => Aujourdhui);

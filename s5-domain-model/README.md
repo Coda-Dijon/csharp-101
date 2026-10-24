@@ -42,7 +42,7 @@ En binôme, essayez le **ping-pong** : l'un écrit le test, l'autre le fait pass
 
 | Histoire | Ce qu'on construit | Réinvestit |
 |---|---|---|
-| `01_LePrixEnDents.cs` | `Dents`, un value object | S2 `record struct`, opérateurs · S1 exceptions |
+| `01_LePrixEnDents.cs` | `Dents`, un value object créé par une factory method | S2 `record struct`, constructeur privé, opérateurs · `Result<T>` |
 | `02_UnCerveauFrais.cs` | `Plat` et sa date de préparation | S2 `record`, `enum` · S1 `DateOnly` |
 | `03_ChacunSonRegime.cs` | les clients et leur régime | S2 hiérarchie, pattern matching · S3 méthode d'extension |
 | `04_PasserUneCommande.cs` | l'agrégat `Commande` et ses refus | S2 constructeur privé, factory, generics · `Result<T>` |

@@ -7,13 +7,17 @@ namespace Winchester.Tests;
 //   afin de ne jamais me tromper en rendant la monnaie.
 //
 //   Exemples :
-//   - 12 dents + 8 dents = 20 dents
+//   - un prix se crée à partir d'un nombre de dents : 12 dents
+//   - un prix négatif n'existe pas : la création échoue, avec la raison (PrixNegatif), sans exception
 //   - deux prix de 12 dents sont le même prix
-//   - un prix négatif n'existe pas : c'est un bug, l'erreur doit être immédiate
+//   - 12 dents + 8 dents = 20 dents
 //   - 3 cervelles à 12 dents coûtent 36 dents
 //   - un prix s'affiche « 12 dents »
 //
-// 🧰 Séance 2 : record struct, égalité structurelle, opérateurs · Séance 1 : exceptions
+// 💡 Pas de constructeur qui lance une exception : rien dans « new Dents(-1) » ne dit que ça peut échouer.
+//    Constructeur privé + FACTORY METHOD Dents.Creer(...) qui renvoie un Result<Dents> (fourni) :
+//    la signature avoue que la création peut échouer, et l'appelant ne peut pas l'ignorer.
+// 🧰 Séance 2 : record struct, constructeur privé, opérateurs · Result<T>
 
 public class LePrixEnDents
 {
@@ -22,39 +26,49 @@ public class LePrixEnDents
     //    Écris le minimum de code pour le faire passer, puis continue avec ta liste de tests.
     // >>> A_DECOMMENTER
     [Fact]
-    public void Des_dents_s_additionnent()
+    public void Un_prix_se_cree_a_partir_d_un_nombre_de_dents()
     {
-        var total = new Dents(12) + new Dents(8);
+        var prix = Dents.Creer(12).DoitReussir();
 
-        Check.That(total).IsEqualTo(new Dents(20));
+        Check.That(prix.Valeur).IsEqualTo(12);
     }
     // <<< A_DECOMMENTER
 
     // >>> TESTS
+    private static Dents Prix(int dents) => Dents.Creer(dents).DoitReussir();
+
     [Fact]
-    public void Deux_prix_de_meme_montant_sont_egaux()
+    public void Un_prix_negatif_n_existe_pas()
     {
-        Check.That(new Dents(12)).IsEqualTo(new Dents(12));
-        Check.That(new Dents(12) == new Dents(12)).IsTrue();
-        Check.That(new Dents(12)).IsNotEqualTo(new Dents(13));
+        var erreur = Dents.Creer(-1).DoitEchouer();
+
+        Check.That(erreur).IsEqualTo(new PrixNegatif(-1));
     }
 
     [Fact]
-    public void Un_prix_ne_peut_pas_etre_negatif()
+    public void Deux_prix_de_meme_montant_sont_egaux()
     {
-        Check.ThatCode(() => new Dents(-1)).Throws<ArgumentOutOfRangeException>();
+        Check.That(Prix(12)).IsEqualTo(Prix(12));
+        Check.That(Prix(12) == Prix(12)).IsTrue();
+        Check.That(Prix(12)).IsNotEqualTo(Prix(13));
+    }
+
+    [Fact]
+    public void Des_dents_s_additionnent()
+    {
+        Check.That(Prix(12) + Prix(8)).IsEqualTo(Prix(20));
     }
 
     [Fact]
     public void Le_prix_de_plusieurs_portions_est_le_prix_unitaire_multiplie()
     {
-        Check.That(new Dents(12) * 3).IsEqualTo(new Dents(36));
+        Check.That(Prix(12) * 3).IsEqualTo(Prix(36));
     }
 
     [Fact]
     public void Un_prix_s_affiche_avec_son_unite()
     {
-        Check.That(new Dents(12).ToString()).IsEqualTo("12 dents");
+        Check.That(Prix(12).ToString()).IsEqualTo("12 dents");
     }
     // <<< TESTS
 }

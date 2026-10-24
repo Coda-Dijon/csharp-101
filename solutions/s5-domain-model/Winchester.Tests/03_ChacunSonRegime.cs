@@ -17,9 +17,11 @@ namespace Winchester.Tests;
 public class ChacunSonRegime
 {
     // >>> TESTS
+    private static Dents Prix(int dents) => Dents.Creer(dents).DoitReussir();
+
     private static readonly DateOnly Hier = new(2026, 10, 30);
-    private static readonly Plat Cervelle = new("Cervelle nature", Categorie.Cerveau, new Dents(12), Hier);
-    private static readonly Plat Gratin = new("Gratin de chou-fleur", Categorie.ChouFleur, new Dents(10), Hier);
+    private static readonly Plat Cervelle = new("Cervelle nature", Categorie.Cerveau, Prix(12), Hier);
+    private static readonly Plat Gratin = new("Gratin de chou-fleur", Categorie.ChouFleur, Prix(10), Hier);
 
     [Fact]
     public void Un_rodeur_mange_de_tout()

@@ -594,6 +594,70 @@ Héritage : Humain("Rick") != MortVivant("Rick") même avec les mêmes valeurs, 
 -->
 
 ---
+layout: two-cols-header
+---
+
+# Quand la construction peut échouer
+
+::left::
+
+<div class="kicker mb-2">❌ Le constructeur qui lance</div>
+
+```csharp
+record Temperature(double Celsius)
+{
+    public double Celsius { get; } = Celsius >= -273.15
+        ? Celsius
+        : throw new ArgumentOutOfRangeException();
+}
+
+var t = new Temperature(-300);   // 💥 à l'exécution
+```
+
+<div v-click="1" class="small mt-2">
+
+Rien dans `new Temperature(-300)` ne prévient l'appelant : il découvre l'échec en production. Java fait pareil avec le constructeur compact d'un record.
+
+</div>
+
+::right::
+
+<div v-click="2">
+
+<div class="kicker mb-2">✅ Une factory method</div>
+
+```csharp
+sealed record Temperature
+{
+    public double Celsius { get; }
+    private Temperature(double c) => Celsius = c;
+
+    public static Temperature? Creer(double c)
+        => c >= -273.15 ? new Temperature(c) : null;
+}
+
+if (Temperature.Creer(-300) is { } t) { ... }
+// ou : Temperature.TryCreer(-300, out var t)
+```
+
+</div>
+
+::bottom::
+
+<div class="grid grid-cols-3 gap-3 mt-2 small">
+<div v-click="3" class="callout">Le constructeur est <strong>privé</strong> : <code>Creer</code> est la seule porte d'entrée</div>
+<div v-click="4" class="callout">La <strong>signature avoue</strong> l'échec : <code>Temperature?</code>, ou <code>bool TryCreer(…, out …)</code> comme <code>int.TryParse</code></div>
+<div v-click="5" class="callout">Séance 5 : <code>Result&lt;T&gt;</code>, qui dit aussi <strong>pourquoi</strong> ça a échoué</div>
+</div>
+
+<!--
+Le principe : une fonction honnête annonce dans son type de retour qu'elle peut échouer. Un constructeur ne peut renvoyer que l'objet : s'il peut échouer, il ment.
+Les exceptions restent pour les bugs et l'imprévu (disque plein, réseau), pas pour une donnée invalide qu'on peut prévoir.
+Piège : un record positionnel garde un constructeur public et des propriétés init, donc with peut contourner la factory. D'où le record non positionnel, avec une propriété en get seul.
+Koans : Un_constructeur_qui_lance_cache_que_la_construction_peut_echouer et Une_factory_method_rend_l_echec_visible, dans 05_Records.
+-->
+
+---
 
 # Quel type choisir ?
 
@@ -979,7 +1043,7 @@ dotnet test -- --filter-class "Types.AProposDesRecords"   # un seul fichier
 | `02_Encapsulation.cs` | `private`, `protected`, `internal`, `file`, `sealed`, collections protégées |
 | `03_ValeurOuReference.cs` | `struct` vs `class`, `ref`, `out`, boxing |
 | `04_Heritage.cs` | interfaces, `virtual`/`override`/`new`, `abstract`, composition |
-| `05_Records.cs` | égalité structurelle, `with`, déconstruction, héritage |
+| `05_Records.cs` | égalité structurelle, `with`, déconstruction, factory method, héritage |
 | `06_ClassesStatiques.cs` | classes `static`, `using static`, méthodes d'extension |
 | `07_Generiques.cs` | generics réifiés, contraintes, variance, `INumber<T>` |
 | `08_PatternMatching.cs` | patterns de type, de propriétés, de listes |

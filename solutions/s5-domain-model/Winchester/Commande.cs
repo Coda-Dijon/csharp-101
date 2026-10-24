@@ -28,7 +28,7 @@ public sealed record Commande
     public int Quantite { get; }
     public EtatDeCommande Etat { get; private init; } = new Passee();
 
-    public Dents Total => Plat.Prix * Quantite;
+    public Dents Total => Plat.Prix * (uint)Quantite;   // Quantite > 0 : garanti par Passer
 
     // Privé : impossible de construire une commande sans passer par les règles
     private Commande(Client client, Plat plat, int quantite) =>

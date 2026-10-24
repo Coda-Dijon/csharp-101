@@ -55,6 +55,7 @@ Créer une formation hands-on « C# 101 » dans l'esprit de `fp101/` (code d'abo
 - `record` / `record struct` vs `record` Java 16+ ; `with`, égalité structurelle
 - `struct` vs `class` (valeur vs référence), un point absent de Java
 - **Paramètres `ref`, `out` et `in`** : Java passe tout par valeur (y compris les références) ; `ref` donne la variable de l'appelant (modifier une struct, remplacer un objet), `out` oblige la méthode à l'affecter (pattern `TryXxx`, `out var`, discard `out _`), `in` passe par référence en lecture seule
+- **Quand la construction peut échouer** : pas de constructeur qui lance une exception (sa signature ment), mais un constructeur privé et une factory method qui l'avoue (`Temperature? Creer(...)`, `bool TryCreer(..., out ...)`) ; `Result<T>` en séance 5
 - Interfaces (default methods), héritage, `sealed`, `abstract`
 - **Classes `static`** vs classe utilitaire Java (`final` + constructeur privé) : ni instanciables ni héritables, membres tous `static`, constructeur statique, `using static` (≈ `import static`) ; pas de static nested au sens Java (une classe imbriquée C# n'a jamais accès implicite à l'instance englobante). Ouvre la porte aux méthodes d'extension de la séance 3
 - Generics réifiés (≠ type erasure Java), contraintes `where T :`
@@ -141,8 +142,8 @@ Créer une formation hands-on « C# 101 » dans l'esprit de `fp101/` (code d'abo
 - **Domaine : 🧟 le Winchester, Food-Truck Zombie.** Prix en dents, cerveaux périmés après 3 jours, zombies vegans au chou-fleur, Shaun le survivant, et un cuisinier qui dévore les commandes.
 - **Format** : pas de koans. Chaque fichier de test raconte une **histoire** (user story + exemples) et se termine par une **liste de tests** ; les participants écrivent les tests un par un (rouge, vert, refactor). Seul le premier test de l'histoire 1 est donné, et ne compile pas : c'est le premier rouge. Générateur : les blocs `// >>> TESTS … // <<< TESTS` deviennent la liste des noms de tests à écrire, les blocs `// >>> MODELE` vident le domaine.
 - **Fourni** : `Result<T>` (`Succes` / `Echec`, conversions implicites, `Match`, `Map`, `Bind`, `Select` / `SelectMany`), la base `Erreur`, et `DoitReussir()` / `DoitEchouer()` côté tests.
-- **Les 7 histoires** (34 tests dans la solution), chacune réinvestit une séance :
-  1. `01_LePrixEnDents` : `Dents`, value object en `record struct`, opérateurs, validation par exception (S1, S2)
+- **Les 7 histoires** (35 tests dans la solution), chacune réinvestit une séance :
+  1. `01_LePrixEnDents` : `Dents`, value object en `record struct`, constructeur privé + factory method `Creer` qui renvoie un `Result<Dents>` (`PrixNegatif`) plutôt qu'un constructeur qui lance, opérateurs (S2)
   2. `02_UnCerveauFrais` : `Plat`, `DateOnly`, la date du jour passée en paramètre (S1, S2)
   3. `03_ChacunSonRegime` : `Client` → `Rodeur` / `ZombieVegan` / `Survivant`, pattern matching, méthode d'extension `PeutManger` (S2, S3)
   4. `04_PasserUneCommande` : l'agrégat `Commande`, constructeur privé, factory `Passer` qui renvoie un `Result<Commande>` ; règles ordonnées (quantité, vivant, régime, périmé, stock) (S2)
@@ -252,7 +253,7 @@ csharp-101/
 - [x] **Séance 3** : 57 koans en 7 fichiers autour du registre de la horde (`solutions/s3-linq`, domaine dans `Koans/Domain.cs`), slides `slides/s3-linq.md`, sans slide preview.
 - [ ] **Séance 4**, en cours : 26 koans en 4 fichiers (`solutions/s4-async` : fichiers, PostgreSQL via Testcontainers, Dapper, arrivage) et slides `slides/s4-async.md` (connexion, l'async avant `async` / `await`, fichiers et base de données). Restent `05_Cancellation`, `06_RaceCondition`, `07_ProducerConsumer` et la preview runtime async.
 - [x] **Séance 6** : l'API `FoodTruck` (`solutions/s6-aspnet`), PostgreSQL via Testcontainers (Docker requis), `compose.yaml` pour la démo (PostgreSQL + dashboard Aspire), slides `slides/s6-aspnet.md`. Le domaine est une version simplifiée et autonome du Food-Truck de la séance 5.
-- [x] **Séance 5** : le domaine `Winchester` en TDD (`solutions/s5-domain-model` : 7 histoires, 34 tests, `Result<T>` fourni), version élève avec les listes de tests, slides `slides/s5-domain-model.md` (23 slides)
+- [x] **Séance 5** : le domaine `Winchester` en TDD (`solutions/s5-domain-model` : 7 histoires, 35 tests, `Result<T>` fourni), version élève avec les listes de tests, slides `slides/s5-domain-model.md` (23 slides)
 
 Décisions prises pendant la séance 1 :
 - **Placeholders** : tests rouges à l'exécution (le code compile toujours). `___` est une propriété qui lève `BlankNotFilledException`, pour que le message d'échec ne souffle pas la réponse.
