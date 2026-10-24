@@ -126,6 +126,99 @@ Point clé : l'async ne sert pas à aller plus vite, il sert à ne pas immobilis
 -->
 
 ---
+layout: two-cols
+---
+
+# Du process à la Task
+
+<div class="mt-6 mr-6 small">
+<div class="rounded-lg p-3" style="border: 2px solid var(--blood)">
+  <div class="kicker mb-2">Process · FoodTruck</div>
+  <div class="muted mb-3">sa mémoire, son tas géré, son GC, ses assemblies</div>
+  <div class="grid grid-cols-[1fr_3fr] gap-3">
+    <div class="rounded p-2 text-center" style="border: 1.5px dashed var(--muted)">Thread<br>principal</div>
+    <div class="rounded p-2" style="border: 1.5px solid var(--muted)">
+      <div class="font-bold mb-1">ThreadPool</div>
+      <div class="flex gap-1 mb-2">
+        <span class="pill">T1</span><span class="pill">T2</span><span class="pill">T3</span><span class="pill">T4</span>
+      </div>
+      <div class="muted">↑ piochent dans la file des travaux</div>
+      <div class="flex gap-1 mt-1">
+        <span class="pill">Task</span><span class="pill">Task</span><span class="pill">Task</span><span class="pill">…</span>
+      </div>
+    </div>
+  </div>
+  <div class="mt-3 rounded p-2 text-center" style="border: 1.5px dashed var(--muted)">Thread dédié (<code>new Thread</code>), rare</div>
+</div>
+</div>
+
+::right::
+
+<div class="mt-12 small">
+
+<v-clicks>
+
+- **Process** : un programme en cours d'exécution, avec sa mémoire isolée (≈ un process JVM). Lourd, rarement créé à la main (`Process.Start`)
+- **Thread** : un fil d'exécution de l'OS, avec sa pile (≈ 1 Mo réservé). Le créer, le détruire et passer de l'un à l'autre coûte cher (≈ `java.lang.Thread`)
+- **ThreadPool** : des threads créés une fois puis réutilisés, qui piochent dans une file de travaux. Un seul par process, géré par le runtime (≈ `ForkJoinPool.commonPool()`)
+- **Task** : une opération et son résultat à venir, **pas un thread** (≈ `CompletableFuture`). Un calcul s'exécute sur un thread du pool ; une E/S en attente n'en occupe aucun
+
+</v-clicks>
+
+</div>
+
+<!--
+Le vocabulaire nécessaire pour la suite : « rendre le thread au pool » n'a de sens que si on sait ce qu'est le pool.
+Un process contient au moins un thread. Les threads d'un même process partagent la mémoire : d'où les race conditions (koan 06).
+Le pool a deux sortes de threads : les workers (le code) et les threads d'E/S, réveillés par l'OS quand une E/S se termine (IOCP sous Windows, epoll sous Linux).
+-->
+
+---
+layout: two-cols
+---
+
+# Le ThreadPool en action
+
+```csharp
+// UN CALCUL : confié au pool
+var dents = await Task.Run(() => CompterLesDents(horde));
+
+// UNE E/S : aucun thread n'attend pendant la requête
+var plats = await connexion.QueryAsync<Plat>(sql);
+// la suite reprend sur un thread du pool, peut-être un autre
+Console.WriteLine(Environment.CurrentManagedThreadId);
+
+// UN THREAD DÉDIÉ : pour un travail sans fin
+var veilleur = new Thread(SurveillerLaHorde);
+veilleur.Start();
+
+// LE PIÈGE : bloquer un thread du pool
+var menu = repository.MenuAsync().Result;   // ❌
+```
+
+::right::
+
+<div class="mt-16 small">
+
+<v-clicks>
+
+- Le pool démarre avec à peu près **un thread par cœur**, et n'en ajoute que **lentement** quand les travaux s'accumulent
+- ASP.NET Core sert chaque requête sur un thread du pool. Un `await` le rend pour la requête suivante
+- `.Result` et `.Wait()` le gardent bloqué. Sous la charge, le pool s'épuise : c'est la **famine** (*thread pool starvation*), l'API ne répond plus
+- `Task.Run` pour le calcul, `await` pour les E/S
+- Java 21 règle le même problème avec les **virtual threads**, dans le runtime ; C# le règle dans le **compilateur** (voir « Sous le capot »)
+
+</v-clicks>
+
+</div>
+
+<!--
+Démo possible : afficher ThreadPool.ThreadCount et Environment.CurrentManagedThreadId avant et après un await.
+Le pool ajoute environ un thread toutes les 500 ms quand il détecte une famine : avec 1 000 requêtes bloquées, il faut plusieurs minutes pour rattraper.
+Pour du calcul parallèle sur des données : Parallel.ForEach et PLINQ (AsParallel), qui utilisent aussi le pool.
+-->
+
+---
 
 # 2002 · APM : `Begin` / `End` et callbacks
 

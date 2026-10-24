@@ -111,6 +111,7 @@ Créer une formation hands-on « C# 101 » dans l'esprit de `fp101/` (code d'abo
 
 ### Séance 4 : Async & concurrence (niveau 4)
 *Objectif : écrire du code qui monte en charge sur l'I/O sans bloquer de threads.*
+- **Du process à la Task** (2 slides) : process, thread de l'OS (coût, pile), ThreadPool (threads réutilisés, file de travaux, injection lente), `Task` (une opération, pas un thread) ; `Task.Run` pour le calcul, `await` pour les E/S, la famine du pool avec `.Result`, comparaison avec `ForkJoinPool` et les virtual threads
 - `Task`/`Task<T>` vs `CompletableFuture` ; `async/await` vs virtual threads (Loom)
 - `Task.WhenAll`, `Task.WhenAny`, timeouts
 - `CancellationToken` (pas d'équivalent direct en Java)
