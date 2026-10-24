@@ -5,6 +5,6 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <!-- Les koans contiennent volontairement du code "naïf" : on coupe les warnings de style -->
-    <NoWarn>$(NoWarn);CS0162;CS1718;CS8520;CS8793;xUnit2000;xUnit2003;xUnit2004</NoWarn>
+    <NoWarn>$(NoWarn);CS0162;CS1718;CS8520;CS8793;xUnit2000;xUnit2003;xUnit2004;xUnit1051</NoWarn>
   </PropertyGroup>
 </Project>

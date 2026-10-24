@@ -116,7 +116,21 @@ Créer une formation hands-on « C# 101 » dans l'esprit de `fp101/` (code d'abo
 - `IAsyncEnumerable<T>` + `await foreach`
 - Accès concurrents : `lock`, `Interlocked`, `SemaphoreSlim`, `Channel<T>` (aperçu)
 - Pièges : `.Result`/`.Wait()`, `async void`
-- **Koans** : `01_TaskBasics`, `02_WhenAll`, `03_Cancellation`, `04_AsyncStreams`, `05_RaceCondition` (un compteur faux à corriger), `06_ProducerConsumer`
+
+**Avant `async` / `await` (slides)** : le même scénario (lire l'arrivage d'un food truck, puis mettre à jour le stock) écrit à chaque époque
+- 2002, APM : `BeginRead` / `EndRead`, callbacks imbriqués, `try` / `finally` éclatés
+- 2005, EAP : `DownloadStringAsync` + événement `Completed`, erreurs dans `e.Error`
+- 2010, TPL : `Task`, `ContinueWith`, `Unwrap`, `AggregateException`
+- 2012, `async` / `await` (C# 5) : côte à côte avec la version synchrone, même forme
+- Frise (F# 2007, `CompletableFuture` 2014, Python 2015, JavaScript 2017, virtual threads 2023), comparaison Java (`thenCompose` vs virtual threads vs `await`), la machine à états générée (lien avec `yield` de la séance 3)
+
+**Fichiers et base de données, en async**
+- Un vrai PostgreSQL démarré par **Testcontainers** (la même bibliothèque qu'en Java), partagé par une collection fixture xUnit et réinitialisé avant chaque test. Docker est requis sur les postes.
+- Domaine : le Winchester, food truck pour zombies (version simplifiée de la séance 5) : plats, clients, commandes
+- Fichiers : `Path`, `File.*Async`, `File.ReadLinesAsync` + `await foreach`, `await using` ≈ try-with-resources, `System.Text.Json` et ses pièges (PascalCase, accents échappés, propriétés inconnues ignorées)
+- Npgsql (≈ JDBC) puis Dapper (≈ JdbcTemplate) : **plusieurs requêtes `await` d'affilée qui se lisent comme du code synchrone**, `try` / `catch`, `await` dans une boucle, `Task.WhenAll` sur des requêtes indépendantes, une connexion = une requête à la fois
+
+- **Koans** : `01_LesFichiers`, `02_AsyncCommeDuSync` (Npgsql), `03_Dapper` (injection SQL, transactions), `04_LArrivage` (CSV → PostgreSQL → JSON), `05_Cancellation`, `06_RaceCondition` (un compteur faux à corriger), `07_ProducerConsumer`
 - 🔮 **Preview** : **runtime async** (.NET 11, async géré par le runtime plutôt que par une state machine générée par le compilateur), avec une comparaison de l'IL et des stack traces avant/après
 
 ### Séance 5 : Capstone, modéliser un domaine en C#
@@ -183,7 +197,9 @@ AJOUTER les monads, Functional Core - Imperative Shell à ce dernier moment
 
 - ⚠️ **Point de vigilance licences** : plusieurs packages historiques sont passés sous licence commerciale en 2025 (FluentAssertions 8, AutoMapper, MediatR, MassTransit 9). C'est l'une des raisons du choix de NFluent dans cette formation. Réflexe à transmettre : vérifier la licence d'un package avant de l'adopter.
 
-- **Koans / exercices** : `01_MinimalApi` (routes, paramètres, `TypedResults`), `02_InjectionDeDependances` (durées de vie, le piège scoped dans singleton), `03_ExposerLeFoodTruck` (endpoints à écrire, tests d'intégration fournis en rouge), `04_ProblemDetails` (`Result<T>` → codes HTTP), `05_Observabilite` (une métrique `commandes.servies` et une trace custom, vérifiées avec l'exporter en mémoire d'OpenTelemetry)
+- **Données** : l'API s'appuie sur le PostgreSQL et le Dapper de la séance 4 (Testcontainers pour les tests d'intégration)
+- **Koans** : `01_InjectionDeDependances` (durées de vie, captive dependency, `IOptions<T>`), `02_MinimalApi` (`WebApplicationFactory`, routes, query string, OpenAPI), `03_ExposerLeFoodTruck` (`Cuisine.Decider` pure, `POST /commandes`, `ProblemDetails`, 5 commandes concurrentes pour 3 cerveaux). Le code des endpoints à écrire est dans le projet `FoodTruck`.
+- Observabilité : pas de koan, OpenTelemetry (avec l'instrumentation Npgsql) est montré en démo dans le dashboard Aspire
 - **Démo** : l'API ouverte dans Scalar, puis les traces d'une commande dans le dashboard Aspire
 - Clôture de la formation : rétro, plus la carte du Maturity Stack (niveaux 5 à 7) pour la suite
 
@@ -219,7 +235,9 @@ csharp-101/
 - [x] **Séance 1** : 53 koans en 5 fichiers, slides Slidev `slides/s1-fundamentals.md`, démos `hello.cs` et `compilation`.
 - [x] **Séance 2** : 70 koans en 8 fichiers + un exercice de modélisation (`solutions/s2-types`), slides `slides/s2-types.md`, sans démo ni slide preview (comme en séance 1).
 - [x] **Séance 3** : 57 koans en 7 fichiers autour du registre de la horde (`solutions/s3-linq`, domaine dans `Koans/Domain.cs`), slides `slides/s3-linq.md`, sans slide preview.
-- [ ] Séance 4 · [ ] Séance 5 · [ ] Séance 6
+- [ ] **Séance 4**, en cours : 26 koans en 4 fichiers (`solutions/s4-async` : fichiers, PostgreSQL via Testcontainers, Dapper, arrivage) et slides `slides/s4-async.md` (connexion, l'async avant `async` / `await`, fichiers et base de données). Restent `05_Cancellation`, `06_RaceCondition`, `07_ProducerConsumer` et la preview runtime async.
+- [x] **Séance 6** : l'API `FoodTruck` (`solutions/s6-aspnet`), PostgreSQL via Testcontainers (Docker requis), `compose.yaml` pour la démo (PostgreSQL + dashboard Aspire), slides `slides/s6-aspnet.md`. Le domaine est une version simplifiée et autonome du Food-Truck de la séance 5.
+- [ ] Séance 5
 
 Décisions prises pendant la séance 1 :
 - **Placeholders** : tests rouges à l'exécution (le code compile toujours). `___` est une propriété qui lève `BlankNotFilledException`, pour que le message d'échec ne souffle pas la réponse.

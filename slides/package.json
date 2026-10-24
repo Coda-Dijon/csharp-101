@@ -12,6 +12,12 @@
     "s3": "slidev s3-linq.md --open",
     "build:s3": "slidev build s3-linq.md --out dist/s3",
     "export:s3": "slidev export s3-linq.md --output dist/s3-linq.pdf",
+    "s4": "slidev s4-async.md --open",
+    "build:s4": "slidev build s4-async.md --out dist/s4",
+    "export:s4": "slidev export s4-async.md --output dist/s4-async.pdf",
+    "s6": "slidev s6-aspnet.md --open",
+    "build:s6": "slidev build s6-aspnet.md --out dist/s6",
+    "export:s6": "slidev export s6-aspnet.md --output dist/s6-aspnet.pdf",
     "build:site": "node scripts/build-site.mjs",
     "serve:site": "node scripts/serve-site.mjs",
     "site": "npm run build:site && npm run serve:site"

@@ -9,4 +9,11 @@
   <Folder Name="/s3-linq/">
     <Project Path="s3-linq/Koans/Koans.csproj" />
   </Folder>
+  <Folder Name="/s4-async/">
+    <Project Path="s4-async/Koans/Koans.csproj" />
+  </Folder>
+  <Folder Name="/s6-aspnet/">
+    <Project Path="s6-aspnet/FoodTruck/FoodTruck.csproj" />
+    <Project Path="s6-aspnet/Koans/Koans.csproj" />
+  </Folder>
 </Solution>

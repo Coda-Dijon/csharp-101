@@ -12,7 +12,7 @@ const sessions = [
   { slug: 's1-fundamentals', n: 1, title: 'Fondamentaux', topics: 'Histoire de .NET, compilation, syntaxe Java ↔ C#, anatomie d\'un test' },
   { slug: 's2-types', n: 2, title: 'Types & design objet', topics: 'Propriétés, encapsulation, struct vs class, ref/out, héritage, records, generics, pattern matching' },
   { slug: 's3-linq', n: 3, title: 'LINQ & principes fonctionnels', topics: 'Func vs Action, lambdas, fonctions pures, LINQ vs Streams sur une horde de zombies, exécution différée' },
-  { slug: 's4-async', n: 4, title: 'Async & concurrence', topics: 'Task, async/await, CancellationToken, IAsyncEnumerable, race conditions' },
+  { slug: 's4-async', n: 4, title: 'Async & concurrence', topics: 'L\'async avant async/await, Task, fichiers et PostgreSQL en async avec Testcontainers, Dapper' },
   { slug: 's5-domain-model', n: 5, title: 'Le Food-Truck Zombie', topics: 'Un domain model complet, piloté par les tests' },
   { slug: 's6-aspnet', n: 6, title: 'L\'écosystème & ASP.NET Core', topics: 'Minimal API sur le Food-Truck Zombie, injection de dépendances, NuGet, OpenAPI avec Scalar, OpenTelemetry' },
 ]

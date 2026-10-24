@@ -1,0 +1,23 @@
+# La démo de la séance : la base du food truck et le dashboard Aspire (traces, métriques, logs OpenTelemetry).
+#   docker compose up -d
+#   dotnet run --project FoodTruck      -> http://localhost:5080/scalar
+#   dashboard                           -> http://localhost:18888
+# (les koans n'en ont pas besoin : Testcontainers démarre son propre PostgreSQL)
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: foodtruck
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./FoodTruck/sql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+
+  dashboard:
+    image: mcr.microsoft.com/dotnet/aspire-dashboard:13.0
+    environment:
+      DOTNET_DASHBOARD_UNSECURED_ALLOW_ANONYMOUS: "true"
+    ports:
+      - "18888:18888"   # l'interface
+      - "4317:18889"    # la réception OTLP (OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4317)
