@@ -14,6 +14,7 @@ const sessions = [
   { slug: 's3-linq', n: 3, title: 'LINQ & principes fonctionnels', topics: 'Func vs Action, lambdas, fonctions pures, LINQ vs Streams sur une horde de zombies, exécution différée' },
   { slug: 's4-async', n: 4, title: 'Async & concurrence', topics: 'Task, async/await, CancellationToken, IAsyncEnumerable, race conditions' },
   { slug: 's5-domain-model', n: 5, title: 'Le Food-Truck Zombie', topics: 'Un domain model complet, piloté par les tests' },
+  { slug: 's6-aspnet', n: 6, title: 'L\'écosystème & ASP.NET Core', topics: 'Minimal API sur le Food-Truck Zombie, injection de dépendances, NuGet, OpenAPI avec Scalar, OpenTelemetry' },
 ]
 
 rmSync(out, { recursive: true, force: true })
@@ -70,7 +71,7 @@ writeFileSync(join(out, 'index.html'), `<!doctype html>
   <rect x="690" y="0" width="14" height="52" rx="7"/><rect x="870" y="0" width="16" height="42" rx="8"/>
 </svg>
 <main>
-  <div class="kicker">5 séances de 1h30</div>
+  <div class="kicker">6 séances de 1h30</div>
   <h1>C# 101</h1>
   <p class="lead">Découvrir C# quand on vient de Java : des slides côte à côte, puis des koans à faire passer du rouge au vert.</p>
   <div class="grid">

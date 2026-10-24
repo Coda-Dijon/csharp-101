@@ -1,6 +1,6 @@
 # C# 101
 
-Découvrir C# en 5 séances de 1h30, quand on vient de `java`.
+Découvrir C# en 6 séances de 1h30, quand on vient de `java`.
 
 ![Csharp 101](img/csharp101.webp)
 
@@ -13,6 +13,7 @@ Le format est hands-on : des koans à faire passer du rouge au vert.
 | 3 | LINQ & principes fonctionnels | [`s3-linq`](s3-linq/README.md) |
 | 4 | Async & concurrence | _à venir_ |
 | 5 | Domain model : le Food-Truck Zombie | _à venir_ |
+| 6 | L'écosystème & ASP.NET Core : Minimal API, NuGet, OpenAPI, OpenTelemetry | _à venir_ |
 
 ## Démarrer
 
@@ -53,7 +54,7 @@ csharp-101/
 ├── Directory.Build.props     # réglages communs à tous les projets (.NET 10, C# 14, nullable)
 ├── Directory.Packages.props  # versions des paquets NuGet, centralisées (xUnit v3, NFluent)
 ├── global.json               # version du SDK et runner de tests
-├── PLAN.md                   # le programme détaillé des 5 séances
+├── PLAN.md                   # le programme détaillé des 6 séances
 └── LICENSE                   # MIT pour le code (les slides ont leur propre LICENSE, CC BY-SA 4.0)
 ```
 
