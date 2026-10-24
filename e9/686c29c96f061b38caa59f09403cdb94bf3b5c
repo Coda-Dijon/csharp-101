@@ -1,0 +1,133 @@
+s2-types/Koans/04_Heritage.cs
+  s_81f00e07054cb6::t_874e35c061a928 1-178
+solutions/s2-types/Koans/01_Proprietes.cs
+  s_81f00e07054cb6::t_4790e5e8e15139 1-165
+slides/scripts/build-site.mjs
+  s_81f00e07054cb6::t_906e91c90d5948 14
+  s_81f00e07054cb6::t_20233259305f01 13
+Directory.Build.props
+  s_81f00e07054cb6::t_874e35c061a928 8
+slides/s2-types.md
+  s_81f00e07054cb6::t_b543d5651c48fa 263-305,685,690,692-705,707-726,728-733,735-749,751,753,755,759-764,771-774,776,779-795,797-808,810-812,815-833,836,838,843-847
+  s_81f00e07054cb6::t_906e91c90d5948 207-262,370-424,913,918,977,981-983,995
+  s_81f00e07054cb6::t_29a10a9fece646 522
+  s_81f00e07054cb6::t_9af15eb5b7a456 994
+  s_81f00e07054cb6::t_99291d11dd9ede 1-37,39,41-90,92-206,306-359,361-369,425-432,434-501,503-519,521,523-529,618-684,686-689,750,752,754,756-758,765-770,775,777-778,809,813-814,834-835,837,839-842,848-895,897-912,914-917,919-976,984-986,988-993,996-1030
+  s_81f00e07054cb6::t_fe821c15444840 502,520,896
+  s_81f00e07054cb6::t_4d29af09f7e6d6 360
+  s_81f00e07054cb6::t_058aed0813fa7a 691,706,727,734,796
+  s_81f00e07054cb6::t_20233259305f01 38,40,91,433,530-617,978-980,987
+s2-types/Koans/01_Proprietes.cs
+  s_81f00e07054cb6::t_874e35c061a928 1-160
+solutions/Solutions.slnx
+  s_81f00e07054cb6::t_56320f31263057 6-8
+README.md
+  s_81f00e07054cb6::t_4d29af09f7e6d6 12
+  s_81f00e07054cb6::t_46c150fbc51f0d 87
+solutions/s2-types/Koans/02_Encapsulation.cs
+  s_81f00e07054cb6::t_b05b8cee351164 1-174
+s2-types/Koans/03_ValeurOuReference.cs
+  s_81f00e07054cb6::t_874e35c061a928 1-2,4-56,98-150,152-186,210-211
+  s_81f00e07054cb6::t_20233259305f01 3,57-97,187-209
+  s_81f00e07054cb6::t_dee17d759476d8 151
+slides/package.json
+  s_81f00e07054cb6::t_4d29af09f7e6d6 9-11
+s2-types/Koans/05_Records.cs
+  s_81f00e07054cb6::t_20233259305f01 1-136
+solutions/s2-types/Koans/04_Heritage.cs
+  s_81f00e07054cb6::t_5dd5efad10004f 1-182
+s2-types/Koans/08_PatternMatching.cs
+  s_81f00e07054cb6::t_a2c9b161b33496 1-135
+s2-types/Koans/07_Generiques.cs
+  s_81f00e07054cb6::t_a2c9b161b33496 1-91,127-158
+  s_81f00e07054cb6::t_194c3997e09380 92-126
+solutions/s2-types/Koans/07_Generiques.cs
+  s_81f00e07054cb6::t_b1754be4bb888b 9,11,13,15,21,23,25,30,32,34,38,40,42,48,50,52,58,61,63,65,67,77,79,81,90,92-127,129,142,147,157,159,161,165
+  s_81f00e07054cb6::t_bb0a00e0c94e8c 6-8
+  s_81f00e07054cb6::t_4b3871a183ea7d 10
+  s_81f00e07054cb6::t_0b6b846c2795a5 12
+  s_81f00e07054cb6::t_2081b35242573a 14
+  s_81f00e07054cb6::t_d90dfa7fd1a18b 16-20
+  s_81f00e07054cb6::t_3b315152f89786 22
+  s_81f00e07054cb6::t_63fbee20c97b6d 24
+  s_81f00e07054cb6::t_76c45dae57942f 26-29
+  s_81f00e07054cb6::t_0d49e3f494b4b4 31
+  s_81f00e07054cb6::t_87cc96f4741df6 33
+  s_81f00e07054cb6::t_e6b47bf7ebc5ed 35-37
+  s_81f00e07054cb6::t_f8166631e70f95 39
+  s_81f00e07054cb6::t_45fe2c81ad393d 41
+  s_81f00e07054cb6::t_b6ddb51e0c8542 43-47
+  s_81f00e07054cb6::t_cdae79fbf1273e 49
+  s_81f00e07054cb6::t_e58eb9ccc61106 51
+  s_81f00e07054cb6::t_53a8d223382b00 53-57
+  s_81f00e07054cb6::t_5cb5378d19d309 59-60
+  s_81f00e07054cb6::t_ad0b042cccc6f7 62
+  s_81f00e07054cb6::t_dfd8bd7ce05731 64
+  s_81f00e07054cb6::t_71ddef37c07a79 66
+  s_81f00e07054cb6::t_aeca1ee3a57294 68-70,74-76
+  s_81f00e07054cb6::t_bb24bbe72d9c73 78
+  s_81f00e07054cb6::t_6394b90da4636f 80
+  s_81f00e07054cb6::t_a46c8643082a58 82-84,87-89
+  s_81f00e07054cb6::t_4c3d43f4e97fb5 91
+  s_81f00e07054cb6::t_d692e660cfd2af 128
+  s_81f00e07054cb6::t_451235b65736a9 130-132,139-141
+  s_81f00e07054cb6::t_3c39e7471c88c8 143-146
+  s_81f00e07054cb6::t_e12d0e6938cc3e 148-150,154-156
+  s_81f00e07054cb6::t_20b3b92364d255 158
+  s_81f00e07054cb6::t_bc29b8d59e6b8d 160
+  s_81f00e07054cb6::t_f1ab6356b07913 162-164
+  s_81f00e07054cb6::t_9e0eb721ef656e 166
+  s_81f00e07054cb6::t_e15f4887563121 1-5,71-73,85-86,133-138,151-153
+s2-types/Koans/06_ClassesStatiques.cs
+  s_81f00e07054cb6::t_a2c9b161b33496 1-137
+s2-types/Koans/Blanks.cs
+  s_81f00e07054cb6::t_874e35c061a928 1-22
+solutions/s2-types/Koans/Koans.csproj
+  s_81f00e07054cb6::t_267eec685f569d 1-23
+solutions/s2-types/Koans/03_ValeurOuReference.cs
+  s_81f00e07054cb6::t_dee17d759476d8 3,57-97,151,189-220
+  s_81f00e07054cb6::t_b7556d00378bb2 1-2,4-56,98-150,152-188,221-222
+s2-types/Koans/02_Encapsulation.cs
+  s_81f00e07054cb6::t_a2c9b161b33496 1-168
+solutions/s2-types/Koans/Blanks.cs
+  s_81f00e07054cb6::t_267eec685f569d 1-22
+solutions/s2-types/README.md
+  s_81f00e07054cb6::t_20233259305f01 24-26,34
+  s_81f00e07054cb6::t_906e91c90d5948 23,27-29
+  s_81f00e07054cb6::t_b91557beab4c33 1-22,30-33
+s2-types/README.md
+  s_81f00e07054cb6::t_b91557beab4c33 1-22,30-33
+  s_81f00e07054cb6::t_906e91c90d5948 23,27-29
+  s_81f00e07054cb6::t_20233259305f01 24-26,34
+csharp-101.slnx
+  s_81f00e07054cb6::t_56320f31263057 6-8
+PLAN.md
+  s_81f00e07054cb6::t_20233259305f01 60
+  s_81f00e07054cb6::t_9af15eb5b7a456 158
+  s_81f00e07054cb6::t_bb39657120d322 51,54,65,67-69,73-99,136
+  s_81f00e07054cb6::t_29a10a9fece646 159
+s2-types/Koans/Koans.csproj
+  s_81f00e07054cb6::t_5359b00a7e1ff9 1-23
+solutions/s2-types/Koans/05_Records.cs
+  s_81f00e07054cb6::t_4a58ed54acf070 1-140
+solutions/s2-types/Koans/06_ClassesStatiques.cs
+  s_81f00e07054cb6::t_6ec387f1af033b 1-139
+solutions/s2-types/Koans/08_PatternMatching.cs
+  s_81f00e07054cb6::t_0ca5c6e95d1d55 1-151
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "e9686c29c96f061b38caa59f09403cdb94bf3b5c",
+  "prompts": {},
+  "sessions": {
+    "s_81f00e07054cb6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "12a7d70d-2244-42e4-8b2b-6116d5cce135",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Yoan Thirion <yoan.thirion@gmail.com>"
+    }
+  }
+}
