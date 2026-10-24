@@ -1,3 +1,7 @@
+// Les alias de type se déclarent en haut du fichier, avec using (voir Un_alias_donne_un_nom_a_un_type_existant)
+using Position = (int Ligne, int Colonne);
+using Dents = int;
+
 namespace Fundamentals;
 
 // 🎯 Objectif : retrouver ses repères Java dans la syntaxe C#.
@@ -107,6 +111,22 @@ public class AProposDeLaSyntaxe
         Check.That(bornes.Max).IsEqualTo(___);
         Check.That(min).IsEqualTo(___);
         Check.That(min + max - 2).IsEqualTo(___);
+    }
+
+    [Fact]
+    public void Un_alias_donne_un_nom_a_un_type_existant()
+    {
+        // Java : pas d'alias de type (Kotlin a typealias).
+        // C#   : using Nom = Type; en haut du fichier. Depuis C# 12, n'importe quel type : tuple, tableau...
+        Position abri = (3, 7);
+        Dents prix = 12;
+
+        Check.That(abri.Colonne).IsEqualTo(___);
+
+        // Un alias est un NOUVEAU NOM, pas un nouveau type : le compilateur le remplace par int
+        int memePrix = prix;
+        Check.That(typeof(Dents) == typeof(int)).IsEqualTo(___);
+        Check.That(memePrix + prix).IsEqualTo(___);
     }
 
     [Fact]

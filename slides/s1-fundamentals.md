@@ -428,6 +428,54 @@ sb.Append("bra");       // PascalCase pour les méthodes
 ```
 
 ---
+layout: two-cols
+---
+
+# Les alias de type
+
+```csharp {all|1-3|5-8|10-13|15-17|all}{at:1}
+// DÉJÀ VU : les mots-clés sont des alias
+int n;      // System.Int32
+string s;   // System.String
+
+// UN NOM POUR UN TYPE EXISTANT, en haut du fichier
+using Position = (int Ligne, int Colonne);   // C# 12
+using Horde = List<Zombie>;
+using Dents = int;
+
+Position abri = (3, 7);
+abri.Colonne;                      // 7
+Horde horde = [];
+Dents prix = 12;
+
+// MAIS CE N'EST PAS UN NOUVEAU TYPE
+int memePrix = prix;               // compile : Dents EST int
+typeof(Dents) == typeof(int);      // true
+```
+
+::right::
+
+<div class="mt-16">
+
+<v-clicks>
+
+- **Java** : pas d'alias de type (Kotlin a `typealias`)
+- `using Nom = Type;` donne un **nom métier** à un type existant : un tuple, un générique, un tableau
+- Portée : **le fichier**. `global using` (C# 10) pour tout le projet
+- Pratique aussi pour lever une ambiguïté : `using Timer = System.Threading.Timer;`
+- Le compilateur **remplace** l'alias par le type : aucune sécurité de type. Pour qu'un prix ne se mélange pas à un âge, il faut un vrai type (`record struct`, séance 2)
+
+</v-clicks>
+
+</div>
+
+<!--
+Avant C# 12, l'alias ne visait que des types nommés (classes, génériques fermés). Depuis C# 12, n'importe quel type : tuples, tableaux, pointeurs.
+Dans un .csproj : <Using Include="System.Threading.Timer" Alias="Timer" />, c'est ainsi que les koans importent Xunit et NFluent (sans alias).
+Koan : Un_alias_donne_un_nom_a_un_type_existant, dans 01_Syntaxe.
+-->
+
+---
 layout: two-cols-header
 ---
 
@@ -952,7 +1000,7 @@ dotnet test -- --filter-class "Fundamentals.AProposDeLaSyntaxe"   # un seul fich
 
 | Fichier | Thème |
 |---|---|
-| `01_Syntaxe.cs` | var, types, interpolation, méthodes, tuples, tableaux |
+| `01_Syntaxe.cs` | var, types, alias de type, interpolation, méthodes, tuples, tableaux |
 | `02_Chaines.cs` | égalité, immutabilité, ranges, StringBuilder |
 | `03_ControleEtEnums.cs` | boucles, switch, switch expressions, enums |
 | `04_Nullabilite.cs` | `?`, `?.`, `??`, `??=`, `Nullable<T>` |

@@ -39,6 +39,7 @@ Créer une formation hands-on « C# 101 » dans l'esprit de `fp101/` (code d'abo
   - Démo : `dotnet build`, puis ouverture de la dll dans **ILSpy** / sharplab.io pour voir l'IL et le code « lowered » (par exemple ce que devient un `foreach` ou une interpolation `$"..."` ; les `record` sont gardés pour la séance 2)
   - Écosystème : SDK vs runtime, NuGet (≈ Maven Central), `.csproj` (≈ `pom.xml`)
 - Toolchain : `dotnet new`, `dotnet test`, `dotnet run app.cs` (fichier unique, .NET 10)
+- **Alias de type** : `int` = `System.Int32`, puis `using Position = (int Ligne, int Colonne);` (tout type depuis C# 12), `global using` ; un nouveau nom, pas un nouveau type (pas d'équivalent Java, ≈ `typealias` Kotlin)
 - `var`/types, `const`/`readonly`, interpolation `$"..."`, raw strings `"""`
 - `if`, `switch` expression vs `switch` Java, boucles, `foreach`
 - Méthodes : paramètres nommés et par défaut, `out`, expression-bodied `=>`

@@ -27,7 +27,7 @@ Les commentaires `// Java :` montrent l'équivalent Java pour vous raccrocher à
 
 | Fichier | Thème |
 |---|---|
-| `01_Syntaxe.cs` | var, types, interpolation, méthodes, tuples, tableaux |
+| `01_Syntaxe.cs` | var, types, alias de type, interpolation, méthodes, tuples, tableaux |
 | `02_Chaines.cs` | égalité, immutabilité, ranges, StringBuilder |
 | `03_ControleEtEnums.cs` | boucles, switch, switch expressions, enums |
 | `04_Nullabilite.cs` | `?`, `?.`, `??`, `??=`, `Nullable<T>` |
