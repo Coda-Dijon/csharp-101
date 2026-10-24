@@ -1,6 +1,8 @@
 # C# 101
 
-Découvrir C# en 5 séances de 1h30, quand on vient de Java.
+Découvrir C# en 5 séances de 1h30, quand on vient de `java`.
+
+![Csharp 101](img/csharp101.webp)
 
 Le format est hands-on : des koans à faire passer du rouge au vert.
 
@@ -44,14 +46,15 @@ csharp-101/
 ├── solutions/                # les mêmes séances, avec toutes les réponses
 │   ├── Solutions.slnx
 │   └── s1-fundamentals/
-├── slides/                   # les supports de cours (Slidev), un fichier par séance
+├── slides/                   # les supports de cours (Slidev), un fichier par séance, sous CC BY-SA 4.0
 │   └── s1-fundamentals.md
 ├── tools/
 │   └── generate-exercises.py # fabrique les exercices à partir des solutions
 ├── Directory.Build.props     # réglages communs à tous les projets (.NET 10, C# 14, nullable)
 ├── Directory.Packages.props  # versions des paquets NuGet, centralisées (xUnit v3, NFluent)
 ├── global.json               # version du SDK et runner de tests
-└── PLAN.md                   # le programme détaillé des 5 séances
+├── PLAN.md                   # le programme détaillé des 5 séances
+└── LICENSE                   # MIT pour le code (les slides ont leur propre LICENSE, CC BY-SA 4.0)
 ```
 
 ### Les koans
@@ -84,3 +87,8 @@ cd slides && npm install
 npm run s1     # une séance, touche O pour la vue d'ensemble, P pour le mode présentateur
 npm run site   # le site complet comme en ligne : page d'accueil + toutes les séances, sur http://localhost:4173
 ```
+
+## Licence
+
+- **Le code** (koans, solutions, démos, outils) est sous licence [MIT](LICENSE) : faites-en ce que vous voulez, en gardant la mention de copyright.
+- **Les slides** (dossier `slides/`) sont sous licence [Creative Commons Attribution - Partage dans les mêmes conditions 4.0 International (CC BY-SA 4.0)](https://creativecommons.org/licenses/by-sa/4.0/deed.fr) : vous pouvez les réutiliser, les adapter et les partager, y compris commercialement, en citant l'auteur et en diffusant vos versions sous la même licence. Le texte complet est dans [`slides/LICENSE`](slides/LICENSE).

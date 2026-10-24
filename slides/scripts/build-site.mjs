@@ -58,6 +58,7 @@ writeFileSync(join(out, 'index.html'), `<!doctype html>
   .soon { opacity: .45; }
   .soon .go { color: var(--muted); }
   footer { margin-top: 3rem; color: var(--muted); font-size: .85rem; }
+  footer a { color: var(--blood); }
   kbd { border: 1px solid var(--line); border-radius: 4px; padding: 0 .3rem; font-size: .8rem; }
 </style>
 </head>
@@ -75,7 +76,8 @@ writeFileSync(join(out, 'index.html'), `<!doctype html>
   <div class="grid">
     ${sessions.map(card).join('\n    ')}
   </div>
-  <footer>Dans les slides : <kbd>→</kbd> / <kbd>←</kbd> pour avancer, <kbd>O</kbd> pour la vue d'ensemble, <kbd>F</kbd> pour le plein écran.</footer>
+  <footer>Dans les slides : <kbd>→</kbd> / <kbd>←</kbd> pour avancer, <kbd>O</kbd> pour la vue d'ensemble, <kbd>F</kbd> pour le plein écran.<br>
+    Slides sous licence <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.fr">CC BY-SA 4.0</a>.</footer>
 </main>
 </body>
 </html>

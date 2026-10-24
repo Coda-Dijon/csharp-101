@@ -1,4 +1,4 @@
-# Séance 1 : Fondamentaux 🧟
+# Séance 1 : Fondamentaux
 
 ## Pré-requis
 - [SDK .NET 10](https://dotnet.microsoft.com/download) : `dotnet --version` doit afficher `10.x`
