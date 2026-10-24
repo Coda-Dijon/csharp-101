@@ -11,8 +11,12 @@ Le domaine de la séance 5, en version simplifiée et stocké dans PostgreSQL co
 
 ```
 s6-aspnet/
-├── FoodTruck/          # l'API (Minimal API) : Program.cs, Endpoints.cs, Comptoir.cs (Dapper), Domain.cs
-│   └── sql/init.sql    # le schéma et les données
+├── FoodTruck/          # l'API, en architecture hexagonale
+│   ├── Domaine/        #   le modèle, Cuisine.Decider et les ports (interfaces des repositories)
+│   ├── Application/    #   le cas d'usage PrendreUneCommande
+│   ├── Infrastructure/ #   les adaptateurs PostgreSQL (Dapper)
+│   ├── Program.cs      #   le branchement des ports (avec leurs durées de vie) et les routes de la Minimal API
+│   └── sql/init.sql    #   le schéma et les données
 ├── Koans/              # les tests : injection de dépendances, API
 └── compose.yaml        # pour la démo : PostgreSQL + le dashboard Aspire
 ```
@@ -26,18 +30,19 @@ dotnet test
 ```
 
 - **`___`** : remplacez le blanc par la valeur attendue, après l'avoir **prédite**.
-- **`throw new NotImplementedException("🧟 À toi de jouer !")`** (sous un commentaire 🛠) : écrivez l'implémentation. Pour les fichiers 02 et 03, le code à écrire est dans le projet `FoodTruck`.
+- **`throw new NotImplementedException("🧟 À toi de jouer !")`** (sous un commentaire 🛠) : écrivez l'implémentation. Pour les fichiers 02 à 04, une partie du code à écrire est dans le projet `FoodTruck`.
 
 | Fichier | Thème |
 |---|---|
-| `01_InjectionDeDependances.cs` | `AddSingleton` / `AddScoped` / `AddTransient`, le piège de la captive dependency, `IOptions<T>` |
+| `01_InjectionDeDependances.cs` | `AddSingleton` / `AddScoped` / `AddTransient`, la captive dependency, `IOptions<T>`, les durées de vie du FoodTruck |
 | `02_MinimalApi.cs` | l'API démarrée en mémoire avec `WebApplicationFactory`, routes, query string, OpenAPI |
-| `03_ExposerLeFoodTruck.cs` | la règle métier (fonction pure), `POST /commandes`, `ProblemDetails`, cinq zombies pour trois cerveaux |
+| `03_ArchitectureHexagonale.cs` | ports et adaptateurs : un repository en mémoire, le cas d'usage testé sans base ni serveur |
+| `04_ExposerLeFoodTruck.cs` | la règle métier (fonction pure), `POST /commandes`, `ProblemDetails`, cinq zombies pour trois cerveaux |
 
 💡 Astuce : lancez un seul fichier avec
 `dotnet test -- --filter-class "Ecosysteme.AProposDesMinimalApi"`
 
-Pas le temps de tout finir ? Priorité à `03_ExposerLeFoodTruck.cs`.
+Pas le temps de tout finir ? Priorité à `03_ArchitectureHexagonale.cs` et `04_ExposerLeFoodTruck.cs`.
 
 ## La démo : l'API, Scalar et OpenTelemetry
 ```bash

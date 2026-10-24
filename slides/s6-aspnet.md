@@ -38,7 +38,8 @@ Rappel logistique : Docker doit tourner sur les postes (Testcontainers).
 |---|---|
 | 0:00 | C# en entreprise, combien ? |
 | 0:10 | ASP.NET Core vu par un dev Spring Boot |
-| 0:25 | L'écosystème NuGet, et une démo |
+| 0:22 | Architecture hexagonale et repositories |
+| 0:30 | L'écosystème NuGet, et une démo |
 | 0:40 | Koans en binôme |
 | 1:20 | Conclusions et rétro de la formation |
 
@@ -140,76 +141,214 @@ layout: section
 # ASP.NET Core
 
 ---
-layout: two-cols-header
+layout: two-cols
 ---
 
-# Spring Boot vs Minimal API
+# Un contrôleur d'API
 
-::left::
+```csharp {all|1|2,11|3-4|6-9|12-14|17-19|all}
+[ApiController]
+[Route("plats")]
+public class PlatsController(IRepositoryDesPlats plats)
+    : ControllerBase
+{
+    [HttpGet]
+    public async Task<IReadOnlyList<Plat>> Menu(
+        [FromQuery] string? categorie)
+        => await plats.MenuAsync(categorie);
 
-<Lang name="java" />
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<Plat>> Trouver(int id)
+        => await plats.TrouverAsync(id) is { } plat
+            ? Ok(plat) : NotFound();
+}
 
-```java {all|1-4|6-9|all}{at:1}
-@SpringBootApplication
-public class FoodTruckApp {
-    public static void main(String[] a) {
-        SpringApplication.run(FoodTruckApp.class, a); } }
-
-@RestController
-class MenuController {
-    @GetMapping("/plats/{id}")
-    ResponseEntity<Plat> plat(@PathVariable int id) { ... } }
+// Program.cs
+builder.Services.AddControllers();
+app.MapControllers();
 ```
 
 ::right::
 
-<Lang name="csharp" />
+<div class="mt-16 small">
 
-```csharp {all|1-3,10|5-9|all}{at:1}
+<div v-click="1">
+
+- `[ApiController]` ≈ `@RestController` : un modèle invalide donne un 400 en Problem Details, sans une ligne de code
+
+</div>
+<div v-click="2">
+
+- `[Route]`, `[HttpGet("{id:int}")]` ≈ `@RequestMapping`, `@GetMapping`, avec le type contraint dans la route
+
+</div>
+<div v-click="3">
+
+- L'injection par le constructeur ; une instance de contrôleur par requête
+
+</div>
+<div v-click="4">
+
+- `[FromQuery]`, `[FromRoute]`, `[FromBody]` ≈ `@RequestParam`, `@PathVariable`, `@RequestBody`
+
+</div>
+<div v-click="5">
+
+- `ActionResult<T>` ≈ `ResponseEntity<T>` ; `Ok()` et `NotFound()` viennent de `ControllerBase`
+
+</div>
+<div v-click="6">
+
+- Les contrôleurs sont découverts par réflexion au démarrage (≈ le scan du classpath)
+
+</div>
+</div>
+
+<!--
+Le style historique d'ASP.NET (Web API, 2012), toujours très présent dans le code existant en entreprise.
+Un dev Spring s'y retrouve tout de suite : des classes, des attributs à la place des annotations.
+Les attributs [FromRoute] sont implicites pour les paramètres présents dans la route, [FromBody] pour les types complexes.
+-->
+
+---
+layout: two-cols
+---
+
+# Minimal API
+
+```csharp {all|1-4,11|6-9|all}{at:1}
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddScoped<Comptoir>();   // l'injection
+builder.Services
+    .AddScoped<IRepositoryDesPlats, PlatsRepository>();
 var app = builder.Build();
 
 app.MapGet("/plats/{id:int}",
-    async (int id, Comptoir comptoir) =>
-        await comptoir.PlatAsync(id) is { } plat
+    async (int id, IRepositoryDesPlats plats) =>
+        await plats.TrouverAsync(id) is { } plat
             ? TypedResults.Ok(plat)
             : TypedResults.NotFound());
 
 app.Run();
 ```
 
-::bottom::
+<div v-click="3" class="callout small mt-3">
 
-<div v-click="3" class="grid grid-cols-3 gap-3 mt-2 small">
-<div class="callout">Pas d'annotation, pas de scan du classpath : tout se déclare dans <code>Program.cs</code></div>
-<div class="callout">Les paramètres de la lambda viennent de la route, de la query string, du body ou de l'injection</div>
-<div class="callout">Les Controllers existent aussi (<code>[ApiController]</code>), proches de Spring MVC</div>
+Ni classe, ni attribut, ni réflexion. Les paramètres de la lambda viennent de la route, de la query string, du body ou de l'injection.
+
+</div>
+
+::right::
+
+<div class="mt-16 ml-6 small">
+
+<div class="kicker mb-2">Une histoire récente</div>
+
+<v-clicks at="4">
+
+- **.NET 6** · novembre **2021** : naissance des Minimal API, avec les top-level statements et `WebApplication`. Le but : la concision d'Express ou de Flask
+- **.NET 7** · 2022 : `TypedResults`, `Results<…>`, les groupes de routes `MapGroup`, les filtres
+- **.NET 8** · 2023 : compatibles **Native AOT** ; le template `webapi` passe aux Minimal API par défaut
+- **.NET 9** · 2024 : OpenAPI natif (`AddOpenApi`)
+- **.NET 10** · 2025 : la validation intégrée
+
+</v-clicks>
+
+<div v-click class="callout mt-4">
+
+Contrôleurs ou Minimal API : même pipeline, même injection, on peut mélanger. Les exercices utilisent les Minimal API.
+
+</div>
 </div>
 
 <!--
 Kestrel est le serveur HTTP intégré (le Tomcat embarqué de Spring Boot).
-Minimal API est le style par défaut des nouveaux projets depuis .NET 6, et celui des exercices.
+Pourquoi les Minimal API : moins de cérémonie, démarrage plus rapide, et pas de réflexion, donc compatibles Native AOT.
+dotnet new webapi génère des Minimal API depuis .NET 8 ; --use-controllers pour l'ancien style.
+-->
+
+---
+layout: two-cols-header
+---
+
+# ASP.NET Core MVC et Razor
+
+::left::
+
+<div class="kicker mb-2">Le contrôleur</div>
+
+```csharp
+// Controllers/MenuController.cs
+public class MenuController(IRepositoryDesPlats plats)
+    : Controller
+{
+    public async Task<IActionResult> Index(string? cat)
+    {
+        var menu = await plats.MenuAsync(cat);
+        return View(menu); // -> Views/Menu/Index.cshtml
+    }
+}
+```
+
+::right::
+
+<div class="kicker mb-2">La vue Razor</div>
+
+```razor
+@model IReadOnlyList<Plat>
+<h1>Le menu du Winchester</h1>
+<ul>
+  @foreach (var plat in Model)
+  {
+    <li>
+      @plat.Nom : @plat.PrixEnDents dents
+      @if (plat.Stock == 0) { <em>(rupture)</em> }
+    </li>
+  }
+</ul>
+<a asp-route-cat="Chou-fleur">Menu vegan</a>
+```
+
+::bottom::
+
+<div v-click class="grid grid-cols-3 gap-3 mt-2 small">
+<div class="callout">Le HTML est produit côté serveur (≈ Spring MVC + Thymeleaf)</div>
+<div class="callout"><code>@</code> bascule en C#, et la vue est compilée</div>
+<div class="callout">Cousins : <strong>Razor Pages</strong> et <strong>Blazor</strong></div>
+</div>
+
+<!--
+On ne pratique pas MVC dans les koans (on fait une API), mais c'est très présent dans le code existant en entreprise.
+asp-route-cat est un tag helper : ils génèrent l'URL à partir des routes, comme th:href="@{...}" en Thymeleaf.
+Blazor reprend la syntaxe Razor pour écrire des composants interactifs, exécutés sur le serveur ou dans le navigateur (WebAssembly).
 -->
 
 ---
 
-# L'injection de dépendances
+# Les durées de vie dans le conteneur
 
-| Spring | .NET | Durée de vie |
-|---|---|---|
-| `@Scope("singleton")` (par défaut) | `AddSingleton<T>()` | une instance pour toute l'application |
-| `@Scope("request")` | `AddScoped<T>()` | une instance par requête HTTP |
-| `@Scope("prototype")` | `AddTransient<T>()` | une nouvelle instance à chaque injection |
-| `@ConfigurationProperties` | `IOptions<T>` | une classe typée, remplie par la configuration |
+| | Pour | Dans le FoodTruck | Requête 1 | Requête 1, encore | Requête 2 |
+|---|---|---|---|---|---|
+| **Singleton** <span class="muted">≈ singleton</span> | partagé, thread-safe, coûteux à créer | `NpgsqlDataSource` | **A** | **A** | **A** |
+| **Scoped** <span class="muted">≈ request</span> | lié à la requête | `IRepositoryDesPlats` | **B** | **B** | **C** |
+| **Transient** <span class="muted">≈ prototype</span> | léger et sans état | `PrendreUneCommande` | **D** | **E** | **F** |
 
-<div v-click class="callout mt-6">
+```csharp
+builder.Services.AddSingleton(NpgsqlDataSource.Create(chaine));            // un pool pour toute l'application
+builder.Services.AddScoped<IRepositoryDesPlats, PlatsRepository>();        // un repository par requête
+builder.Services.AddTransient<PrendreUneCommande>();                       // un cas d'usage à chaque injection
+```
 
-**Le piège** : un singleton qui reçoit un service scoped le garde pour toujours (*captive dependency*). En Development, ASP.NET Core le détecte au démarrage (`ValidateScopes`).
+<div v-click class="callout mt-4">
+
+**Le piège** : un singleton qui reçoit un service scoped le garde pour toujours (*captive dependency*). Règle d'or : on ne dépend que de services qui vivent **au moins aussi longtemps** que soi. En Development, ASP.NET Core le vérifie au démarrage.
 
 </div>
 
-<Zombie kind="skull" pos="br" :size="3.5" />
+<!--
+La règle d'or : un service ne dépend que de services qui vivent au moins aussi longtemps que lui.
+Le koan Les_durees_de_vie_du_FoodTruck vérifie ces trois durées de vie sur les vrais enregistrements de Program.cs.
+Configuration : IOptions<T> ≈ @ConfigurationProperties, aussi dans 01_InjectionDeDependances.
+-->
 
 ---
 layout: two-cols
@@ -317,6 +456,150 @@ layout: section
 
 <div class="kicker mb-3">Partie 02</div>
 
+# Architecture hexagonale et repositories
+
+---
+layout: two-cols
+---
+
+# Ports et adaptateurs
+
+```mermaid {scale: 0.72}
+flowchart TB
+  API["Program.cs · routes<br/>(adaptateur HTTP)"] --> APP["Application<br/>PrendreUneCommande"]
+  APP --> DOM["Domaine<br/>Plat, Client, Cuisine.Decider<br/>ports : IRepositoryDesPlats..."]
+  PG["Infrastructure<br/>PlatsRepository (Dapper)"] -. implémente .-> DOM
+  MEM["Tests<br/>PlatsEnMemoire"] -. implémente .-> DOM
+```
+
+::right::
+
+<div class="mt-20">
+
+<v-clicks>
+
+- Le **domaine** au centre : le modèle, les règles, et les **ports**, des interfaces écrites dans son langage
+- Les **adaptateurs** autour : HTTP d'un côté, PostgreSQL de l'autre
+- Les dépendances pointent **vers** le domaine : il ne connaît ni Npgsql, ni ASP.NET Core
+- `Program.cs` : la *composition root* (le seul endroit où un port rencontre son adaptateur) et les routes HTTP
+- Pour le vérifier en test : NetArchTest ou ArchUnitNET (≈ ArchUnit)
+
+</v-clicks>
+
+</div>
+
+<!--
+Alistair Cockburn, 2005. Aussi appelée « ports and adapters » ; Clean Architecture et Onion en sont des variantes.
+Dans le FoodTruck, ce sont des dossiers et des namespaces d'un seul projet. En entreprise, on voit souvent un projet .csproj par couche, pour que le compilateur interdise les mauvaises références.
+-->
+
+---
+layout: two-cols-header
+---
+
+# Un port, des adaptateurs
+
+::left::
+
+<Lang name="java" />
+
+```java
+// SPRING DATA JPA : on écrit l'interface...
+public interface PlatRepository
+        extends JpaRepository<Plat, Integer> {
+    List<Plat> findByCategorie(String categorie);
+}
+// ...et Spring en génère l'implémentation
+// au démarrage, à partir du nom des méthodes
+```
+
+::right::
+
+<Lang name="csharp" />
+
+```csharp {all|1-6|8-10|12-14|all}{at:1}
+// LE PORT, dans le domaine
+public interface IRepositoryDesPlats
+{
+    Task<IReadOnlyList<Plat>> MenuAsync(string? cat);
+    Task<Plat?> TrouverAsync(int id);
+}
+
+// UN ADAPTATEUR, dans l'infrastructure (Dapper)
+public sealed class PlatsRepository(NpgsqlDataSource source)
+    : IRepositoryDesPlats { ... }
+
+// LE BRANCHEMENT, dans Program.cs
+builder.Services
+    .AddScoped<IRepositoryDesPlats, PlatsRepository>();
+```
+
+::bottom::
+
+<div v-click="4" class="callout small mt-2">
+
+Pas de génération magique : on écrit l'adaptateur. En test, on branche `PlatsEnMemoire` : le cas d'usage se teste en millisecondes, sans Docker.
+
+</div>
+
+---
+layout: two-cols
+---
+
+# Entity Framework Core
+
+```csharp
+// le DbContext ≈ l'EntityManager de JPA
+public class FoodTruckContext(
+    DbContextOptions<FoodTruckContext> options)
+    : DbContext(options)
+{
+    public DbSet<Plat> Plats => Set<Plat>();
+}
+
+// un AUTRE adaptateur pour le même port
+public sealed class PlatsEfCore(FoodTruckContext db)
+    : IRepositoryDesPlats
+{
+    public async Task<IReadOnlyList<Plat>>
+        MenuAsync(string? c) => await db.Plats
+            .Where(p => c == null || p.Categorie == c)
+            .OrderBy(p => p.Id)
+            .ToListAsync();   // LINQ traduit en SQL
+
+    public Task<Plat?> TrouverAsync(int id)
+        => db.Plats.FindAsync(id).AsTask();
+}
+```
+
+::right::
+
+<div class="mt-20">
+
+<v-clicks>
+
+- L'ORM officiel de .NET (≈ JPA / Hibernate)
+- On écrit du **LINQ** : `IQueryable<T>` le traduit en SQL (séance 3)
+- `AddDbContext` l'enregistre en **scoped** : un contexte, et son suivi des modifications, par requête
+- Migrations : `dotnet ef migrations add` (≈ Flyway, Liquibase)
+- **Dapper ou EF Core ?** Le SQL à la main et la performance, ou la productivité. Avec l'hexagone, on change d'adaptateur sans toucher au domaine.
+
+</v-clicks>
+
+</div>
+
+<!--
+Pour mapper les colonnes snake_case de PostgreSQL : le package EFCore.NamingConventions (UseSnakeCaseNamingConvention) ou des attributs [Column].
+Provider PostgreSQL : Npgsql.EntityFrameworkCore.PostgreSQL, du même projet que le driver Npgsql.
+Le piège classique : le N+1 avec le lazy loading, comme en JPA.
+-->
+
+---
+layout: section
+---
+
+<div class="kicker mb-3">Partie 03</div>
+
 # L'écosystème
 
 ---
@@ -411,6 +694,8 @@ Démo (8 min) depuis solutions/s6-aspnet.
 | `@RestController` | `app.MapGet(...)` | les paramètres de la lambda viennent de la route, de la query string, du body ou de l'injection |
 | `ResponseEntity<T>` | `Results<Ok<T>, NotFound>` | le type de retour documente les réponses possibles |
 | `@ControllerAdvice` | `TypedResults.Problem(...)` | les erreurs au format Problem Details |
+| Spring Data génère le repository | on écrit l'adaptateur du port | et on le branche dans `Program.cs` |
+| Thymeleaf | Razor (`.cshtml`) | `@` bascule en C#, la vue est compilée |
 | `@SpringBootTest` + MockMvc | `WebApplicationFactory<Program>` | l'API tourne en mémoire, pour de vrai |
 | springdoc-openapi | `AddOpenApi()` + Scalar | le document OpenAPI est natif |
 
@@ -420,7 +705,7 @@ Démo (8 min) depuis solutions/s6-aspnet.
 layout: section
 ---
 
-<div class="kicker mb-3">Partie 03</div>
+<div class="kicker mb-3">Partie 04</div>
 
 # À vous de jouer
 
@@ -447,13 +732,11 @@ commandes (id, client_id, plat_id, quantite, passee_le)
 <div>
 
 ```
-s6-aspnet/
-├── FoodTruck/       l'API
-│   ├── Endpoints.cs   à compléter (02, 03)
-│   ├── Domain.cs      Cuisine.Decider (03)
-│   └── sql/init.sql
-├── Koans/
-└── compose.yaml     la démo
+FoodTruck/
+├── Domaine/          modèle, Cuisine.Decider, ports
+├── Application/      PrendreUneCommande
+├── Infrastructure/   adaptateurs PostgreSQL
+└── Program.cs        branchement + routes
 ```
 
 <div class="callout mt-4">
@@ -471,22 +754,23 @@ s6-aspnet/
 
 | Fichier | Thème |
 |---|---|
-| `01_InjectionDeDependances.cs` | singleton, scoped, transient, `IOptions<T>` |
+| `01_InjectionDeDependances.cs` | singleton, scoped, transient, `IOptions<T>`, les durées de vie du FoodTruck |
 | `02_MinimalApi.cs` | l'API en mémoire, routes, OpenAPI |
-| `03_ExposerLeFoodTruck.cs` | `POST /commandes`, Problem Details, cinq zombies pour trois cerveaux |
+| `03_ArchitectureHexagonale.cs` | un adaptateur en mémoire, le cas d'usage testé sans base ni serveur |
+| `04_ExposerLeFoodTruck.cs` | `POST /commandes`, Problem Details, cinq zombies pour trois cerveaux |
 
 <div class="callout mt-6">
 
-On change de pilote à chaque fichier · priorité à **03**
+On change de pilote à chaque fichier · priorité à **03** et **04**
 
 </div>
 
 <Zombie kind="hand" pos="br" :size="4" />
 
 <!--
-21 koans.
-Pièges habituels : l'ordre des règles dans Decider (Shaun vegan doit être refusé comme vivant), la Location attendue est /commandes/8 (03).
-Le dernier test de 03 envoie 5 commandes simultanées pour 3 Cerveaux flambés : 3 x 201 et 2 x 409, grâce à l'UPDATE ... WHERE stock >= @Quantite.
+26 koans.
+Pièges habituels : l'ordre des règles dans Decider (Shaun vegan doit être refusé comme vivant), Task.FromResult pour un adaptateur synchrone (03), la Location attendue est /commandes/8 (04).
+Le dernier test de 04 envoie 5 commandes simultanées pour 3 Cerveaux flambés : 3 x 201 et 2 x 409, grâce à l'UPDATE ... WHERE stock >= @Quantite.
 -->
 
 ---
@@ -495,7 +779,7 @@ Le dernier test de 03 envoie 5 commandes simultanées pour 3 Cerveaux flambés :
 
 <v-clicks>
 
-- Correction live de `PasserCommande` : la coquille qui appelle le cœur
+- Correction live de `PrendreUneCommande` : le cas d'usage qui orchestre les ports
 - **Retour à la connexion** : quel chiffre vous a le plus surpris ?
 - **Rétro de la formation** : ce que vous emportez, ce qui vous manque encore
 - **La suite** : les niveaux 5 à 7 du *.NET Maturity Stack*

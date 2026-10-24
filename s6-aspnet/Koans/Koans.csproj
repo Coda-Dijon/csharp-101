@@ -25,7 +25,8 @@
     <Using Include="Xunit" />
     <Using Include="NFluent" />
     <Using Include="Npgsql" />
-    <Using Include="FoodTruck" />
+    <Using Include="FoodTruck.Application" />
+    <Using Include="FoodTruck.Domaine" />
     <Using Include="Ecosysteme.Blanks" Static="true" />
   </ItemGroup>
 

@@ -31,6 +31,7 @@ Créer une formation hands-on « C# 101 » dans l'esprit de `fp101/` (code d'abo
   - 2014 : open source, Roslyn ; 2016 : .NET Core, cross-platform (Linux/macOS)
   - 2020 : .NET 5 unifie Framework, Core et Mono ; une version par an, LTS les années paires
   - 2025 : .NET 10 LTS / C# 14
+- **Une plateforme, beaucoup d'usages** (une slide) : ASP.NET Core (web, API), Blazor (UI web en C#), .NET MAUI (mobile et desktop multiplateforme), WPF / WinForms (desktop Windows), Worker Services, Azure Functions (serverless), .NET Aspire, Unity / Godot (jeux), ML.NET / Microsoft.Extensions.AI, chacun avec son équivalent Java
 - **Comment le code s'exécute** (parallèle avec la JVM) :
   - `.cs` → compilateur **Roslyn** → **IL** (CIL, ≈ bytecode) dans un **assembly** `.dll` (≈ `.jar`) avec ses métadonnées
   - **CLR** (≈ JVM) : **JIT** RyuJIT, Tiered compilation, GC générationnel
@@ -174,14 +175,23 @@ AJOUTER les monads, Functional Core - Imperative Shell à ce dernier moment
 - Pipeline de middlewares (`app.Use...`, l'ordre compte) vs filtres de servlet et intercepteurs
 
 **Deux styles d'API**
-- Controllers (`[ApiController]`, `[HttpGet]`) ≈ `@RestController` / `@GetMapping`
-- **Minimal API** : `app.MapGet(...)`, `MapGroup`, `TypedResults`, `Results<Ok<T>, NotFound>`, validation intégrée (.NET 10). Pas d'équivalent dans Spring (au plus proche : les functional endpoints de WebFlux). C'est le style retenu pour les exercices.
+- Controllers (`[ApiController]`, `[HttpGet]`) ≈ `@RestController` / `@GetMapping` : une slide avec un `PlatsController` commenté pas à pas (attributs, injection, `[FromQuery]`, `ActionResult<T>`, `AddControllers` / `MapControllers`)
+- **Minimal API**, apparues avec .NET 6 (novembre 2021), puis enrichies à chaque version : `TypedResults` et `MapGroup` (.NET 7), Native AOT et template `webapi` par défaut (.NET 8), OpenAPI natif (.NET 9). `app.MapGet(...)`, `MapGroup`, `TypedResults`, `Results<Ok<T>, NotFound>`, validation intégrée (.NET 10). Pas d'équivalent dans Spring (au plus proche : les functional endpoints de WebFlux). C'est le style retenu pour les exercices.
 
 **Exposer le Food-Truck Zombie**
 - `GET /menu`, `POST /commandes`, `GET /commandes/{id}`, `GET /stats/chiffre-affaires-par-type`
 - Le `Result<T>` de la séance 5 traduit en HTTP : `RuptureDeStock` → 409, `ClientEncoreVivant` → 422, au format `ProblemDetails` (RFC 9457)
 - Le repository `async` en mémoire injecté, et la file de commandes exposée en streaming (`IAsyncEnumerable<T>`)
 - Tests d'intégration avec `WebApplicationFactory<Program>` (≈ `@SpringBootTest` + MockMvc), toujours en xUnit + NFluent
+
+**Architecture hexagonale et repositories**
+- Le FoodTruck est découpé en `Domaine` (modèle, `Cuisine.Decider`, **ports** : `IRepositoryDesPlats`, `IRepositoryDesClients`, `IRepositoryDesCommandes`), `Application` (cas d'usage `PrendreUneCommande`), `Infrastructure` (adaptateurs PostgreSQL avec Dapper) ; les routes de la Minimal API restent dans `Program.cs`, l'adaptateur HTTP
+- Les dépendances pointent vers le domaine ; `Program.cs` est la composition root. Comparaison avec Spring Data (l'implémentation générée) ; NetArchTest / ArchUnitNET ≈ ArchUnit
+- Des adaptateurs en mémoire pour tester le cas d'usage sans Docker
+- **Cycle de vie des instances** dans le conteneur, appliqué au FoodTruck : `NpgsqlDataSource` en singleton (pool partagé), repositories en scoped (un par requête), cas d'usage en transient (sans état) ; la captive dependency
+- **Entity Framework Core** en slides : `DbContext`, LINQ traduit en SQL, migrations, présenté comme un autre adaptateur du même port
+
+**ASP.NET Core MVC** (slides) : un contrôleur et sa vue Razor (`@model`, `@foreach`, `@if`, tag helpers), ≈ Spring MVC + Thymeleaf ; Razor Pages et Blazor cités
 
 **L'écosystème NuGet (≈ Maven Central)**
 
@@ -198,7 +208,7 @@ AJOUTER les monads, Functional Core - Imperative Shell à ce dernier moment
 - ⚠️ **Point de vigilance licences** : plusieurs packages historiques sont passés sous licence commerciale en 2025 (FluentAssertions 8, AutoMapper, MediatR, MassTransit 9). C'est l'une des raisons du choix de NFluent dans cette formation. Réflexe à transmettre : vérifier la licence d'un package avant de l'adopter.
 
 - **Données** : l'API s'appuie sur le PostgreSQL et le Dapper de la séance 4 (Testcontainers pour les tests d'intégration)
-- **Koans** : `01_InjectionDeDependances` (durées de vie, captive dependency, `IOptions<T>`), `02_MinimalApi` (`WebApplicationFactory`, routes, query string, OpenAPI), `03_ExposerLeFoodTruck` (`Cuisine.Decider` pure, `POST /commandes`, `ProblemDetails`, 5 commandes concurrentes pour 3 cerveaux). Le code des endpoints à écrire est dans le projet `FoodTruck`.
+- **Koans** (26) : `01_InjectionDeDependances` (durées de vie, captive dependency, `IOptions<T>`, les durées de vie réelles du FoodTruck), `02_MinimalApi` (`WebApplicationFactory`, routes, query string, OpenAPI), `03_ArchitectureHexagonale` (écrire `PlatsEnMemoire`, tester `PrendreUneCommande` sans base), `04_ExposerLeFoodTruck` (`Cuisine.Decider` pure, `POST /commandes`, `ProblemDetails`, 5 commandes concurrentes pour 3 cerveaux). Une partie du code à écrire est dans le projet `FoodTruck`.
 - Observabilité : pas de koan, OpenTelemetry (avec l'instrumentation Npgsql) est montré en démo dans le dashboard Aspire
 - **Démo** : l'API ouverte dans Scalar, puis les traces d'une commande dans le dashboard Aspire
 - Clôture de la formation : rétro, plus la carte du Maturity Stack (niveaux 5 à 7) pour la suite

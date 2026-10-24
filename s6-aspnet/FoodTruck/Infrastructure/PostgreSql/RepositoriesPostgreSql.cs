@@ -1,11 +1,14 @@
 using Dapper;
+using FoodTruck.Domaine;
 using Npgsql;
 
-namespace FoodTruck;
+namespace FoodTruck.Infrastructure.PostgreSql;
 
-// L'accès aux données, avec Dapper (≈ JdbcTemplate) : du SQL écrit à la main, mappé vers les records.
+// Les ADAPTATEURS PostgreSQL : ils implémentent les ports du domaine avec Dapper (≈ JdbcTemplate).
 // Toutes les méthodes sont async : pendant que PostgreSQL répond, aucun thread n'attend.
-public sealed class Comptoir(NpgsqlDataSource source)
+// Remplacer Dapper par Entity Framework Core ne toucherait qu'à ce dossier.
+
+public sealed class PlatsRepository(NpgsqlDataSource source) : IRepositoryDesPlats
 {
     private const string SelectPlats =
         "SELECT id, nom, categorie, prix_en_dents AS PrixEnDents, stock FROM plats";
@@ -19,29 +22,35 @@ public sealed class Comptoir(NpgsqlDataSource source)
         return plats.AsList();
     }
 
-    public async Task<Plat?> PlatAsync(int id)
+    public async Task<Plat?> TrouverAsync(int id)
     {
         await using var connexion = await source.OpenConnectionAsync();
         return await connexion.QuerySingleOrDefaultAsync<Plat>($"{SelectPlats} WHERE id = @id", new { id });
     }
+}
 
-    public async Task<Client?> ClientAsync(int id)
+public sealed class ClientsRepository(NpgsqlDataSource source) : IRepositoryDesClients
+{
+    public async Task<Client?> TrouverAsync(int id)
     {
         await using var connexion = await source.OpenConnectionAsync();
         return await connexion.QuerySingleOrDefaultAsync<Client>(
             "SELECT id, nom, type, est_vivant AS EstVivant FROM clients WHERE id = @id", new { id });
     }
+}
 
-    public async Task<Commande?> CommandeAsync(int id)
+public sealed class CommandesRepository(NpgsqlDataSource source) : IRepositoryDesCommandes
+{
+    private const string ColonnesCommande =
+        "id, client_id AS ClientId, plat_id AS PlatId, quantite, passee_le AS PasseeLe";
+
+    public async Task<Commande?> TrouverAsync(int id)
     {
         await using var connexion = await source.OpenConnectionAsync();
         return await connexion.QuerySingleOrDefaultAsync<Commande>(
-            "SELECT id, client_id AS ClientId, plat_id AS PlatId, quantite, passee_le AS PasseeLe FROM commandes WHERE id = @id",
-            new { id });
+            $"SELECT {ColonnesCommande} FROM commandes WHERE id = @id", new { id });
     }
 
-    // Décrémente le stock et enregistre la commande dans une même transaction.
-    // Renvoie null si le stock a été vidé entre-temps par une autre commande.
     public async Task<Commande?> EnregistrerAsync(NouvelleCommande demande)
     {
         await using var connexion = await source.OpenConnectionAsync();
@@ -54,9 +63,9 @@ public sealed class Comptoir(NpgsqlDataSource source)
         if (servis == 0) return null;
 
         var commande = await connexion.QuerySingleAsync<Commande>(
-            """
+            $"""
             INSERT INTO commandes (client_id, plat_id, quantite) VALUES (@ClientId, @PlatId, @Quantite)
-            RETURNING id, client_id AS ClientId, plat_id AS PlatId, quantite, passee_le AS PasseeLe
+            RETURNING {ColonnesCommande}
             """,
             demande, transaction);
 
@@ -64,7 +73,7 @@ public sealed class Comptoir(NpgsqlDataSource source)
         return commande;
     }
 
-    public async Task<Dictionary<string, int>> ChiffreDAffairesParTypeAsync()
+    public async Task<IReadOnlyDictionary<string, int>> ChiffreDAffairesParTypeAsync()
     {
         await using var connexion = await source.OpenConnectionAsync();
         var lignes = await connexion.QueryAsync<(string Type, int Total)>(

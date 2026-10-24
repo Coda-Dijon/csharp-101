@@ -7,10 +7,11 @@ namespace Ecosysteme;
 // 🎯 Objectif : exposer la prise de commande du food truck.
 //
 // À compléter dans le projet FoodTruck :
-//   1. Cuisine.Decider (Domain.cs)               : la règle métier, une fonction pure
-//   2. Endpoints.Probleme (Endpoints.cs)         : un refus de la cuisine -> une réponse HTTP « Problem Details »
-//   3. Endpoints.PasserCommande (Endpoints.cs)   : POST /commandes, qui assemble le tout
+//   1. Cuisine.Decider (Domaine/Modele.cs)                     : la règle métier, une fonction pure
+//   2. PrendreUneCommande (Application/PrendreUneCommande.cs)  : le cas d'usage (déjà testé en mémoire dans 03)
+//   3. Program.Probleme (Program.cs)                             : un refus -> une réponse HTTP « Problem Details »
 //
+// L'endpoint POST /commandes est fourni : il appelle le cas d'usage et traduit son résultat en HTTP.
 // Functional core, imperative shell : la décision ne connaît ni la base, ni HTTP ; l'endpoint, si.
 
 public class LaCuisineDecide
@@ -47,10 +48,10 @@ public class LaCuisineDecide
     [Fact]
     public void Chaque_refus_a_son_code_HTTP()
     {
-        Check.That(Endpoints.Probleme(new ClientEncoreVivant("Shaun")).StatusCode).IsEqualTo(422);
-        Check.That(Endpoints.Probleme(new RegimeNonRespecte("Gégé", "Cerveau")).StatusCode).IsEqualTo(422);
-        Check.That(Endpoints.Probleme(new RuptureDeStock("Tartare de neurones", 0)).StatusCode).IsEqualTo(409);
-        Check.That(Endpoints.Probleme(new RuptureDeStock("Tartare de neurones", 0)).ProblemDetails.Title)
+        Check.That(Program.Probleme(new ClientEncoreVivant("Shaun")).StatusCode).IsEqualTo(422);
+        Check.That(Program.Probleme(new RegimeNonRespecte("Gégé", "Cerveau")).StatusCode).IsEqualTo(422);
+        Check.That(Program.Probleme(new RuptureDeStock("Tartare de neurones", 0)).StatusCode).IsEqualTo(409);
+        Check.That(Program.Probleme(new RuptureDeStock("Tartare de neurones", 0)).ProblemDetails.Title)
             .IsEqualTo("Rupture de stock");
     }
 }

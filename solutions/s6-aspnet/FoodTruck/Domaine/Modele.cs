@@ -1,4 +1,4 @@
-namespace FoodTruck;
+namespace FoodTruck.Domaine;
 
 // Le domaine du Food-Truck Zombie (séance 5), réduit à ce qu'on stocke dans PostgreSQL.
 public sealed record Plat(int Id, string Nom, string Categorie, int PrixEnDents, int Stock);

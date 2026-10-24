@@ -3,7 +3,7 @@ using System.Net.Http.Json;
 
 namespace Ecosysteme;
 
-// 🎯 Objectif : appeler l'API du food truck (FoodTruck/Endpoints.cs), démarrée en mémoire pour le test.
+// 🎯 Objectif : appeler l'API du food truck (FoodTruck/Program.cs), démarrée en mémoire pour le test.
 //
 // Spring : @SpringBootTest + MockMvc ;  .NET : WebApplicationFactory<Program> + un HttpClient
 // L'API tourne pour de vrai (routing, sérialisation JSON, injection), sur le PostgreSQL du conteneur.
@@ -71,7 +71,7 @@ public class AProposDesMinimalApi(BaseDeDonnees db) : AvecLApi(db)
     [Fact]
     public async Task On_sait_ecrire_un_endpoint()
     {
-        // 🛠 Implémente Endpoints.TrouverPlat dans FoodTruck/Endpoints.cs
+        // 🛠 Implémente la route GET /plats/{id} dans FoodTruck/Program.cs
         var flambe = await Api.GetFromJsonAsync<Plat>("/plats/2");
         var inconnu = await Api.GetAsync("/plats/99");
 

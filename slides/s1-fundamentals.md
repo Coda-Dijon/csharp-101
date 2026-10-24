@@ -132,6 +132,70 @@ Aujourd'hui : Rider ou VS Code sur Mac et Linux, .NET très bien placé sur les 
 -->
 
 ---
+
+# Une plateforme, beaucoup d'usages
+
+<div class="grid grid-cols-3 gap-3 small">
+<div v-click class="callout">
+
+**ASP.NET Core** · sites web et API HTTP, MVC et Razor <span class="muted">≈ Spring Boot</span>
+
+</div>
+<div v-click class="callout">
+
+**Blazor** · des interfaces web interactives en C#, sans JavaScript <span class="muted">≈ Vaadin</span>
+
+</div>
+<div v-click class="callout">
+
+**.NET MAUI** · une base de code pour Android, iOS, Windows et macOS <span class="muted">≈ Compose Multiplatform</span>
+
+</div>
+<div v-click class="callout">
+
+**WPF, WinForms** · applications de bureau Windows <span class="muted">≈ JavaFX, Swing</span>
+
+</div>
+<div v-click class="callout">
+
+**Worker Services** · traitements en arrière-plan, consommateurs de files <span class="muted">≈ Spring Boot sans web</span>
+
+</div>
+<div v-click class="callout">
+
+**Azure Functions** · du code serverless, déclenché par un événement <span class="muted">≈ AWS Lambda</span>
+
+</div>
+<div v-click class="callout">
+
+**.NET Aspire** · lancer et observer une application distribuée en local <span class="muted">≈ Docker Compose + dashboard</span>
+
+</div>
+<div v-click class="callout">
+
+**Unity, Godot** · les jeux vidéo, scriptés en C# <span class="muted">≈ libGDX</span>
+
+</div>
+<div v-click class="callout">
+
+**ML.NET, Microsoft.Extensions.AI** · machine learning et IA générative <span class="muted">≈ Spring AI</span>
+
+</div>
+</div>
+
+<div v-click class="mt-4 text-center">
+
+Un langage, un runtime, les mêmes packages **NuGet** : seule la « couche du dessus » change
+
+</div>
+
+<!--
+Le but : casser l'image « .NET = backend Windows ». Demander qui a déjà touché à Unity : souvent quelqu'un, sans savoir que c'était du C#.
+Dans cette formation : ASP.NET Core en séance 6, avec une API et un aperçu de MVC / Razor ; Aspire apparaît dans la démo d'observabilité.
+MAUI a succédé à Xamarin en 2022.
+-->
+
+---
 layout: section
 ---
 

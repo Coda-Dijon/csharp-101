@@ -1,3 +1,4 @@
+using FoodTruck.Infrastructure.PostgreSql;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -14,6 +15,12 @@ namespace Ecosysteme;
 //   singleton (par défaut)      AddSingleton    une instance pour toute l'application
 //   request                     AddScoped       une instance par « scope » : par requête HTTP dans ASP.NET Core
 //   prototype                   AddTransient    une nouvelle instance à chaque injection
+//
+// Comment choisir ?
+//   - sans état, ou un état partagé et thread-safe, coûteux à créer (pool, cache, client HTTP)  -> singleton
+//   - lié à une requête : un repository, un DbContext, l'utilisateur courant, une transaction   -> scoped
+//   - léger et sans état, quand on ne veut rien partager                                         -> transient
+//   Règle d'or : un service ne doit dépendre que de services qui vivent AU MOINS aussi longtemps que lui.
 public class AProposDeLInjectionDeDependances
 {
     private sealed class Compteur
@@ -78,6 +85,33 @@ public class AProposDeLInjectionDeDependances
         var erreur = Record.Exception(() => services.GetRequiredService<Caisse>());
 
         Check.That(erreur is InvalidOperationException).IsEqualTo(/*__*/true/*__*/);
+    }
+
+    [Fact]
+    public void Les_durees_de_vie_du_FoodTruck()
+    {
+        // Les vrais enregistrements de FoodTruck/Program.cs (l'API n'a pas besoin de la base pour démarrer)
+        using var api = new FoodTruckEnMemoire("Host=localhost;Database=foodtruck");
+        using var requete1 = api.Services.CreateScope();
+        using var requete2 = api.Services.CreateScope();
+        T Dans<T>(IServiceScope requete) where T : notnull => requete.ServiceProvider.GetRequiredService<T>();
+
+        // Le port est branché sur l'adaptateur PostgreSQL
+        Check.That(Dans<IRepositoryDesPlats>(requete1) is PlatsRepository).IsEqualTo(/*__*/true/*__*/);
+
+        // NpgsqlDataSource : singleton
+        Check.That(ReferenceEquals(Dans<NpgsqlDataSource>(requete1), Dans<NpgsqlDataSource>(requete2)))
+            .IsEqualTo(/*__*/true/*__*/);
+
+        // Les repositories : scoped
+        Check.That(ReferenceEquals(Dans<IRepositoryDesPlats>(requete1), Dans<IRepositoryDesPlats>(requete1)))
+            .IsEqualTo(/*__*/true/*__*/);
+        Check.That(ReferenceEquals(Dans<IRepositoryDesPlats>(requete1), Dans<IRepositoryDesPlats>(requete2)))
+            .IsEqualTo(/*__*/false/*__*/);
+
+        // Le cas d'usage : transient
+        Check.That(ReferenceEquals(Dans<PrendreUneCommande>(requete1), Dans<PrendreUneCommande>(requete1)))
+            .IsEqualTo(/*__*/false/*__*/);
     }
 
     public sealed class OptionsDuFoodTruck
