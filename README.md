@@ -12,7 +12,7 @@ Le format est hands-on : des koans à faire passer du rouge au vert.
 | 2 | Types & design objet | [`s2-types`](s2-types/README.md) |
 | 3 | LINQ & principes fonctionnels | [`s3-linq`](s3-linq/README.md) |
 | 4 | Async & concurrence : fichiers et PostgreSQL en async, l'async avant `async` / `await` | [`s4-async`](s4-async/README.md) |
-| 5 | Domain model : le Food-Truck Zombie | _à venir_ |
+| 5 | Le Food-Truck Zombie : concevoir un domain model en TDD, en réinvestissant les séances 1 à 4 | [`s5-domain-model`](s5-domain-model/README.md) |
 | 6 | L'écosystème & ASP.NET Core : Minimal API, injection de dépendances, NuGet, OpenAPI, OpenTelemetry | [`s6-aspnet`](s6-aspnet/README.md) |
 
 ## Démarrer

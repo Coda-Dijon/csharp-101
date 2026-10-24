@@ -135,21 +135,24 @@ Créer une formation hands-on « C# 101 » dans l'esprit de `fp101/` (code d'abo
 - **Koans** : `01_LesFichiers`, `02_AsyncCommeDuSync` (Npgsql), `03_Dapper` (injection SQL, transactions), `04_LArrivage` (CSV → PostgreSQL → JSON), `05_Cancellation`, `06_RaceCondition` (un compteur faux à corriger), `07_ProducerConsumer`
 - 🔮 **Preview** : **runtime async** (.NET 11, async géré par le runtime plutôt que par une state machine générée par le compilateur), avec une comparaison de l'IL et des stack traces avant/après
 
-### Séance 5 : Capstone, modéliser un domaine en C#
-*Objectif : réinvestir les 4 séances dans un domain model complet, piloté par les tests.*
-- **Domaine retenu : 🧟 Food-Truck Zombie.** Pendant l'apocalypse, un food truck vend des cerveaux à la horde.
-- Briques attendues :
-  - Value objects en `record` avec validation : `Fraîcheur` (décroît avec le temps, via immutabilité + `with`), `Prix` (en dents ? en doigts ?), `Quantité`
-  - Agrégat `Commande` avec invariants (constructeur privé + factory `Create`), règles métier comme « les végan-zombies mangent du chou-fleur » ou « pas de cerveau périmé de plus de 3 jours »
-  - Types de zombies et états de commande modélisés par une hiérarchie `abstract record` + pattern matching exhaustif (`Passée → EnPréparation → Servie | Dévorée(parLeCuisinier)`)
-  - `Result<T>` explicite pour `RuptureDeStock` ou `ClientEncoreVivant` au lieu d'exceptions
-  - Requêtes LINQ : « le cerveau le plus populaire », « le chiffre d'affaires par type de zombie »
-  - Une horde qui passe des commandes concurrentes : race condition sur le stock à corriger (`lock` / `SemaphoreSlim`), repository `async` en mémoire et file de commandes en `IAsyncEnumerable`
-- 🔮 **Preview, final** : refactorer `Result<T>` et les états de `Commande` en **union types** et **closed** hierarchies, puis comparer le code avant/après
-- Déroulé : user stories données sous forme de tests (activés au fur et à mesure), en mob ou en binôme
+### Séance 5 : Capstone, un domain model en TDD
+*Objectif : **mettre en pratique tout ce qui a été vu en séances 1 à 4** en concevant un domain model, en TDD. Pas de nouveau concept de langage : on assemble.*
+- **Domaine : 🧟 le Winchester, Food-Truck Zombie.** Prix en dents, cerveaux périmés après 3 jours, zombies vegans au chou-fleur, Shaun le survivant, et un cuisinier qui dévore les commandes.
+- **Format** : pas de koans. Chaque fichier de test raconte une **histoire** (user story + exemples) et se termine par une **liste de tests** ; les participants écrivent les tests un par un (rouge, vert, refactor). Seul le premier test de l'histoire 1 est donné, et ne compile pas : c'est le premier rouge. Générateur : les blocs `// >>> TESTS … // <<< TESTS` deviennent la liste des noms de tests à écrire, les blocs `// >>> MODELE` vident le domaine.
+- **Fourni** : `Result<T>` (`Succes` / `Echec`, conversions implicites, `Match`, `Map`, `Bind`, `Select` / `SelectMany`), la base `Erreur`, et `DoitReussir()` / `DoitEchouer()` côté tests.
+- **Les 7 histoires** (34 tests dans la solution), chacune réinvestit une séance :
+  1. `01_LePrixEnDents` : `Dents`, value object en `record struct`, opérateurs, validation par exception (S1, S2)
+  2. `02_UnCerveauFrais` : `Plat`, `DateOnly`, la date du jour passée en paramètre (S1, S2)
+  3. `03_ChacunSonRegime` : `Client` → `Rodeur` / `ZombieVegan` / `Survivant`, pattern matching, méthode d'extension `PeutManger` (S2, S3)
+  4. `04_PasserUneCommande` : l'agrégat `Commande`, constructeur privé, factory `Passer` qui renvoie un `Result<Commande>` ; règles ordonnées (quantité, vivant, régime, périmé, stock) (S2)
+  5. `05_LaVieDUneCommande` : états `Passee → EnPreparation(cuisinier) → Servie | Devoree(parLeCuisinier)`, transitions avec `with`, enchaînées par `Bind` (S2, S3)
+  6. `06_LesComptesDuSoir` : chiffre d'affaires, plat le plus populaire, CA par sorte de client, pertes en cuisine (S3, LINQ)
+  7. `07_LeRushDeMinuit` : `Comptoir` async, 100 zombies pour 10 cervelles (`SemaphoreSlim`), la horde en `IAsyncEnumerable` (S4)
+- **Slides** : le but du jour mis en avant (les 4 séances → un domaine) ; connexion « votre boîte à outils » (un besoin du Winchester → un outil des séances 1 à 4) ; le TDD en 5 minutes (rouge / vert / refactor, liste de tests, le premier test en direct) ; modéliser (value objects, agrégat, états illégaux irreprésentables, `Result<T>` plutôt qu'exceptions) ; la table histoire → séance.
+- **Déroulé** : histoire 1 en mob (10 min), puis binômes en ping-pong (40 min) ; priorité aux histoires 1 à 5.
+- **Pour aller plus loin, en fin de séance** : `Result<T>` est une **monade** (`Bind`, syntaxe requête LINQ, parallèle avec `Optional.flatMap`, `SelectMany`, `await`) ; **Functional Core, Imperative Shell** (le cœur pur, le `Comptoir` comme coquille, lien avec l'hexagone de la séance 6).
+- 🔮 **Preview** : les **union types** (C# 15 / .NET 11) pour `EtatDeCommande`, avec un `switch` exhaustif sans `_` (syntaxe à revérifier avant la séance)
 - Clôture : rétro, plus la carte du Maturity Stack (niveaux 5 à 7) pour la suite
-
-AJOUTER les monads, Functional Core - Imperative Shell à ce dernier moment
 
 ### Séance 6 : L'écosystème, ASP.NET Core et les packages incontournables
 *Objectif : exposer le domaine de la séance 5 (🧟 Food-Truck Zombie) sous forme d'API HTTP, et découvrir l'écosystème qu'un développeur .NET rencontre en entreprise.*
@@ -248,7 +251,7 @@ csharp-101/
 - [x] **Séance 3** : 57 koans en 7 fichiers autour du registre de la horde (`solutions/s3-linq`, domaine dans `Koans/Domain.cs`), slides `slides/s3-linq.md`, sans slide preview.
 - [ ] **Séance 4**, en cours : 26 koans en 4 fichiers (`solutions/s4-async` : fichiers, PostgreSQL via Testcontainers, Dapper, arrivage) et slides `slides/s4-async.md` (connexion, l'async avant `async` / `await`, fichiers et base de données). Restent `05_Cancellation`, `06_RaceCondition`, `07_ProducerConsumer` et la preview runtime async.
 - [x] **Séance 6** : l'API `FoodTruck` (`solutions/s6-aspnet`), PostgreSQL via Testcontainers (Docker requis), `compose.yaml` pour la démo (PostgreSQL + dashboard Aspire), slides `slides/s6-aspnet.md`. Le domaine est une version simplifiée et autonome du Food-Truck de la séance 5.
-- [ ] Séance 5
+- [x] **Séance 5** : le domaine `Winchester` en TDD (`solutions/s5-domain-model` : 7 histoires, 34 tests, `Result<T>` fourni), version élève avec les listes de tests, slides `slides/s5-domain-model.md` (23 slides)
 
 Décisions prises pendant la séance 1 :
 - **Placeholders** : tests rouges à l'exécution (le code compile toujours). `___` est une propriété qui lève `BlankNotFilledException`, pour que le message d'échec ne souffle pas la réponse.

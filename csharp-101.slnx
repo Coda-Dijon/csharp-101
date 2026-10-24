@@ -12,6 +12,10 @@
   <Folder Name="/s4-async/">
     <Project Path="s4-async/Koans/Koans.csproj" />
   </Folder>
+  <Folder Name="/s5-domain-model/">
+    <Project Path="s5-domain-model/Winchester/Winchester.csproj" />
+    <Project Path="s5-domain-model/Winchester.Tests/Winchester.Tests.csproj" />
+  </Folder>
   <Folder Name="/s6-aspnet/">
     <Project Path="s6-aspnet/FoodTruck/FoodTruck.csproj" />
     <Project Path="s6-aspnet/Koans/Koans.csproj" />
