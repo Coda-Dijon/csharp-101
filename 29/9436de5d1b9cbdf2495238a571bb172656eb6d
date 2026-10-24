@@ -1,0 +1,110 @@
+solutions/s5-domain-model/Winchester/Winchester.csproj
+  s_81f00e07054cb6::t_19eeb8b30e6a7a 1-7
+s5-domain-model/Winchester/Dents.cs
+  s_81f00e07054cb6::t_08186b74e679d6 1-5
+solutions/s5-domain-model/Winchester/Commande.cs
+  s_81f00e07054cb6::t_2b45904e9dde52 1-71
+s5-domain-model/Winchester/Statistiques.cs
+  s_81f00e07054cb6::t_08186b74e679d6 1-5
+s5-domain-model/Winchester/Comptoir.cs
+  s_81f00e07054cb6::t_08186b74e679d6 1-5
+s5-domain-model/README.md
+  s_81f00e07054cb6::t_67f74482d73eb9 1-36,39-54
+  s_81f00e07054cb6::t_6c84ad73b43dd9 37-38
+slides/scripts/build-site.mjs
+  s_81f00e07054cb6::t_34fcd8a12c9c87 16
+slides/package.json
+  s_81f00e07054cb6::t_67f74482d73eb9 18-20
+solutions/s5-domain-model/Winchester.Tests/05_LaVieDUneCommande.cs
+  s_81f00e07054cb6::t_d4f33a4f9a0041 1-94
+solutions/s5-domain-model/README.md
+  s_81f00e07054cb6::t_6c84ad73b43dd9 37-38
+  s_81f00e07054cb6::t_67f74482d73eb9 1-36,39-54
+solutions/s5-domain-model/Winchester/Result.cs
+  s_81f00e07054cb6::t_2efd04b67fb45b 1-48
+solutions/s5-domain-model/Winchester.Tests/03_ChacunSonRegime.cs
+  s_81f00e07054cb6::t_d4f33a4f9a0041 1-51
+s5-domain-model/Winchester/Commande.cs
+  s_81f00e07054cb6::t_08186b74e679d6 1-6
+s5-domain-model/Winchester.Tests/06_LesComptesDuSoir.cs
+  s_81f00e07054cb6::t_08186b74e679d6 1-31
+solutions/s5-domain-model/Winchester.Tests/Verifications.cs
+  s_81f00e07054cb6::t_d4f33a4f9a0041 1-17
+solutions/s5-domain-model/Winchester.Tests/01_LePrixEnDents.cs
+  s_81f00e07054cb6::t_d4f33a4f9a0041 1-19,22,24-30,32-60
+  s_81f00e07054cb6::t_6c84ad73b43dd9 20-21,23,31
+s5-domain-model/Winchester.Tests/02_UnCerveauFrais.cs
+  s_81f00e07054cb6::t_08186b74e679d6 1-25
+s5-domain-model/Winchester.Tests/05_LaVieDUneCommande.cs
+  s_81f00e07054cb6::t_08186b74e679d6 1-35
+solutions/s5-domain-model/Winchester/Dents.cs
+  s_81f00e07054cb6::t_a53847b7f3132e 1-27
+s5-domain-model/Winchester.Tests/01_LePrixEnDents.cs
+  s_81f00e07054cb6::t_08186b74e679d6 1-19,22,27,30-37
+  s_81f00e07054cb6::t_6c84ad73b43dd9 20-21,23-25,29
+  s_81f00e07054cb6::t_4f3ae228df7e43 26,28
+solutions/s5-domain-model/Winchester/Plat.cs
+  s_81f00e07054cb6::t_1065bc9b666d28 1-17
+solutions/Solutions.slnx
+  s_81f00e07054cb6::t_67f74482d73eb9 15-18
+slides/s5-domain-model.md
+  s_81f00e07054cb6::t_4f5d7145a02927 39-41,239-244,246-258,260-269,271,273,350,409-411,414-426,429-430,435-436,443,628-629,639,651,666
+  s_81f00e07054cb6::t_4d2d08f129d51c 1-38,42-238,245,259,270,272,274-349,351-408,412-413,427-428,431-434,437-442,444-515,517-627,630-638,640-650,652-665,667-746
+  s_81f00e07054cb6::t_6c84ad73b43dd9 516
+csharp-101.slnx
+  s_81f00e07054cb6::t_67f74482d73eb9 15-18
+README.md
+  s_81f00e07054cb6::t_67f74482d73eb9 15
+solutions/s5-domain-model/Winchester.Tests/04_PasserUneCommande.cs
+  s_81f00e07054cb6::t_d4f33a4f9a0041 1-99
+PLAN.md
+  s_81f00e07054cb6::t_e5820d8d0d8482 138-154,254
+s5-domain-model/Winchester.Tests/03_ChacunSonRegime.cs
+  s_81f00e07054cb6::t_08186b74e679d6 1-24
+solutions/s5-domain-model/Winchester.Tests/06_LesComptesDuSoir.cs
+  s_81f00e07054cb6::t_d4f33a4f9a0041 1-82
+solutions/s5-domain-model/Winchester.Tests/02_UnCerveauFrais.cs
+  s_81f00e07054cb6::t_d4f33a4f9a0041 1-51
+solutions/s5-domain-model/Winchester/Clients.cs
+  s_81f00e07054cb6::t_f4bd564d255470 1-27
+solutions/s5-domain-model/Winchester.Tests/07_LeRushDeMinuit.cs
+  s_81f00e07054cb6::t_d4f33a4f9a0041 1-92
+solutions/s5-domain-model/Winchester/Statistiques.cs
+  s_81f00e07054cb6::t_9c909bb6b22bd0 1-29
+s5-domain-model/Winchester.Tests/04_PasserUneCommande.cs
+  s_81f00e07054cb6::t_08186b74e679d6 1-40
+s5-domain-model/Winchester/Result.cs
+  s_81f00e07054cb6::t_08186b74e679d6 1-48
+s5-domain-model/Winchester.Tests/Verifications.cs
+  s_81f00e07054cb6::t_08186b74e679d6 1-17
+s5-domain-model/Winchester.Tests/07_LeRushDeMinuit.cs
+  s_81f00e07054cb6::t_08186b74e679d6 1-31
+s5-domain-model/Winchester/Plat.cs
+  s_81f00e07054cb6::t_08186b74e679d6 1-5
+solutions/s5-domain-model/Winchester.Tests/Winchester.Tests.csproj
+  s_81f00e07054cb6::t_19eeb8b30e6a7a 1-26
+s5-domain-model/Winchester/Clients.cs
+  s_81f00e07054cb6::t_08186b74e679d6 1-7
+solutions/s5-domain-model/Winchester/Comptoir.cs
+  s_81f00e07054cb6::t_ca0bea28c166d4 1-52
+s5-domain-model/Winchester.Tests/Winchester.Tests.csproj
+  s_81f00e07054cb6::t_8f94a08908a976 1-26
+s5-domain-model/Winchester/Winchester.csproj
+  s_81f00e07054cb6::t_049f6af7e0cfed 1-7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "299436de5d1b9cbdf2495238a571bb172656eb6d",
+  "prompts": {},
+  "sessions": {
+    "s_81f00e07054cb6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "12a7d70d-2244-42e4-8b2b-6116d5cce135",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Yoan Thirion <yoan.thirion@gmail.com>"
+    }
+  }
+}
