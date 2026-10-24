@@ -1,0 +1,35 @@
+slides/components/License.vue
+  s_81f00e07054cb6::t_24e229f8e6684e 1-27,29,32-43,45-51
+  s_81f00e07054cb6::t_7365c903abd9b0 28,30-31,44
+slides/global-bottom.vue
+  s_81f00e07054cb6::t_01311846322054 17
+  s_81f00e07054cb6::t_41d88b6076aa59 7,13,15-16,18,24,28-36
+slides/scripts/build-site.mjs
+  s_81f00e07054cb6::t_04e8eef1ec5a2a 80
+  s_81f00e07054cb6::t_4ae363acf7436c 61,79
+slides/LICENSE
+  s_81f00e07054cb6::t_04e8eef1ec5a2a 1-439
+LICENSE
+  s_81f00e07054cb6::t_b7e2fd91b300b7 2-4
+  s_81f00e07054cb6::t_04e8eef1ec5a2a 1,5-27
+README.md
+  s_81f00e07054cb6::t_4ae363acf7436c 90-92
+  s_81f00e07054cb6::t_04e8eef1ec5a2a 49,57,93-94
+  s_81f00e07054cb6::t_a31df822ee9853 56
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "f55221233b7fe707ae26c209f2bf4decf6ac6b13",
+  "prompts": {},
+  "sessions": {
+    "s_81f00e07054cb6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "12a7d70d-2244-42e4-8b2b-6116d5cce135",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Yoan Thirion <yoan.thirion@gmail.com>"
+    }
+  }
+}
