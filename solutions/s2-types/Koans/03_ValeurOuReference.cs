@@ -1,6 +1,6 @@
 namespace Types;
 
-// 🎯 Objectif : class (référence) vs struct (valeur), une différence qui n'existe pas en Java, et les paramètres ref / out.
+// 🎯 Objectif : class (référence) vs struct (valeur), une différence qui n'existe pas en Java, les paramètres ref / out et la surcharge d'opérateurs.
 public class AProposDesValeursEtDesReferences
 {
     private class PositionClasse
@@ -161,6 +161,62 @@ public class AProposDesValeursEtDesReferences
 
         Check.That(bunker.Longitude).IsEqualTo(/*__*/2.35/*__*/);
         Check.That(refuge == new Coordonnees(48.85, 2.29)).IsEqualTo(/*__*/true/*__*/);
+    }
+
+    // Une vraie valeur peut avoir ses propres opérateurs : une méthode public static nommée operator +
+    // Java : pas de surcharge d'opérateurs, on écrit rations.plus(autres), comme BigDecimal.add(...)
+    private readonly record struct Rations(int Jours)
+    {
+        public static Rations operator +(Rations gauche, Rations droite) => new(gauche.Jours + droite.Jours);
+        public static Rations operator *(Rations rations, int survivants) => new(rations.Jours * survivants);
+
+        // < et > vont par paires : définir l'un sans l'autre ne compile pas (CS0216), tout comme == sans !=
+        public static bool operator <(Rations gauche, Rations droite) => gauche.Jours < droite.Jours;
+        public static bool operator >(Rations gauche, Rations droite) => gauche.Jours > droite.Jours;
+
+        // 🛠 À toi de coder : consommer des rations, sans jamais descendre sous 0 jour
+        public static Rations operator -(Rations stock, Rations consommees)
+        {
+            // >>> SOLUTION
+            return new(Math.Max(0, stock.Jours - consommees.Jours));
+            // <<< SOLUTION
+        }
+    }
+
+    [Fact]
+    public void Une_struct_peut_surcharger_les_operateurs()
+    {
+        var conserves = new Rations(3);
+        var eau = new Rations(2);
+
+        var stock = conserves + eau;
+        var pourLeGroupe = conserves * 4;
+        stock += eau; // += se déduit de + : rien à écrire
+
+        Check.That(stock.Jours).IsEqualTo(/*__*/7/*__*/);
+        Check.That(pourLeGroupe.Jours).IsEqualTo(/*__*/12/*__*/);
+    }
+
+    [Fact]
+    public void Les_operateurs_de_comparaison_vont_par_paires()
+    {
+        var conserves = new Rations(3);
+        var eau = new Rations(2);
+
+        Check.That(eau < conserves).IsEqualTo(/*__*/true/*__*/);
+        Check.That(eau > conserves).IsEqualTo(/*__*/false/*__*/);
+        // == et != : générés par le record struct, comparés champ par champ (à écrire soi-même sur une struct)
+        Check.That(eau + eau == new Rations(4)).IsEqualTo(/*__*/true/*__*/);
+        // conserves <= eau  -> ne compile pas : <= et >= sont une autre paire, à définir aussi
+    }
+
+    [Fact]
+    public void On_sait_ecrire_un_operateur()
+    {
+        var stock = new Rations(5);
+
+        Check.That((stock - new Rations(2)).Jours).IsEqualTo(3);
+        Check.That((stock - new Rations(8)).Jours).IsEqualTo(0);
     }
 
     // 🛠 À toi de coder : soigne un survivant en modifiant directement sa struct, sans dépasser 100 points de vie.

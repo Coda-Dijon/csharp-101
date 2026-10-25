@@ -427,6 +427,59 @@ in : pour passer une grosse struct sans copie, sans pouvoir la modifier.
 -->
 
 ---
+layout: two-cols-header
+---
+
+# Surcharge d'opérateurs
+
+::left::
+
+<Lang name="java" />
+
+```java {all|1-4|6-8|all}{at:1}
+// PAS DE SURCHARGE : des méthodes
+record Rations(int jours) {
+    Rations plus(Rations autres) { ... }
+}
+
+// COMPARER → Comparable
+var stock = conserves.plus(eau);
+if (eau.compareTo(conserves) < 0) { ... }
+```
+
+::right::
+
+<Lang name="csharp" />
+
+```csharp {all|1-5|7-9|all}{at:1}
+// OPERATOR : une méthode static
+readonly record struct Rations(int Jours)
+{
+    public static Rations operator +(Rations a, Rations b)
+        => new(a.Jours + b.Jours);
+    ...
+}
+var stock = conserves + eau;   // += offert
+if (eau < conserves) { ... }   // < ET > à définir
+```
+
+::bottom::
+
+<div class="grid grid-cols-3 gap-3 mt-2 small">
+<div v-click="3" class="callout">Les opérateurs vont <strong>par paires</strong> : <code>==</code> / <code>!=</code>, <code>&lt;</code> / <code>&gt;</code>, <code>&lt;=</code> / <code>&gt;=</code></div>
+<div v-click="4" class="callout">Un <code>record</code> génère déjà <code>==</code> et <code>!=</code> : égalité par valeur</div>
+<div v-click="5" class="callout">À réserver aux <strong>vraies valeurs</strong> : un prix, une durée, un vecteur. Pas pour additionner deux zombies</div>
+</div>
+
+<!--
+Java n'a jamais voulu de surcharge d'opérateurs (BigDecimal.add, LocalDate.plusDays) ; Kotlin l'a, avec operator fun plus.
+Ce sont des méthodes public static : au moins un paramètre doit être du type qui les déclare.
+Sur une struct classique (pas un record), définir == oblige aussi à redéfinir Equals et GetHashCode, sinon warning.
+C# 14 permet aussi de définir += soi-même (opérateur d'affectation composée), pour éviter une copie sur les gros types.
+On s'en sert en séance 5 : Dents + Dents, Dents * quantité.
+-->
+
+---
 layout: section
 ---
 
@@ -982,6 +1035,7 @@ Combinateurs : and, or, not ; patterns relationnels : < 5, >= 0 and <= 10.
 | méthode par défaut visible partout | visible via l'interface seulement | `((ICrieur)coureur).Crier()` |
 | record `final`, sans `with` | héritage de records et `with` | immuabilité **superficielle** |
 | tout objet est une référence | `struct` = valeur, `ref` / `out` | modifier une struct d'une `List` ne change qu'une copie |
+| `plus()`, `compareTo()` | `operator +`, `operator <` | les opérateurs vont par paires |
 | type erasure | generics réifiés | `typeof(T)`, `new T()`, pas de boxing |
 | `sealed ... permits` | pas de hiérarchie fermée | `_` obligatoire dans le `switch` |
 
@@ -1041,7 +1095,7 @@ dotnet test -- --filter-class "Types.AProposDesRecords"   # un seul fichier
 |---|---|
 | `01_Proprietes.cs` | propriétés, `init`, `required`, `field`, constructeurs primaires |
 | `02_Encapsulation.cs` | `private`, `protected`, `internal`, `file`, `sealed`, collections protégées |
-| `03_ValeurOuReference.cs` | `struct` vs `class`, `ref`, `out`, boxing |
+| `03_ValeurOuReference.cs` | `struct` vs `class`, `ref`, `out`, boxing, opérateurs |
 | `04_Heritage.cs` | interfaces, `virtual`/`override`/`new`, `abstract`, composition |
 | `05_Records.cs` | égalité structurelle, `with`, déconstruction, factory method, héritage |
 | `06_ClassesStatiques.cs` | classes `static`, `using static`, méthodes d'extension |
@@ -1058,7 +1112,7 @@ On change de pilote à chaque fichier · priorité à **02**, **04**, **05** et 
 <Zombie kind="hand" pos="br" :size="4" />
 
 <!--
-70 koans et un exercice de modélisation : c'est volontairement trop pour 40 minutes. 02, 04, 05 et 08 sont les briques de la séance 5, les autres peuvent se finir à la maison.
+73 koans et un exercice de modélisation : c'est volontairement trop pour 40 minutes. 02, 04, 05 et 08 sont les briques de la séance 5, les autres peuvent se finir à la maison.
 Pièges habituels : la fuite de la List derrière IReadOnlyList, l'égalité du Groupe (liste différente), Espece() via la variable Creature, Ouvertures == 1 (constructeur static), Bornes avec CompareTo.
 -->
 

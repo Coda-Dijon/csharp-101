@@ -21,7 +21,7 @@ Les commentaires `// Java :` donnent l'équivalent Java, et les lignes `// ... -
 |---|---|
 | `01_Proprietes.cs` | propriétés, `init`, `required`, `field`, constructeurs primaires, indexeurs |
 | `02_Encapsulation.cs` | `private`, `protected`, `internal`, `protected internal`, `private protected`, `file`, `sealed`, collections en lecture seule |
-| `03_ValeurOuReference.cs` | `struct` vs `class`, paramètres `ref` et `out`, boxing, `readonly record struct` |
+| `03_ValeurOuReference.cs` | `struct` vs `class`, paramètres `ref` et `out`, boxing, `readonly record struct`, surcharge d'opérateurs |
 | `04_Heritage.cs` | interfaces, méthodes par défaut, `virtual`/`override`/`new`, `sealed`, `abstract`, composition |
 | `05_Records.cs` | records, égalité structurelle, `with`, déconstruction, factory method plutôt qu'un constructeur qui lance, héritage de records |
 | `06_ClassesStatiques.cs` | classes `static`, `using static`, constructeur statique, méthodes d'extension |

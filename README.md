@@ -54,7 +54,6 @@ csharp-101/
 ├── Directory.Build.props     # réglages communs à tous les projets (.NET 10, C# 14, nullable)
 ├── Directory.Packages.props  # versions des paquets NuGet, centralisées (xUnit v3, NFluent)
 ├── global.json               # version du SDK et runner de tests
-├── PLAN.md                   # le programme détaillé des 6 séances
 └── LICENSE                   # MIT pour le code (les slides ont leur propre LICENSE, CC BY-SA 4.0)
 ```
 
@@ -86,7 +85,7 @@ Les supports sont des decks [Slidev](https://sli.dev) en Markdown, publiés en l
 ```bash
 cd slides && npm install
 npm run s2     # une séance (s1, s2...), touche O pour la vue d'ensemble, P pour le mode présentateur
-npm run site   # le site complet comme en ligne : page d'accueil + toutes les séances, sur http://localhost:4173
+npm run site   # le site complet comme en ligne : page d'accueil avec le plan de cours + toutes les séances, sur http://localhost:4173
 ```
 
 ## Licence
