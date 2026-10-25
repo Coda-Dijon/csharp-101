@@ -1,0 +1,38 @@
+s2-types/README.md
+  s_196016fdafdcf1::t_35262c775255e0 24
+README.md
+  s_196016fdafdcf1::t_063ff6cb4d7ccd 88
+slides/scripts/build-site.mjs
+  s_196016fdafdcf1::t_adc1fa934d3656 11,13-22,24-28,30-73,86-94,116,129-137,151,155-161
+  s_196016fdafdcf1::t_35262c775255e0 23,29
+solutions/s2-types/README.md
+  s_196016fdafdcf1::t_35262c775255e0 24
+slides/components/Lang.vue
+  s_196016fdafdcf1::t_9d10df28d6955b 2-3,9-10,17
+solutions/s2-types/Koans/03_ValeurOuReference.cs
+  s_196016fdafdcf1::t_3a78851d218b1f 166-221
+  s_196016fdafdcf1::t_821805fa99380f 3
+slides/s2-types.md
+  s_196016fdafdcf1::t_74f49742ae486e 429-470,472-481
+  s_196016fdafdcf1::t_35262c775255e0 1038,1098,1115
+  s_196016fdafdcf1::t_bf2a605f0a765a 471
+s2-types/Koans/03_ValeurOuReference.cs
+  s_196016fdafdcf1::t_821805fa99380f 3,166-218
+  s_196016fdafdcf1::t_a3af3a90e2eae4 219
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "0767b12d09fe1e1f011cd17fd7b5b38fce557f43",
+  "prompts": {},
+  "sessions": {
+    "s_196016fdafdcf1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8a0b81eb-f53f-4a0e-bbfd-8bc94fd3221e",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Yoan Thirion <yoan.thirion@gmail.com>"
+    }
+  }
+}
